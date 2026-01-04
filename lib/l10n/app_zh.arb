@@ -1,0 +1,80 @@
+{
+  "@@locale": "zh",
+  "welcome": "欢迎来到 mBrics",
+  "ddp": "DDP 平台",
+  "ddp_subtitle": "透明的到岸成本报价",
+  "forex": "外汇汇率",
+  "forex_subtitle": "美元, 人民币, 南非兰特",
+  "escrow": "创建托管合同",
+  "escrowTitle": "托管",
+  "pay": "支付给某人",
+  "payTitle": "支付功能",
+  "recipientLabel": "收款人姓名",
+  "amountLabel": "金额",
+  "confirmPayment": "确认支付",
+  "hintTitle": "提示",
+  "hintSubtitle": "此页面为支付演示，不连接真实支付渠道。",
+  "loginTitle": "登录",
+  "username": "用户名",
+  "password": "密码",
+  "loginBtn": "登录",
+  "toggleLang": "English",
+  "invalidCredentials": "凭证无效",
+  "loginHint": "演示登录：用户名 = mbrics, 密码 = mbrics",
+  "paymentConfirmation": "支付演示：{recipient} 收到 {amount}",
+  "@paymentConfirmation": {
+    "description": "提交支付后的确认信息",
+    "placeholders": {
+      "recipient": {"type": "String", "example": "Alice"},
+      "amount": {"type": "String", "example": "100"}
+    }
+  },
+  "noData": "没有数据",
+
+  "currency": "货币",
+  "amount": "金额",
+  "convertedAmount": "转换金额",
+  "method": "支付方式",
+  "payBtn": "支付",
+  "paySuccess": "支付成功",
+
+  "usdToCny": "美元 → 人民币",
+  "usdToZar": "美元 → 南非兰特",
+  "cnyToZar": "人民币 → 南非兰特",
+
+  "dashboardTitle": "仪表盘",
+  "homeTitle": "主菜单",
+  "settings": "设置",
+  "preferredCurrency": "首选货币",
+  "apiSource": "API 来源",
+
+  "registerTitle": "注册",
+  "fullName": "姓名",
+  "email": "电子邮箱",
+  "createAccount": "创建账户",
+
+  "alreadyHaveAccount": "已有账户？登录",
+  "goToLogin": "已有账户？登录",
+  "noAccountRegister": "没有账户？注册",
+
+  "phoneOptional": "电话（可选）",
+  "companyOptional": "公司（可选）",
+  "terms": "条款",
+  "privacyPolicy": "隐私政策",
+  "registrationSuccess": "账户创建成功。请验证邮箱并登录。",
+
+  "originCountry": "起运国",
+  "destinationCountry": "目的国",
+  "incoterm": "贸易术语",
+  "shipmentType": "运输类型",
+  "containerType": "集装箱类型",
+  "volume": "体积 (立方米)",
+  "goodsValue": "货物价值",
+  "hsCode": "HS 编码",
+  "weight": "重量 (公斤)",
+  "generateQuote": "生成报价",
+  "logout": "退出登录",
+
+  "darkMode": "深色模式",
+  "notifications": "通知"
+}

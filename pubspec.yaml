@@ -1,0 +1,30 @@
+name: mbrics
+description: A cross-border digital trade and payment platform.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+  http: ^1.2.0
+  supabase_flutter: ^2.0.0   # ✅ upgraded to v2.x for emailRedirectTo support
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true   # ✅ enables l10n code generation
+
+  assets:
+    - assets/mbrics_logo.png
+    - assets/google_logo.png

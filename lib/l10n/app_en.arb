@@ -1,0 +1,80 @@
+{
+  "@@locale": "en",
+  "welcome": "Welcome to mBrics",
+  "ddp": "DDP Platform",
+  "ddp_subtitle": "Transparent landed cost quoting",
+  "forex": "Forex Exchange Rates",
+  "forex_subtitle": "USD, RMB, ZAR",
+  "escrow": "Create Escrow Contract",
+  "escrowTitle": "Escrow",
+  "pay": "Pay Someone",
+  "payTitle": "Pay Feature",
+  "recipientLabel": "Recipient Name",
+  "amountLabel": "Amount",
+  "confirmPayment": "Confirm Payment",
+  "hintTitle": "Hint",
+  "hintSubtitle": "This page is a payment demo, not connected to real payment channels.",
+  "loginTitle": "Login",
+  "username": "Username",
+  "password": "Password",
+  "loginBtn": "Login",
+  "toggleLang": "中文",
+  "invalidCredentials": "Invalid credentials",
+  "loginHint": "Demo login: username = mbrics, password = mbrics",
+  "paymentConfirmation": "Payment demo: {recipient} received {amount}",
+  "@paymentConfirmation": {
+    "description": "Confirmation message after submitting payment",
+    "placeholders": {
+      "recipient": {"type": "String", "example": "Alice"},
+      "amount": {"type": "String", "example": "100"}
+    }
+  },
+  "noData": "No data",
+
+  "currency": "Currency",
+  "amount": "Amount",
+  "convertedAmount": "Converted Amount",
+  "method": "Payment Method",
+  "payBtn": "Pay",
+  "paySuccess": "Payment Successful",
+
+  "usdToCny": "USD → CNY",
+  "usdToZar": "USD → ZAR",
+  "cnyToZar": "CNY → ZAR",
+
+  "dashboardTitle": "Dashboard",
+  "homeTitle": "Main Menu",
+  "settings": "Settings",
+  "preferredCurrency": "Preferred Currency",
+  "apiSource": "API Source",
+
+  "registerTitle": "Register",
+  "fullName": "Full Name",
+  "email": "Email",
+  "createAccount": "Create account",
+
+  "alreadyHaveAccount": "Already have an account? Log in",
+  "goToLogin": "Already have an account? Log in",
+  "noAccountRegister": "Don't have an account? Register",
+
+  "phoneOptional": "Phone (optional)",
+  "companyOptional": "Company (optional)",
+  "terms": "Terms",
+  "privacyPolicy": "Privacy Policy",
+  "registrationSuccess": "Account created successfully. Please verify your email and log in.",
+
+  "originCountry": "Origin Country",
+  "destinationCountry": "Destination Country",
+  "incoterm": "Incoterm",
+  "shipmentType": "Shipment Type",
+  "containerType": "Container Type",
+  "volume": "Volume (CBM)",
+  "goodsValue": "Goods Value",
+  "hsCode": "HS Code",
+  "weight": "Weight (kg)",
+  "generateQuote": "Generate Quote",
+  "logout": "Logout",
+
+  "darkMode": "Dark Mode",
+  "notifications": "Notifications"
+}
