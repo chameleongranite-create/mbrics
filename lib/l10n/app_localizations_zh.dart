@@ -72,6 +72,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get loginHint => '演示登录：用户名 = mbrics, 密码 = mbrics';
 
   @override
+  String loginFailed(String error) {
+    return '登录失败：$error';
+  }
+
+  @override
   String paymentConfirmation(String recipient, String amount) {
     return '支付演示：$recipient 收到 $amount';
   }
@@ -195,4 +200,15 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get notifications => '通知';
+
+  @override
+  String get appTitle => 'mBrics 平台';
+
+  @override
+  String get navigation => '导航';
+
+  @override
+  String footerText(String year) {
+    return '© $year mBrics';
+  }
 }

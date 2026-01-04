@@ -3,15 +3,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'l10n/app_localizations.dart';
-import 'login/login_screen.dart';
-import 'registration/registration_screen.dart';
-import 'main_menu/main_menu_page.dart';
-import 'ddp/ddp_page.dart';
-import 'forex/forex_page.dart';
-import 'escrow/escrow_page.dart';
-import 'pay/pay_page.dart';
-import 'settings/settings_page.dart';
-import 'profile/profile_page.dart';
+import 'package:mbrics/login/login_screen.dart';
+import 'package:mbrics/registration/registration_screen.dart';
+import 'package:mbrics/main_menu/main_menu_page.dart';
+import 'package:mbrics/ddp/ddp_page.dart';
+import 'package:mbrics/forex/forex_page.dart';
+import 'package:mbrics/escrow/escrow_page.dart';
+import 'package:mbrics/pay/pay_page.dart';
+import 'package:mbrics/settings/settings_page.dart';
+import 'package:mbrics/profile/profile_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,14 +24,27 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale = const Locale('en');
+
+  void _setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'mBrics',
-      locale: const Locale('en'),
+      locale: _locale,
       theme: ThemeData(
         brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white, // enforce white layout
@@ -48,14 +61,14 @@ class MyApp extends StatelessWidget {
       ],
       home: const SplashScreen(),
       routes: {
-        '/login': (context) => LoginScreen(onLocaleChange: (_) {}),
-        '/register': (context) => RegistrationScreen(onLocaleChange: (_) {}),
-        '/mainmenu': (context) => MainMenuPage(onLocaleChange: (_) {}),
-        '/ddp': (context) => DDPPage(onLocaleChange: (_) {}),
-        '/forex': (context) => ForexPage(onLocaleChange: (_) {}),
-        '/escrow': (context) => EscrowPage(onLocaleChange: (_) {}),
-        '/pay': (context) => PayPage(onLocaleChange: (_) {}),
-        '/settings': (context) => SettingsPage(onLocaleChange: (_) {}),
+        '/login': (context) => LoginScreen(onLocaleChange: _setLocale),
+        '/register': (context) => RegistrationScreen(onLocaleChange: _setLocale),
+        '/mainmenu': (context) => MainMenuPage(onLocaleChange: _setLocale),
+        '/ddp': (context) => DDPPage(onLocaleChange: _setLocale),
+        '/forex': (context) => ForexPage(onLocaleChange: _setLocale),
+        '/escrow': (context) => EscrowPage(onLocaleChange: _setLocale),
+        '/pay': (context) => PayPage(onLocaleChange: _setLocale),
+        '/settings': (context) => SettingsPage(onLocaleChange: _setLocale),
         '/profile': (context) => const ProfilePage(),
       },
     );

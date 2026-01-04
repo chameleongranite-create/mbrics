@@ -21,6 +21,13 @@
   "toggleLang": "中文",
   "invalidCredentials": "Invalid credentials",
   "loginHint": "Demo login: username = mbrics, password = mbrics",
+  "loginFailed": "Login failed: {error}",
+  "@loginFailed": {
+    "description": "Shown when login fails",
+    "placeholders": {
+      "error": {"type": "String", "example": "Invalid password"}
+    }
+  },
   "paymentConfirmation": "Payment demo: {recipient} received {amount}",
   "@paymentConfirmation": {
     "description": "Confirmation message after submitting payment",
@@ -76,5 +83,15 @@
   "logout": "Logout",
 
   "darkMode": "Dark Mode",
-  "notifications": "Notifications"
+  "notifications": "Notifications",
+
+  "appTitle": "mBrics Platform",
+  "navigation": "Navigation",
+  "footerText": "© {year} mBrics",
+  "@footerText": {
+    "description": "Footer copyright with year",
+    "placeholders": {
+      "year": {"type": "String", "example": "2026"}
+    }
+  }
 }

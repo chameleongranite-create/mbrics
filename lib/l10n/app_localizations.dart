@@ -224,6 +224,12 @@ abstract class AppLocalizations {
   /// **'Demo login: username = mbrics, password = mbrics'**
   String get loginHint;
 
+  /// Shown when login fails
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed: {error}'**
+  String loginFailed(String error);
+
   /// Confirmation message after submitting payment
   ///
   /// In en, this message translates to:
@@ -469,6 +475,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications'**
   String get notifications;
+
+  /// No description provided for @appTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'mBrics Platform'**
+  String get appTitle;
+
+  /// No description provided for @navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigation'**
+  String get navigation;
+
+  /// Footer copyright with year
+  ///
+  /// In en, this message translates to:
+  /// **'© {year} mBrics'**
+  String footerText(String year);
 }
 
 class _AppLocalizationsDelegate

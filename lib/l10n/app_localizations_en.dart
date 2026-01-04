@@ -73,6 +73,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginHint => 'Demo login: username = mbrics, password = mbrics';
 
   @override
+  String loginFailed(String error) {
+    return 'Login failed: $error';
+  }
+
+  @override
   String paymentConfirmation(String recipient, String amount) {
     return 'Payment demo: $recipient received $amount';
   }
@@ -197,4 +202,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notifications => 'Notifications';
+
+  @override
+  String get appTitle => 'mBrics Platform';
+
+  @override
+  String get navigation => 'Navigation';
+
+  @override
+  String footerText(String year) {
+    return '© $year mBrics';
+  }
 }

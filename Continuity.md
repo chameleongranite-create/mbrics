@@ -16,6 +16,9 @@ Databases & Services
 • Agent tables: Clearance fees + zone‑based trucking costs
 
 Invariants (must remain stable)
+• Project root path:
+  ◦ /Users/m2/Developer/mbrics/MOBILE
+  ◦ All commands must be executed from this directory to avoid confusion with stray example paths
 • Ports:
   ◦ Frontend → http://localhost:5442
   ◦ Backend → http://127.0.0.1:8000
@@ -25,12 +28,60 @@ Invariants (must remain stable)
 • Assets:
   ◦ Logo → assets/mbrics_logo.png
   ◦ ARB files for localization → lib/l10n/
-• Baseline modules: tariffs, freight, clearance endpoints in FastAPI
-• Feature flags: platform_shell, profileformsv2, errorlocalizationv2, analytics_basic
+• Baseline modules:
+  ◦ FastAPI endpoints for tariffs, freight, and clearance
+• Feature flags:
+  ◦ platform_shell, profileformsv2, errorlocalizationv2, analytics_basic
+
+Execution Discipline
+• Frontend explicit port binding:
+  cd /Users/m2/Developer/mbrics/MOBILE
+  flutter run -d chrome --web-port=5442
+
+• Backend explicit port binding:
+  cd /Users/m2/Developer/mbrics/MOBILE/backend
+  uvicorn main:app --reload --port 8000
+
+• Never omit port flags — ensures invariants remain stable across environments.
+• Verify routing invariants after startup:
+  ◦ Session exists → /mainmenu
+  ◦ No session → /login
+
+Structure Discipline
+• Source of truth:
+  ◦ Only use /Users/m2/Developer/mbrics/MOBILE as the active Flutter project.
+  ◦ Do not use /Users/m2/Developer/mbrics/flutter-auth-ui/example/flutter-auth-ui/example (deprecated/cleanup complete).
+• Lib structure:
+  ◦ Use lib/layout for app shell (MasterLayout) and lib/services for AuthService and providers.
+  ◦ Keep feature modules under lib/<feature>/ with clear ownership and tests.
 
 Rituals
-• Always update STATUS.md after each milestone
-• Always commit + tag before feature work (golden-* for baselines, chk-* for checkpoints)
-• Rollback safety: use Git tags or Local History, never manual file deletion
-• Keep golden copies of migrations/templates in /db/migrations or /templates
-• Use pre‑coded modules first, avoid one‑off hacks
+• STATUS.md:
+  ◦ Update after each milestone with what changed, why, and next steps.
+• Commits & Tags:
+  ◦ Commit and tag before any feature work (golden-* for baselines, chk-* for checkpoints).
+• Rollback safety:
+  ◦ Prefer Git tags and Local History; avoid manual deletions without checkpoints.
+• Golden copies:
+  ◦ Preserve canonical templates and migrations in /db/migrations or /templates.
+• Module-first:
+  ◦ Use pre‑coded modules first; avoid one‑off hacks that break invariants.
+
+Operational Notes
+• Localization:
+  ◦ Maintain ARB files under lib/l10n/ with English and Chinese entries aligned to UI strings.
+• Assets discipline:
+  ◦ Replace logos and UI assets via golden-copy workflow with reproducible commands.
+• Environment:
+  ◦ Keep env.dart minimal; secrets managed via Supabase and local .env where applicable.
+• Testing:
+  ◦ Use test/ for unit and integration tests; keep web startup consistent with --web-port invariant.
+
+Path Correction History (2026-01-04)
+• Identified stray files under:
+  ◦ /Users/m2/Developer/mbrics/flutter-auth-ui/example/flutter-auth-ui/example
+• Action:
+  ◦ Removed lib/layout and lib/services and stray Dart files from deprecated path.
+  ◦ Re-established canonical files in /Users/m2/Developer/mbrics/MOBILE/lib.
+• Purpose:
+  ◦ Enforce single source of truth and prevent future path drift.
