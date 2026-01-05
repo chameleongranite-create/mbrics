@@ -85,3 +85,33 @@ Path Correction History (2026-01-04)
   ◦ Re-established canonical files in /Users/m2/Developer/mbrics/MOBILE/lib.
 • Purpose:
   ◦ Enforce single source of truth and prevent future path drift.
+  2026-01-04 – Shell split & login restoration (MOBILE)
+• MasterLayout moved to lib/layout/master_layout.dart; LoginScreen recreated in lib/login/login_screen.dart
+• Imports aligned in main.dart; ARB keys added (appTitle, navigation, footerText EN/ZN); l10n regenerated
+• State: Demo login (mbrics/mbrics) works; language toggle functional across shell
+• Next: Supabase auth wiring with localized error handling; wrap registration and main_menu with MasterLayout
+• Tag: chk-2026-01-04-login-shell-split
+
+### Continuity Entry: Supabase Auth Integration (Planned)
+
+We will integrate a standard, pre-programmed login/register and profile management module using Supabase templates. This includes federated sign-in (Google, Apple, WeChat/Alipay), error messaging, and profile updates. The visuals will inherit from the MasterLayout (admin dashboard style). Localization keys will be aligned with ARB files for bilingual UX. 
+
+Checkpoint discipline:
+- STATUS.md updated
+- Continuity.md mirrored
+- Golden copies created
+- Git tag applied: `chk-2026-01-05-supabase-auth`
+
+### Continuity Entry: Solidity + Hardhat Integration (Planned)
+after web2 is pretty much done, we need to move to the heart of the platform. the web 3 smart contracts with integration with bank of china to control flow of funds from boc escrow accounts
+
+We will integrate Solidity smart contracts into the platform using Hardhat as the framework. 
+This includes setting up the Hardhat project structure, importing OpenZeppelin templates for safe and audited contract logic, and connecting Supabase for off-chain data storage. 
+The contracts will encode multipolar trade/payment rules and compliance flows. 
+Deployment routes will be considered for Ethereum, Polygon, and China-compliant chains. 
+
+Checkpoint discipline:
+- STATUS.md updated
+- Continuity.md mirrored
+- Golden copies created
+- Git tag applied: `chk-2026-01-06-hardhat-solidity-init`
