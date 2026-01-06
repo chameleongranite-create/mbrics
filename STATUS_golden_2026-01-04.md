@@ -72,3 +72,19 @@ Rituals
 • State: Splash → Login → MainMenu works (demo credentials mbrics/mbrics); language toggle functional across shell.
 • Next: Replace demo auth with Supabase signInWithPassword; localize Supabase errors; wrap registration and main_menu with MasterLayout.
 • Tag: chk-2026-01-04-login-shell-split
+
+## Checkpoint: Supabase Auth Module Integration (Planned)
+
+- Objective: Integrate Supabase authentication templates into MasterLayout
+- Scope:
+  - Login/Register flows (email, password, magic link)
+  - Federated sign-in (Google, Apple, WeChat/Alipay extension)
+  - Profile management (update name, email, avatar)
+  - Error messaging aligned with l10n ARB files (English/Chinese)
+- Workflow Discipline:
+  - Golden copies created after integration
+  - Git tag: `chk-2026-01-05-supabase-auth`
+  - STATUS.md and Continuity.md updated in sync
+- Next Steps: Wire Supabase auth pages into MasterLayout and test session persistence
+
+

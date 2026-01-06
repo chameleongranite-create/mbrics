@@ -94,3 +94,8 @@ Planned – Solidity + Hardhat Integration
 • Workflow Discipline: Golden copies created after initial Hardhat setup; STATUS.md and Continuity.md updated in sync
 • Next Steps: Scaffold Hardhat project and import Solidity templates for editing
 • Tag: chk-2026-01-06-hardhat-solidity-init
+2026-01-06 – Avatar Picker Deferred (Flutter Web)
+• Issue: file_picker dialog not opening in Chrome/macOS
+• Decision: defer avatar upload; use default_avatar.png as fallback
+• Changes: STATUS.md and Continuity.md updated; checkpoint tagged
+• Tag: chk-2026-01-06-avatar-deferral
