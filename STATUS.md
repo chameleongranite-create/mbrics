@@ -165,3 +165,30 @@ These are guidelines, not rigid instructions. If you uncover missing pieces (wid
   - Charcoal header bar with bilingual toggle
   - Card block styled with soft white + gray border
   - Buttons aligned with global scheme
+
+  ## 2026-01-07 – MasterLayout Applied to All Pages (MOBILE Project)
+
+### Changes
+- Wrapped all remaining pages in `MasterLayout`:
+  - settings_page.dart
+  - main_menu_page.dart
+  - forex_page.dart
+  - pay_page.dart
+  - dashboard_page.dart
+  - escrow_page.dart
+- Confirmed login_screen.dart, registration_screen.dart, and profile_page.dart already used `MasterLayout`.
+- Every page now inherits the charcoal header with bilingual toggle (English left, Chinese right).
+- Logo, microcopy, and button color scheme consistent across flows.
+
+### State
+- Continuity achieved: all screens visually and structurally aligned.
+- Language toggle functional across all routes.
+- Color discipline enforced (gold, silver, charcoal, white).
+
+### Next
+- Extend Supabase login/register integration with localized error handling.
+- Apply avatar upload once web picker issue is resolved.
+- Begin styling main_menu and settings flows with same card rhythm.
+
+### Tag
+`chk-2026-01-07-masterlayout-allpages`
