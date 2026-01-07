@@ -249,6 +249,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get privacyPolicy => '隐私政策';
 
   @override
+  String get editProfile => '编辑资料';
+
+  @override
   String footerText(String year) {
     return '© $year mBrics';
   }

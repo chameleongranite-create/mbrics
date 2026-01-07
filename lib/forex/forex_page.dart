@@ -1,12 +1,13 @@
+import "../layout/master_layout.dart";
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../l10n/app_localizations.dart';
 
 class ForexPage extends StatefulWidget {
-  const ForexPage({super.key, required this.onLocaleChange});
+  const ForexPage({super.key, this.onLocaleChange});
 
-  final void Function(Locale) onLocaleChange;
+  final void Function(Locale)? onLocaleChange;
 
   @override
   State<ForexPage> createState() => _ForexPageState();
@@ -86,9 +87,9 @@ class _ForexPageState extends State<ForexPage> {
   void _toggleLang() {
     final currentLocale = Localizations.localeOf(context);
     if (currentLocale.languageCode == 'en') {
-      widget.onLocaleChange(const Locale('zh'));
+      widget.onLocaleChange?.call(const Locale('zh'));
     } else {
-      widget.onLocaleChange(const Locale('en'));
+      widget.onLocaleChange?.call(const Locale('en'));
     }
   }
 
@@ -96,41 +97,44 @@ class _ForexPageState extends State<ForexPage> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
 
-    return MasterLayout(onLocaleChange: (locale) {}, child: Scaffold(
-      appBar: AppBar(
-        title: Text(t.forex),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.language),
-            onPressed: _toggleLang,
-            tooltip: t.toggleLang,
-          ),
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: fetchRates,
-            tooltip: t.forex_subtitle,
-          ),
-        ],
-      ),
-      body: loading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView(
-              children: [
-                if (errorMsg != null)
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      '${t.noData}: $errorMsg',
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                  ),
-                const SizedBox(height: 12),
-                buildRateCard(t.usdToCny, usdToCny, Icons.currency_yuan),
-                buildRateCard(t.usdToZar, usdToZar, Icons.currency_exchange),
-                buildRateCard(t.cnyToZar, cnyToZar, Icons.swap_horiz),
-                const SizedBox(height: 12),
-              ],
+    return MasterLayout(
+      onLocaleChange: widget.onLocaleChange,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(t.forex),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.language),
+              onPressed: _toggleLang,
+              tooltip: t.toggleLang,
             ),
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: fetchRates,
+              tooltip: t.forex_subtitle,
+            ),
+          ],
+        ),
+        body: loading
+            ? const Center(child: CircularProgressIndicator())
+            : ListView(
+                children: [
+                  if (errorMsg != null)
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        '${t.noData}: $errorMsg',
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  const SizedBox(height: 12),
+                  buildRateCard(t.usdToCny, usdToCny, Icons.currency_yuan),
+                  buildRateCard(t.usdToZar, usdToZar, Icons.currency_exchange),
+                  buildRateCard(t.cnyToZar, cnyToZar, Icons.swap_horiz),
+                  const SizedBox(height: 12),
+                ],
+              ),
+      ),
     );
   }
 }

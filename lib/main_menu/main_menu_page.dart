@@ -1,65 +1,46 @@
+import "../layout/master_layout.dart";
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 
+class MenuItem {
+  final String title;
+  final String route;
+  final IconData icon;
+
+  const MenuItem(this.title, this.route, this.icon);
+}
+
 class MainMenuPage extends StatefulWidget {
-  const MainMenuPage({super.key, required this.onLocaleChange});
-  final void Function(Locale) onLocaleChange;
+  const MainMenuPage({super.key, this.onLocaleChange});
+  final void Function(Locale)? onLocaleChange;
 
   @override
   State<MainMenuPage> createState() => _MainMenuPageState();
 }
 
 class _MainMenuPageState extends State<MainMenuPage> {
-  int _selectedIndex = 0;
-  late List<Map<String, dynamic>> items;
   Map<String, dynamic>? userData;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final t = AppLocalizations.of(context)!;
-    items = [
-      {'title': t.forex, 'icon': Icons.currency_exchange, 'route': '/forex'},
-      {'title': t.ddp, 'icon': Icons.local_shipping, 'route': '/ddp'},
-      {'title': t.payTitle, 'icon': Icons.payment, 'route': '/pay'},
-      {'title': t.escrowTitle, 'icon': Icons.security, 'route': '/escrow'},
-      {'title': t.settings, 'icon': Icons.settings, 'route': '/settings'},
-    ];
+  void initState() {
+    super.initState();
     _fetchProfile();
   }
 
   Future<void> _fetchProfile() async {
     final uid = Supabase.instance.client.auth.currentUser?.id;
     if (uid == null) return;
-
     try {
       final data = await Supabase.instance.client
           .from('users')
           .select('full_name')
           .eq('id', uid)
           .single();
-
-      setState(() {
-        userData = data;
-      });
+      setState(() => userData = data);
     } catch (e) {
       print('Error fetching profile: $e');
-    }
-  }
-
-  void _onItemTapped(int index) {
-    setState(() => _selectedIndex = index);
-    if (index == 0) return; // stay on main menu
-    Navigator.pushNamed(context, items[index - 1]['route'] as String);
-  }
-
-  void _toggleLang(BuildContext context) {
-    final currentLocale = Localizations.localeOf(context);
-    if (currentLocale.languageCode == 'en') {
-      widget.onLocaleChange(const Locale('zh'));
-    } else {
-      widget.onLocaleChange(const Locale('en'));
     }
   }
 
@@ -67,82 +48,178 @@ class _MainMenuPageState extends State<MainMenuPage> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
 
-    return MasterLayout(onLocaleChange: (locale) {}, child: Scaffold(
-      appBar: AppBar(
-        title: Text(t.homeTitle),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.language),
-            onPressed: () => _toggleLang(context),
-            tooltip: t.toggleLang,
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(8),
-        children: [
-          if (userData != null)
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Welcome, ${userData!['full_name'] ?? ''}',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blueAccent,
-                ),
-              ),
-            ),
-          ...List.generate(items.length, (index) {
-            final item = items[index];
-            return Column(
+    const Color backgroundWhite = Color(0xFFFFFFFF);
+    const Color cardTint = Color(0xFFFAFAFA);
+    const Color borderGray = Color(0xFFE0E0E0);
+    const Color silver = Color(0xFFA7A9AC);
+    const Color gold = Color(0xFFC2994B);
+    const Color textDark = Color(0xFF343A40);
+    const Color platinumFill = Color(0xFFE5E4E2); // platinum tone
+
+    // ✅ Main functions (renamed)
+    final mainFunctions = [
+      MenuItem("Get a quote", '/ddp', Icons.local_shipping),
+      MenuItem("Send or receive money", '/pay', Icons.payment),
+      MenuItem("Create a blockchain contract", '/escrow', Icons.security),
+    ];
+
+    // ✅ Secondary functions (renamed + grouped separately)
+    final secondaryFunctions = [
+      MenuItem("Live forex rates", '/forex', Icons.currency_exchange),
+      MenuItem(t.editProfile, '/edit_profile', Icons.edit),
+      MenuItem(t.settings, '/settings', Icons.settings),
+    ];
+
+    return MasterLayout(
+      onLocaleChange: widget.onLocaleChange,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 420),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                ListTile(
-                  leading: Icon(item['icon'] as IconData, color: Colors.blue),
-                  title: Text(item['title'] as String),
-                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                  onTap: () =>
-                      Navigator.pushNamed(context, item['route'] as String),
+                // ✅ Logo outside the card (same as rest of pages)
+                Image.asset(
+                  'assets/mbrics_logo.png',
+                  height: 100,
                 ),
-                const Divider(),
+                const SizedBox(height: 24),
+
+                // ✅ Card begins here
+                Container(
+                  decoration: BoxDecoration(
+                    color: cardTint,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: borderGray),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.04),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // ✅ Slogan inside the card
+                      Text(
+                        "Built for global trade. Designed for trust.",
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: silver,
+                          letterSpacing: 0.4,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Conversational heading for main functions
+                      Text(
+                        'Hi ${userData?['full_name'] ?? ''}, ready to get started?',
+                        style: GoogleFonts.inter(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: textDark,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
+                      // ✅ Render main functions with platinum vibe
+                      ...mainFunctions.map((item) => Card(
+                            color: platinumFill,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              side: BorderSide(color: borderGray),
+                            ),
+                            margin: const EdgeInsets.only(bottom: 12),
+                            child: ListTile(
+                              leading: Icon(item.icon, color: silver, size: 28),
+                              title: Text(
+                                item.title,
+                                style: GoogleFonts.inter(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: textDark,
+                                ),
+                              ),
+                              trailing: const Icon(Icons.arrow_forward_ios,
+                                  size: 16, color: Color(0xFF343A40)),
+                              onTap: () =>
+                                  Navigator.pushNamed(context, item.route),
+                            ),
+                          )),
+
+                      const Divider(thickness: 1, height: 32),
+
+                      // Conversational heading for secondary functions (same style as first heading)
+                      Text(
+                        'Or, manage your tools and settings…',
+                        style: GoogleFonts.inter(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: textDark,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // ✅ Render secondary functions with white fill
+                      ...secondaryFunctions.map((item) => Card(
+                            color: backgroundWhite,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              side: BorderSide(color: borderGray),
+                            ),
+                            margin: const EdgeInsets.only(bottom: 12),
+                            child: ListTile(
+                              leading: Icon(item.icon, color: gold, size: 26),
+                              title: Text(
+                                item.title,
+                                style: GoogleFonts.inter(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: textDark,
+                                ),
+                              ),
+                              trailing: const Icon(Icons.arrow_forward_ios,
+                                  size: 16, color: silver),
+                              onTap: () =>
+                                  Navigator.pushNamed(context, item.route),
+                            ),
+                          )),
+                      const SizedBox(height: 20),
+
+                      // Logout button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: gold,
+                            foregroundColor: backgroundWhite,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () async {
+                            await Supabase.instance.client.auth.signOut();
+                            if (mounted) {
+                              Navigator.pushReplacementNamed(context, '/login');
+                            }
+                          },
+                          child: Text(t.logout),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
-            );
-          }),
-          ListTile(
-            leading: const Icon(Icons.logout, color: Colors.redAccent),
-            title: Text(t.logout),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () async {
-              await Supabase.instance.client.auth.signOut();
-              if (mounted) {
-                Navigator.pushReplacementNamed(context, '/login');
-              }
-            },
+            ),
           ),
-          const Divider(),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.blueGrey[900],
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey[400],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: [
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.home), label: t.homeTitle),
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.currency_exchange), label: t.forex),
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.local_shipping), label: t.ddp),
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.security), label: t.escrowTitle),
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.payment), label: t.payTitle),
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.settings), label: t.settings),
-        ],
+        ),
       ),
     );
   }

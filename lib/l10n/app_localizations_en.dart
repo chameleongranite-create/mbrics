@@ -256,6 +256,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get privacyPolicy => 'Privacy Policy';
 
   @override
+  String get editProfile => 'Edit Profile';
+
+  @override
   String footerText(String year) {
     return '© $year mBrics';
   }

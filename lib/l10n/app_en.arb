@@ -6,7 +6,7 @@
   "welcome": "Welcome to mBrics",
 
   "errorInvalidEmailFormat": "Please enter a valid email address.",
-"errorInvalidPhone": "Please enter a valid phone number.",
+  "errorInvalidPhone": "Please enter a valid phone number.",
 
   "loginTitle": "Login",
   "login": "Login",
@@ -32,7 +32,7 @@
   "@loginFailed": {
     "description": "Shown when login fails",
     "placeholders": {
-      "error": {"type": "String", "example": "Invalid password"}
+      "error": { "type": "String", "example": "Invalid password" }
     }
   },
 
@@ -41,7 +41,7 @@
   "@registrationFailed": {
     "description": "Shown when registration fails",
     "placeholders": {
-      "error": {"type": "String", "example": "Email already registered"}
+      "error": { "type": "String", "example": "Email already registered" }
     }
   },
 
@@ -88,8 +88,8 @@
   "@paymentConfirmation": {
     "description": "Confirmation message after submitting payment",
     "placeholders": {
-      "recipient": {"type": "String", "example": "Alice"},
-      "amount": {"type": "String", "example": "100"}
+      "recipient": { "type": "String", "example": "Alice" },
+      "amount": { "type": "String", "example": "100" }
     }
   },
 
@@ -113,11 +113,13 @@
   "terms": "Terms",
   "privacyPolicy": "Privacy Policy",
 
+  "editProfile": "Edit Profile",
+
   "footerText": "© {year} mBrics",
   "@footerText": {
     "description": "Footer copyright with year",
     "placeholders": {
-      "year": {"type": "String", "example": "2026"}
+      "year": { "type": "String", "example": "2026" }
     }
   }
 }

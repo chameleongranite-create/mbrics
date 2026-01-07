@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 
 class MainMenuPage extends StatefulWidget {
-  const MainMenuPage({super.key, required this.onLocaleChange});
-  final void Function(Locale) onLocaleChange;
+  const MainMenuPage({super.key, this.onLocaleChange});
+  final void Function(Locale)? onLocaleChange;
 
   @override
   State<MainMenuPage> createState() => _MainMenuPageState();
@@ -36,9 +36,9 @@ class _MainMenuPageState extends State<MainMenuPage> {
   void _toggleLang(BuildContext context) {
     final currentLocale = Localizations.localeOf(context);
     if (currentLocale.languageCode == 'en') {
-      widget.onLocaleChange(const Locale('zh'));
+      widget.onLocaleChange?.call(const Locale('zh'));
     } else {
-      widget.onLocaleChange(const Locale('en'));
+      widget.onLocaleChange?.call(const Locale('en'));
     }
   }
 
@@ -46,7 +46,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
 
-    return MasterLayout(onLocaleChange: (locale) {}, child: Scaffold(
+    return MasterLayout(onLocaleChange: widget.onLocaleChange, child: Scaffold(
       appBar: AppBar(
         title: Text(t.homeTitle), // use "Main Menu" / "Home" from ARB
         actions: [

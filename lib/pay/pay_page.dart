@@ -1,10 +1,11 @@
+import "../layout/master_layout.dart";
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 
 class PayPage extends StatefulWidget {
-  const PayPage({super.key, required this.onLocaleChange});
+  const PayPage({super.key, this.onLocaleChange});
 
-  final void Function(Locale) onLocaleChange;
+  final void Function(Locale)? onLocaleChange;
 
   @override
   State<PayPage> createState() => _PayPageState();
@@ -26,9 +27,9 @@ class _PayPageState extends State<PayPage> {
   void _toggleLang() {
     final currentLocale = Localizations.localeOf(context);
     if (currentLocale.languageCode == 'en') {
-      widget.onLocaleChange(const Locale('zh'));
+      widget.onLocaleChange?.call(const Locale('zh'));
     } else {
-      widget.onLocaleChange(const Locale('en'));
+      widget.onLocaleChange?.call(const Locale('en'));
     }
   }
 
@@ -70,72 +71,76 @@ class _PayPageState extends State<PayPage> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
 
-    return MasterLayout(onLocaleChange: (locale) {}, child: Scaffold(
-      appBar: AppBar(
-        title: Text(t.payTitle),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.language),
-            onPressed: _toggleLang,
-            tooltip: t.toggleLang,
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            DropdownButtonFormField<String>(
-              value: selectedCurrency,
-              decoration: InputDecoration(labelText: t.currency),
-              items: ['CNY', 'ZAR']
-                  .map((c) => DropdownMenuItem(value: c, child: Text(c)))
-                  .toList(),
-              onChanged: (val) => setState(() => selectedCurrency = val!),
+    return MasterLayout(
+      onLocaleChange: widget.onLocaleChange,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(t.payTitle),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.language),
+              onPressed: _toggleLang,
+              tooltip: t.toggleLang,
             ),
-            TextFormField(
-              decoration: InputDecoration(
-                  labelText: '${t.amount} (${selectedCurrency})'),
-              keyboardType: TextInputType.number,
-              onChanged: _updateAmounts,
-            ),
-            const SizedBox(height: 12),
-            if (amountCny != null && amountZar != null)
-              Card(
-                child: ListTile(
-                  title: Text(t.convertedAmount),
-                  subtitle: Text(
-                      'CNY: ${amountCny!.toStringAsFixed(2)} | ZAR: ${amountZar!.toStringAsFixed(2)}'),
-                ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              DropdownButtonFormField<String>(
+                value: selectedCurrency,
+                decoration: InputDecoration(labelText: t.currency),
+                items: ['CNY', 'ZAR']
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .toList(),
+                onChanged: (val) => setState(() => selectedCurrency = val!),
               ),
-            const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: t.method),
-              items: ['Bank Transfer', 'Card', 'Crypto']
-                  .map((m) => DropdownMenuItem(value: m, child: Text(m)))
-                  .toList(),
-              onChanged: (val) => setState(() => paymentMethod = val),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: _processPayment,
-              icon: const Icon(Icons.payment),
-              label: Text(t.payBtn),
-            ),
-            if (paymentSuccess)
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Card(
-                  color: Colors.green.shade100,
+              TextFormField(
+                decoration: InputDecoration(
+                    labelText: '${t.amount} (${selectedCurrency})'),
+                keyboardType: TextInputType.number,
+                onChanged: _updateAmounts,
+              ),
+              const SizedBox(height: 12),
+              if (amountCny != null && amountZar != null)
+                Card(
                   child: ListTile(
-                    leading: const Icon(Icons.check_circle, color: Colors.green),
-                    title: Text(t.paySuccess),
+                    title: Text(t.convertedAmount),
                     subtitle: Text(
-                        'CNY: ${amountCny?.toStringAsFixed(2)} | ZAR: ${amountZar?.toStringAsFixed(2)}\nMethod: $paymentMethod'),
+                        'CNY: ${amountCny!.toStringAsFixed(2)} | ZAR: ${amountZar!.toStringAsFixed(2)}'),
                   ),
                 ),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(labelText: t.method),
+                items: ['Bank Transfer', 'Card', 'Crypto']
+                    .map((m) => DropdownMenuItem(value: m, child: Text(m)))
+                    .toList(),
+                onChanged: (val) => setState(() => paymentMethod = val),
               ),
-          ],
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                onPressed: _processPayment,
+                icon: const Icon(Icons.payment),
+                label: Text(t.payBtn),
+              ),
+              if (paymentSuccess)
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Card(
+                    color: Colors.green.shade100,
+                    child: ListTile(
+                      leading:
+                          const Icon(Icons.check_circle, color: Colors.green),
+                      title: Text(t.paySuccess),
+                      subtitle: Text(
+                          'CNY: ${amountCny?.toStringAsFixed(2)} | ZAR: ${amountZar?.toStringAsFixed(2)}\nMethod: $paymentMethod'),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
