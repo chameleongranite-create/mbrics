@@ -137,3 +137,31 @@ These are guidelines, not rigid instructions. If you uncover missing pieces (wid
 • State: Login and Registration flows now render correctly; routing invariant confirmed (session → /mainmenu, else → /login)
 • Next: Integrate Supabase signInWithPassword for login; extend registration to support avatar_url when web picker issue is resolved
 • Tag: chk-2026-01-07-registration-fix
+
+# STATUS.md
+
+## Checkpoint: January 7, 2026
+
+### Updates
+- Added bilingual toggle in top charcoal header bar:
+  - Left: "Digital Currency Bridge Platform" (English, white)
+  - Right: "数字货币桥平台" (Chinese, red accent)
+  - Both act as language selection links.
+- Increased logo size to 120px, pure white background version (`assets/mbrics_logo.png`).
+- Updated microcopy under logo: "Built for global trade. Designed for trust."
+- Refined card block:
+  - Soft white tint (#FAFAFA) background
+  - Light gray (#E0E0E0) border
+  - Subtle shadow for depth
+- Button hierarchy confirmed:
+  - Gold (#C2994B) → Primary CTA ("Continue to Site")
+  - Silver (#A7A9AC) → Secondary actions ("Upload Avatar", "Edit Details")
+  - Charcoal Navy (#343A40) → Tertiary link ("Logout")
+
+### Next Steps
+- Backup current project state (`PROJECT_CHECKPOINT.md`, Git commit).
+- Apply new color scheme to `login_screen.dart`:
+  - Pure white background
+  - Charcoal header bar with bilingual toggle
+  - Card block styled with soft white + gray border
+  - Buttons aligned with global scheme

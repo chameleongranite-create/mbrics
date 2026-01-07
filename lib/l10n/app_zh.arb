@@ -1,26 +1,30 @@
 {
   "@@locale": "zh",
+
+  "appTitle": "mBrics 平台",
+  "welcomeTitle": "欢迎来到 mBrics",
   "welcome": "欢迎来到 mBrics",
-  "ddp": "DDP 平台",
-  "ddp_subtitle": "透明的到岸成本报价",
-  "forex": "外汇汇率",
-  "forex_subtitle": "美元, 人民币, 南非兰特",
-  "escrow": "创建托管合同",
-  "escrowTitle": "托管",
-  "pay": "支付给某人",
-  "payTitle": "支付功能",
-  "recipientLabel": "收款人姓名",
-  "amountLabel": "金额",
-  "confirmPayment": "确认支付",
-  "hintTitle": "提示",
-  "hintSubtitle": "此页面为支付演示，不连接真实支付渠道。",
+
   "loginTitle": "登录",
-  "username": "用户名",
-  "password": "密码",
+  "login": "登录",
   "loginBtn": "登录",
-  "toggleLang": "English",
-  "invalidCredentials": "凭证无效",
+  "register": "注册",
+  "registerTitle": "注册",
+  "createAccount": "创建账户",
+  "alreadyHaveAccount": "已有账户？登录",
+  "goToLogin": "已有账户？登录",
+  "noAccountRegister": "没有账户？注册",
+  "alreadyRegistered": "已经注册？点击这里登录",
+
+  "username": "用户名",
+  "email": "电子邮箱",
+  "password": "密码",
+  "fullName": "姓名",
+  "phoneOptional": "电话（可选）",
+  "companyOptional": "公司（可选）",
+
   "loginHint": "演示登录：用户名 = mbrics, 密码 = mbrics",
+  "invalidCredentials": "凭证无效",
   "loginFailed": "登录失败：{error}",
   "@loginFailed": {
     "description": "登录失败时显示",
@@ -28,48 +32,25 @@
       "error": {"type": "String", "example": "密码错误"}
     }
   },
-  "paymentConfirmation": "支付演示：{recipient} 收到 {amount}",
-  "@paymentConfirmation": {
-    "description": "提交支付后的确认信息",
+
+  "registrationSuccess": "账户创建成功。请验证邮箱并登录。",
+  "registrationFailed": "注册失败：{error}",
+  "@registrationFailed": {
+    "description": "注册失败时显示",
     "placeholders": {
-      "recipient": {"type": "String", "example": "Alice"},
-      "amount": {"type": "String", "example": "100"}
+      "error": {"type": "String", "example": "电子邮箱已注册"}
     }
   },
-  "noData": "没有数据",
 
-  "currency": "货币",
-  "amount": "金额",
-  "convertedAmount": "转换金额",
-  "method": "支付方式",
-  "payBtn": "支付",
-  "paySuccess": "支付成功",
+  "errorInvalidCredentials": "电子邮箱或密码不正确，请重试。",
+  "errorUserNotFound": "没有找到该电子邮箱的账户。要注册吗？",
+  "errorEmailTaken": "该电子邮箱已注册，请尝试登录。",
+  "errorWeakPassword": "密码必须至少包含8个字符。",
+  "errorNetwork": "无法连接服务器，请检查网络后重试。",
+  "errorTooManyAttempts": "登录失败次数过多，请稍后再试。",
 
-  "usdToCny": "美元 → 人民币",
-  "usdToZar": "美元 → 南非兰特",
-  "cnyToZar": "人民币 → 南非兰特",
-
-  "dashboardTitle": "仪表盘",
-  "homeTitle": "主菜单",
-  "settings": "设置",
-  "preferredCurrency": "首选货币",
-  "apiSource": "API 来源",
-
-  "registerTitle": "注册",
-  "fullName": "姓名",
-  "email": "电子邮箱",
-  "createAccount": "创建账户",
-
-  "alreadyHaveAccount": "已有账户？登录",
-  "goToLogin": "已有账户？登录",
-  "noAccountRegister": "没有账户？注册",
-
-  "phoneOptional": "电话（可选）",
-  "companyOptional": "公司（可选）",
-  "terms": "条款",
-  "privacyPolicy": "隐私政策",
-  "registrationSuccess": "账户创建成功。请验证邮箱并登录。",
-
+  "ddp": "DDP 平台",
+  "ddp_subtitle": "透明的到岸成本报价",
   "originCountry": "起运国",
   "destinationCountry": "目的国",
   "incoterm": "贸易术语",
@@ -80,13 +61,58 @@
   "hsCode": "HS 编码",
   "weight": "重量 (公斤)",
   "generateQuote": "生成报价",
-  "logout": "退出登录",
 
+  "errorInvalidEmailFormat": "请输入有效的电子邮箱地址。",
+"errorInvalidPhone": "请输入有效的电话号码。",
+
+  "forex": "外汇汇率",
+  "forex_subtitle": "美元, 人民币, 南非兰特",
+  "usdToCny": "美元 → 人民币",
+  "usdToZar": "美元 → 南非兰特",
+  "cnyToZar": "人民币 → 南非兰特",
+  "currency": "货币",
+  "amount": "金额",
+  "convertedAmount": "转换金额",
+
+  "escrow": "创建托管合同",
+  "escrowTitle": "托管",
+
+  "pay": "支付给某人",
+  "payTitle": "支付功能",
+  "recipientLabel": "收款人姓名",
+  "amountLabel": "金额",
+  "confirmPayment": "确认支付",
+  "payBtn": "支付",
+  "paySuccess": "支付成功",
+  "paymentConfirmation": "支付演示：{recipient} 收到 {amount}",
+  "@paymentConfirmation": {
+    "description": "提交支付后的确认信息",
+    "placeholders": {
+      "recipient": {"type": "String", "example": "Alice"},
+      "amount": {"type": "String", "example": "100"}
+    }
+  },
+
+  "hintTitle": "提示",
+  "hintSubtitle": "此页面为支付演示，不连接真实支付渠道。",
+  "noData": "没有数据",
+  "method": "支付方式",
+
+  "dashboardTitle": "仪表盘",
+  "homeTitle": "主菜单",
+  "settings": "设置",
+  "preferredCurrency": "首选货币",
+  "apiSource": "API 来源",
+  "logout": "退出登录",
   "darkMode": "深色模式",
   "notifications": "通知",
-
-  "appTitle": "mBrics 平台",
   "navigation": "导航",
+
+  "toggleLang": "English",
+
+  "terms": "条款",
+  "privacyPolicy": "隐私政策",
+
   "footerText": "© {year} mBrics",
   "@footerText": {
     "description": "页脚版权，包含年份",

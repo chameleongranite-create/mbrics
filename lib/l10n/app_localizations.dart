@@ -98,89 +98,35 @@ abstract class AppLocalizations {
     Locale('zh')
   ];
 
+  /// No description provided for @appTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'mBrics Platform'**
+  String get appTitle;
+
+  /// No description provided for @welcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to mBrics'**
+  String get welcomeTitle;
+
   /// No description provided for @welcome.
   ///
   /// In en, this message translates to:
   /// **'Welcome to mBrics'**
   String get welcome;
 
-  /// No description provided for @ddp.
+  /// No description provided for @errorInvalidEmailFormat.
   ///
   /// In en, this message translates to:
-  /// **'DDP Platform'**
-  String get ddp;
+  /// **'Please enter a valid email address.'**
+  String get errorInvalidEmailFormat;
 
-  /// No description provided for @ddp_subtitle.
+  /// No description provided for @errorInvalidPhone.
   ///
   /// In en, this message translates to:
-  /// **'Transparent landed cost quoting'**
-  String get ddp_subtitle;
-
-  /// No description provided for @forex.
-  ///
-  /// In en, this message translates to:
-  /// **'Forex Exchange Rates'**
-  String get forex;
-
-  /// No description provided for @forex_subtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'USD, RMB, ZAR'**
-  String get forex_subtitle;
-
-  /// No description provided for @escrow.
-  ///
-  /// In en, this message translates to:
-  /// **'Create Escrow Contract'**
-  String get escrow;
-
-  /// No description provided for @escrowTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Escrow'**
-  String get escrowTitle;
-
-  /// No description provided for @pay.
-  ///
-  /// In en, this message translates to:
-  /// **'Pay Someone'**
-  String get pay;
-
-  /// No description provided for @payTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Pay Feature'**
-  String get payTitle;
-
-  /// No description provided for @recipientLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Recipient Name'**
-  String get recipientLabel;
-
-  /// No description provided for @amountLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Amount'**
-  String get amountLabel;
-
-  /// No description provided for @confirmPayment.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm Payment'**
-  String get confirmPayment;
-
-  /// No description provided for @hintTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Hint'**
-  String get hintTitle;
-
-  /// No description provided for @hintSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'This page is a payment demo, not connected to real payment channels.'**
-  String get hintSubtitle;
+  /// **'Please enter a valid phone number.'**
+  String get errorInvalidPhone;
 
   /// No description provided for @loginTitle.
   ///
@@ -188,17 +134,11 @@ abstract class AppLocalizations {
   /// **'Login'**
   String get loginTitle;
 
-  /// No description provided for @username.
+  /// No description provided for @login.
   ///
   /// In en, this message translates to:
-  /// **'Username'**
-  String get username;
-
-  /// No description provided for @password.
-  ///
-  /// In en, this message translates to:
-  /// **'Password'**
-  String get password;
+  /// **'Login'**
+  String get login;
 
   /// No description provided for @loginBtn.
   ///
@@ -206,143 +146,17 @@ abstract class AppLocalizations {
   /// **'Login'**
   String get loginBtn;
 
-  /// No description provided for @toggleLang.
+  /// No description provided for @register.
   ///
   /// In en, this message translates to:
-  /// **'中文'**
-  String get toggleLang;
-
-  /// No description provided for @invalidCredentials.
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid credentials'**
-  String get invalidCredentials;
-
-  /// No description provided for @loginHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Demo login: username = mbrics, password = mbrics'**
-  String get loginHint;
-
-  /// Shown when login fails
-  ///
-  /// In en, this message translates to:
-  /// **'Login failed: {error}'**
-  String loginFailed(String error);
-
-  /// Confirmation message after submitting payment
-  ///
-  /// In en, this message translates to:
-  /// **'Payment demo: {recipient} received {amount}'**
-  String paymentConfirmation(String recipient, String amount);
-
-  /// No description provided for @noData.
-  ///
-  /// In en, this message translates to:
-  /// **'No data'**
-  String get noData;
-
-  /// No description provided for @currency.
-  ///
-  /// In en, this message translates to:
-  /// **'Currency'**
-  String get currency;
-
-  /// No description provided for @amount.
-  ///
-  /// In en, this message translates to:
-  /// **'Amount'**
-  String get amount;
-
-  /// No description provided for @convertedAmount.
-  ///
-  /// In en, this message translates to:
-  /// **'Converted Amount'**
-  String get convertedAmount;
-
-  /// No description provided for @method.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment Method'**
-  String get method;
-
-  /// No description provided for @payBtn.
-  ///
-  /// In en, this message translates to:
-  /// **'Pay'**
-  String get payBtn;
-
-  /// No description provided for @paySuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment Successful'**
-  String get paySuccess;
-
-  /// No description provided for @usdToCny.
-  ///
-  /// In en, this message translates to:
-  /// **'USD → CNY'**
-  String get usdToCny;
-
-  /// No description provided for @usdToZar.
-  ///
-  /// In en, this message translates to:
-  /// **'USD → ZAR'**
-  String get usdToZar;
-
-  /// No description provided for @cnyToZar.
-  ///
-  /// In en, this message translates to:
-  /// **'CNY → ZAR'**
-  String get cnyToZar;
-
-  /// No description provided for @dashboardTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Dashboard'**
-  String get dashboardTitle;
-
-  /// No description provided for @homeTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Main Menu'**
-  String get homeTitle;
-
-  /// No description provided for @settings.
-  ///
-  /// In en, this message translates to:
-  /// **'Settings'**
-  String get settings;
-
-  /// No description provided for @preferredCurrency.
-  ///
-  /// In en, this message translates to:
-  /// **'Preferred Currency'**
-  String get preferredCurrency;
-
-  /// No description provided for @apiSource.
-  ///
-  /// In en, this message translates to:
-  /// **'API Source'**
-  String get apiSource;
+  /// **'Register'**
+  String get register;
 
   /// No description provided for @registerTitle.
   ///
   /// In en, this message translates to:
   /// **'Register'**
   String get registerTitle;
-
-  /// No description provided for @fullName.
-  ///
-  /// In en, this message translates to:
-  /// **'Full Name'**
-  String get fullName;
-
-  /// No description provided for @email.
-  ///
-  /// In en, this message translates to:
-  /// **'Email'**
-  String get email;
 
   /// No description provided for @createAccount.
   ///
@@ -368,6 +182,36 @@ abstract class AppLocalizations {
   /// **'Don\'t have an account? Register'**
   String get noAccountRegister;
 
+  /// No description provided for @alreadyRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'Already registered? Log in here'**
+  String get alreadyRegistered;
+
+  /// No description provided for @username.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get username;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
   /// No description provided for @phoneOptional.
   ///
   /// In en, this message translates to:
@@ -380,23 +224,83 @@ abstract class AppLocalizations {
   /// **'Company (optional)'**
   String get companyOptional;
 
-  /// No description provided for @terms.
+  /// No description provided for @loginHint.
   ///
   /// In en, this message translates to:
-  /// **'Terms'**
-  String get terms;
+  /// **'Demo login: username = mbrics, password = mbrics'**
+  String get loginHint;
 
-  /// No description provided for @privacyPolicy.
+  /// No description provided for @invalidCredentials.
   ///
   /// In en, this message translates to:
-  /// **'Privacy Policy'**
-  String get privacyPolicy;
+  /// **'Invalid credentials'**
+  String get invalidCredentials;
+
+  /// Shown when login fails
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed: {error}'**
+  String loginFailed(String error);
 
   /// No description provided for @registrationSuccess.
   ///
   /// In en, this message translates to:
   /// **'Account created successfully. Please verify your email and log in.'**
   String get registrationSuccess;
+
+  /// Shown when registration fails
+  ///
+  /// In en, this message translates to:
+  /// **'Registration failed: {error}'**
+  String registrationFailed(String error);
+
+  /// No description provided for @errorInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect email or password. Please try again.'**
+  String get errorInvalidCredentials;
+
+  /// No description provided for @errorUserNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No account exists with this email. Would you like to register instead?'**
+  String get errorUserNotFound;
+
+  /// No description provided for @errorEmailTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already registered. Try logging in instead.'**
+  String get errorEmailTaken;
+
+  /// No description provided for @errorWeakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters.'**
+  String get errorWeakPassword;
+
+  /// No description provided for @errorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn’t reach the server. Check your connection and try again.'**
+  String get errorNetwork;
+
+  /// No description provided for @errorTooManyAttempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many failed login attempts. Please wait a few minutes before trying again.'**
+  String get errorTooManyAttempts;
+
+  /// No description provided for @ddp.
+  ///
+  /// In en, this message translates to:
+  /// **'DDP Platform'**
+  String get ddp;
+
+  /// No description provided for @ddp_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Transparent landed cost quoting'**
+  String get ddp_subtitle;
 
   /// No description provided for @originCountry.
   ///
@@ -458,6 +362,168 @@ abstract class AppLocalizations {
   /// **'Generate Quote'**
   String get generateQuote;
 
+  /// No description provided for @forex.
+  ///
+  /// In en, this message translates to:
+  /// **'Forex Exchange Rates'**
+  String get forex;
+
+  /// No description provided for @forex_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'USD, RMB, ZAR'**
+  String get forex_subtitle;
+
+  /// No description provided for @usdToCny.
+  ///
+  /// In en, this message translates to:
+  /// **'USD → CNY'**
+  String get usdToCny;
+
+  /// No description provided for @usdToZar.
+  ///
+  /// In en, this message translates to:
+  /// **'USD → ZAR'**
+  String get usdToZar;
+
+  /// No description provided for @cnyToZar.
+  ///
+  /// In en, this message translates to:
+  /// **'CNY → ZAR'**
+  String get cnyToZar;
+
+  /// No description provided for @currency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get currency;
+
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amount;
+
+  /// No description provided for @convertedAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Converted Amount'**
+  String get convertedAmount;
+
+  /// No description provided for @escrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Escrow Contract'**
+  String get escrow;
+
+  /// No description provided for @escrowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Escrow'**
+  String get escrowTitle;
+
+  /// No description provided for @pay.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Someone'**
+  String get pay;
+
+  /// No description provided for @payTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Feature'**
+  String get payTitle;
+
+  /// No description provided for @recipientLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient Name'**
+  String get recipientLabel;
+
+  /// No description provided for @amountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amountLabel;
+
+  /// No description provided for @confirmPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Payment'**
+  String get confirmPayment;
+
+  /// No description provided for @payBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay'**
+  String get payBtn;
+
+  /// No description provided for @paySuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Successful'**
+  String get paySuccess;
+
+  /// Confirmation message after submitting payment
+  ///
+  /// In en, this message translates to:
+  /// **'Payment demo: {recipient} received {amount}'**
+  String paymentConfirmation(String recipient, String amount);
+
+  /// No description provided for @hintTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hint'**
+  String get hintTitle;
+
+  /// No description provided for @hintSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This page is a payment demo, not connected to real payment channels.'**
+  String get hintSubtitle;
+
+  /// No description provided for @noData.
+  ///
+  /// In en, this message translates to:
+  /// **'No data'**
+  String get noData;
+
+  /// No description provided for @method.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get method;
+
+  /// No description provided for @dashboardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get dashboardTitle;
+
+  /// No description provided for @homeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Menu'**
+  String get homeTitle;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @preferredCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred Currency'**
+  String get preferredCurrency;
+
+  /// No description provided for @apiSource.
+  ///
+  /// In en, this message translates to:
+  /// **'API Source'**
+  String get apiSource;
+
   /// No description provided for @logout.
   ///
   /// In en, this message translates to:
@@ -476,17 +542,29 @@ abstract class AppLocalizations {
   /// **'Notifications'**
   String get notifications;
 
-  /// No description provided for @appTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'mBrics Platform'**
-  String get appTitle;
-
   /// No description provided for @navigation.
   ///
   /// In en, this message translates to:
   /// **'Navigation'**
   String get navigation;
+
+  /// No description provided for @toggleLang.
+  ///
+  /// In en, this message translates to:
+  /// **'中文'**
+  String get toggleLang;
+
+  /// No description provided for @terms.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms'**
+  String get terms;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
 
   /// Footer copyright with year
   ///

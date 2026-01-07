@@ -1,26 +1,33 @@
 {
   "@@locale": "en",
+
+  "appTitle": "mBrics Platform",
+  "welcomeTitle": "Welcome to mBrics",
   "welcome": "Welcome to mBrics",
-  "ddp": "DDP Platform",
-  "ddp_subtitle": "Transparent landed cost quoting",
-  "forex": "Forex Exchange Rates",
-  "forex_subtitle": "USD, RMB, ZAR",
-  "escrow": "Create Escrow Contract",
-  "escrowTitle": "Escrow",
-  "pay": "Pay Someone",
-  "payTitle": "Pay Feature",
-  "recipientLabel": "Recipient Name",
-  "amountLabel": "Amount",
-  "confirmPayment": "Confirm Payment",
-  "hintTitle": "Hint",
-  "hintSubtitle": "This page is a payment demo, not connected to real payment channels.",
+
+  "errorInvalidEmailFormat": "Please enter a valid email address.",
+"errorInvalidPhone": "Please enter a valid phone number.",
+
   "loginTitle": "Login",
-  "username": "Username",
-  "password": "Password",
+  "login": "Login",
   "loginBtn": "Login",
-  "toggleLang": "中文",
-  "invalidCredentials": "Invalid credentials",
+  "register": "Register",
+  "registerTitle": "Register",
+  "createAccount": "Create account",
+  "alreadyHaveAccount": "Already have an account? Log in",
+  "goToLogin": "Already have an account? Log in",
+  "noAccountRegister": "Don't have an account? Register",
+  "alreadyRegistered": "Already registered? Log in here",
+
+  "username": "Username",
+  "email": "Email",
+  "password": "Password",
+  "fullName": "Full Name",
+  "phoneOptional": "Phone (optional)",
+  "companyOptional": "Company (optional)",
+
   "loginHint": "Demo login: username = mbrics, password = mbrics",
+  "invalidCredentials": "Invalid credentials",
   "loginFailed": "Login failed: {error}",
   "@loginFailed": {
     "description": "Shown when login fails",
@@ -28,48 +35,25 @@
       "error": {"type": "String", "example": "Invalid password"}
     }
   },
-  "paymentConfirmation": "Payment demo: {recipient} received {amount}",
-  "@paymentConfirmation": {
-    "description": "Confirmation message after submitting payment",
+
+  "registrationSuccess": "Account created successfully. Please verify your email and log in.",
+  "registrationFailed": "Registration failed: {error}",
+  "@registrationFailed": {
+    "description": "Shown when registration fails",
     "placeholders": {
-      "recipient": {"type": "String", "example": "Alice"},
-      "amount": {"type": "String", "example": "100"}
+      "error": {"type": "String", "example": "Email already registered"}
     }
   },
-  "noData": "No data",
 
-  "currency": "Currency",
-  "amount": "Amount",
-  "convertedAmount": "Converted Amount",
-  "method": "Payment Method",
-  "payBtn": "Pay",
-  "paySuccess": "Payment Successful",
+  "errorInvalidCredentials": "Incorrect email or password. Please try again.",
+  "errorUserNotFound": "No account exists with this email. Would you like to register instead?",
+  "errorEmailTaken": "This email is already registered. Try logging in instead.",
+  "errorWeakPassword": "Password must be at least 8 characters.",
+  "errorNetwork": "We couldn’t reach the server. Check your connection and try again.",
+  "errorTooManyAttempts": "Too many failed login attempts. Please wait a few minutes before trying again.",
 
-  "usdToCny": "USD → CNY",
-  "usdToZar": "USD → ZAR",
-  "cnyToZar": "CNY → ZAR",
-
-  "dashboardTitle": "Dashboard",
-  "homeTitle": "Main Menu",
-  "settings": "Settings",
-  "preferredCurrency": "Preferred Currency",
-  "apiSource": "API Source",
-
-  "registerTitle": "Register",
-  "fullName": "Full Name",
-  "email": "Email",
-  "createAccount": "Create account",
-
-  "alreadyHaveAccount": "Already have an account? Log in",
-  "goToLogin": "Already have an account? Log in",
-  "noAccountRegister": "Don't have an account? Register",
-
-  "phoneOptional": "Phone (optional)",
-  "companyOptional": "Company (optional)",
-  "terms": "Terms",
-  "privacyPolicy": "Privacy Policy",
-  "registrationSuccess": "Account created successfully. Please verify your email and log in.",
-
+  "ddp": "DDP Platform",
+  "ddp_subtitle": "Transparent landed cost quoting",
   "originCountry": "Origin Country",
   "destinationCountry": "Destination Country",
   "incoterm": "Incoterm",
@@ -80,13 +64,55 @@
   "hsCode": "HS Code",
   "weight": "Weight (kg)",
   "generateQuote": "Generate Quote",
-  "logout": "Logout",
 
+  "forex": "Forex Exchange Rates",
+  "forex_subtitle": "USD, RMB, ZAR",
+  "usdToCny": "USD → CNY",
+  "usdToZar": "USD → ZAR",
+  "cnyToZar": "CNY → ZAR",
+  "currency": "Currency",
+  "amount": "Amount",
+  "convertedAmount": "Converted Amount",
+
+  "escrow": "Create Escrow Contract",
+  "escrowTitle": "Escrow",
+
+  "pay": "Pay Someone",
+  "payTitle": "Pay Feature",
+  "recipientLabel": "Recipient Name",
+  "amountLabel": "Amount",
+  "confirmPayment": "Confirm Payment",
+  "payBtn": "Pay",
+  "paySuccess": "Payment Successful",
+  "paymentConfirmation": "Payment demo: {recipient} received {amount}",
+  "@paymentConfirmation": {
+    "description": "Confirmation message after submitting payment",
+    "placeholders": {
+      "recipient": {"type": "String", "example": "Alice"},
+      "amount": {"type": "String", "example": "100"}
+    }
+  },
+
+  "hintTitle": "Hint",
+  "hintSubtitle": "This page is a payment demo, not connected to real payment channels.",
+  "noData": "No data",
+  "method": "Payment Method",
+
+  "dashboardTitle": "Dashboard",
+  "homeTitle": "Main Menu",
+  "settings": "Settings",
+  "preferredCurrency": "Preferred Currency",
+  "apiSource": "API Source",
+  "logout": "Logout",
   "darkMode": "Dark Mode",
   "notifications": "Notifications",
-
-  "appTitle": "mBrics Platform",
   "navigation": "Navigation",
+
+  "toggleLang": "中文",
+
+  "terms": "Terms",
+  "privacyPolicy": "Privacy Policy",
+
   "footerText": "© {year} mBrics",
   "@footerText": {
     "description": "Footer copyright with year",

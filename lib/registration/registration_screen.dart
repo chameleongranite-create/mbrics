@@ -1,7 +1,7 @@
-// lib/registration/registration_screen.dart
 import 'package:flutter/material.dart';
-import 'package:mbrics/l10n/app_localizations.dart';
-import 'package:supabase_flutter/supabase_flutter.dart'; // ✅ Supabase SDK
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../l10n/app_localizations.dart';
+import '../layout/master_layout.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key, required this.onLocaleChange});
@@ -18,83 +18,94 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _passwordController = TextEditingController();
   final _phoneController = TextEditingController();
   final _companyController = TextEditingController();
+  final _otherCodeController = TextEditingController();
+
   bool _obscurePassword = true;
+  bool _isLoading = false;
+  String _selectedCountry = 'ZA'; // Default South Africa
 
   OutlineInputBorder get _roundedBorder => OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
       );
 
   Future<void> _register() async {
-    if (_formKey.currentState!.validate()) {
-      final supabase = Supabase.instance.client;
-      final t = AppLocalizations.of(context)!;
+    if (!_formKey.currentState!.validate()) return;
+    final supabase = Supabase.instance.client;
+    final t = AppLocalizations.of(context)!;
 
-      try {
-        // Step 1: Sign up with Supabase Auth
-        final response = await supabase.auth.signUp(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-          emailRedirectTo: 'http://localhost:5442', // 👈 match your Flutter dev server
-        );
+    setState(() => _isLoading = true);
 
-        // 👇 Debug print to check UID
-        print('Supabase UID: ${response.user?.id}');
-        
-// 👇 Debug print to check UID
-print('Supabase UID: ${response.user?.id}');
+    try {
+      final response = await supabase.auth.signUp(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+        emailRedirectTo: 'http://localhost:5442',
+      );
 
-        final userId = response.user?.id;
-        if (userId != null) {
-          // Step 2: Insert profile row into public.users
-          await supabase.from('users').insert({
-            'id': userId,
-            'full_name': _nameController.text.trim(),
-            'email': _emailController.text.trim(),
-            'phone': _phoneController.text.trim(),
-            'company': _companyController.text.trim(),
-          });
-
-          showDialog<void>(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: Text(t.registerTitle),
-              content: Text(t.registrationSuccess),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, '/login');
-                  },
-                  child: Text(t.loginBtn),
-                ),
-              ],
-            ),
-          );
+      final userId = response.user?.id;
+      if (userId != null) {
+        String phoneNumber = _phoneController.text.trim();
+        if (_selectedCountry == 'ZA') {
+          phoneNumber = '+27 $phoneNumber';
+        } else if (_selectedCountry == 'CN') {
+          phoneNumber = '+86 $phoneNumber';
+        } else if (_otherCodeController.text.isNotEmpty) {
+          phoneNumber = '${_otherCodeController.text.trim()} $phoneNumber';
         }
-      } catch (e) {
+
+        await supabase.from('users').insert({
+          'id': userId,
+          'full_name': _nameController.text.trim(),
+          'email': _emailController.text.trim(),
+          'phone': phoneNumber,
+          'company': _companyController.text.trim(),
+        });
+
         showDialog<void>(
           context: context,
           builder: (_) => AlertDialog(
             title: Text(t.registerTitle),
-            content: Text('Registration failed: $e'),
+            content: Text(t.registrationSuccess),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/login');
+                },
+                child: Text(t.loginBtn),
               ),
             ],
           ),
         );
       }
-    }
-  }
+    } catch (e) {
+      final errorMsg = e.toString();
+      String message;
+      if (errorMsg.contains('duplicate key value') || errorMsg.contains('users_email_key')) {
+        message = t.errorEmailTaken;
+      } else if (errorMsg.contains('Password')) {
+        message = t.errorWeakPassword;
+      } else if (errorMsg.contains('Network')) {
+        message = t.errorNetwork;
+      } else {
+        message = t.registrationFailed(errorMsg);
+      }
 
-  void _toggleLang() {
-    final currentLocale = Localizations.localeOf(context);
-    if (currentLocale.languageCode == 'en') {
-      widget.onLocaleChange(const Locale('zh'));
-    } else {
-      widget.onLocaleChange(const Locale('en'));
+      showDialog<void>(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text(t.registerTitle),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } finally {
+      setState(() => _isLoading = false);
     }
   }
 
@@ -104,176 +115,228 @@ print('Supabase UID: ${response.user?.id}');
     final screenWidth = MediaQuery.of(context).size.width;
     final cardWidth = screenWidth < 600 ? screenWidth - 32 : 420.0;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: const SizedBox.shrink(),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.language, color: Colors.black),
-            onPressed: _toggleLang,
-            tooltip: t.toggleLang,
-          ),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxHeight: 220,
-                maxWidth: 320,
-              ),
-              child: Image.asset(
-                'assets/mbrics_logo.png',
-                fit: BoxFit.contain,
-              ),
-            ),
-            const SizedBox(height: 24),
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: SizedBox(
-                width: cardWidth,
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: SingleChildScrollView(
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          Text(
-                            t.registerTitle,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 24),
-                          TextFormField(
-                            controller: _nameController,
-                            decoration: InputDecoration(
-                              labelText: t.fullName,
-                              prefixIcon: const Icon(Icons.person),
-                              border: _roundedBorder,
-                            ),
-                            validator: (value) =>
-                                (value == null || value.isEmpty)
-                                    ? "Name is required"
-                                    : null,
-                          ),
-                          const SizedBox(height: 16),
-                          TextFormField(
-                            controller: _emailController,
-                            decoration: InputDecoration(
-                              labelText: t.email,
-                              prefixIcon: const Icon(Icons.email),
-                              border: _roundedBorder,
-                            ),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Email is required";
-                              }
-                              final emailRegex =
-                                  RegExp(r'^[^@]+@[^@]+\.[^@]+$');
-                              if (!emailRegex.hasMatch(value)) {
-                                return "Enter a valid email";
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 16),
-                          TextFormField(
-                            controller: _passwordController,
-                            obscureText: _obscurePassword,
-                            decoration: InputDecoration(
-                              labelText: t.password,
-                              prefixIcon: const Icon(Icons.lock),
-                              border: _roundedBorder,
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _obscurePassword
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscurePassword = !_obscurePassword;
-                                  });
-                                },
+    return MasterLayout(
+      onLocaleChange: widget.onLocaleChange,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset('assets/mbrics_logo.png', height: 120),
+                const SizedBox(height: 24),
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: SizedBox(
+                    width: cardWidth,
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            Text(
+                              t.registerTitle,
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
                               ),
+                              textAlign: TextAlign.center,
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Password is required";
-                              }
-                              if (value.length < 8) {
-                                return "Use at least 8 characters";
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 16),
-                          TextFormField(
-                            controller: _phoneController,
-                            decoration: InputDecoration(
-                              labelText: t.phoneOptional,
-                              prefixIcon: const Icon(Icons.phone),
-                              border: _roundedBorder,
+                            const SizedBox(height: 24),
+
+                            TextFormField(
+                              controller: _nameController,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                labelText: t.fullName,
+                                prefixIcon: const Icon(Icons.person),
+                                border: _roundedBorder,
+                              ),
+                              validator: (value) =>
+                                  (value == null || value.isEmpty)
+                                      ? "Name is required"
+                                      : null,
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          TextFormField(
-                            controller: _companyController,
-                            decoration: InputDecoration(
-                              labelText: t.companyOptional,
-                              prefixIcon: const Icon(Icons.business),
-                              border: _roundedBorder,
+                            const SizedBox(height: 16),
+
+                            TextFormField(
+                              controller: _emailController,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                labelText: t.email,
+                                prefixIcon: const Icon(Icons.email),
+                                border: _roundedBorder,
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Email is required";
+                                }
+                                final emailRegex =
+                                    RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                                if (!emailRegex.hasMatch(value)) {
+                                  return t.errorInvalidEmailFormat;
+                                }
+                                return null;
+                              },
                             ),
-                          ),
-                          const SizedBox(height: 24),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blueAccent,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 14),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                            const SizedBox(height: 16),
+
+                            TextFormField(
+                              controller: _passwordController,
+                              obscureText: _obscurePassword,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                labelText: t.password,
+                                prefixIcon: const Icon(Icons.lock),
+                                border: _roundedBorder,
+                                helperText: "Password must be at least 8 characters",
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscurePassword = !_obscurePassword;
+                                    });
+                                  },
                                 ),
                               ),
-                              onPressed: _register,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Password is required";
+                                }
+                                if (value.length < 8) {
+                                  return t.errorWeakPassword;
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
+
+                            // Country + Phone block (fixed layout)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                DropdownButtonFormField<String>(
+                                  value: _selectedCountry,
+                                  items: const [
+                                    DropdownMenuItem(
+                                        value: 'ZA',
+                                        child: Text('🇿🇦 South Africa')),
+                                    DropdownMenuItem(
+                                        value: 'CN',
+                                        child: Text('🇨🇳 China')),
+                                    DropdownMenuItem(
+                                        value: 'OTHER',
+                                        child: Text('🌍 Other')),
+                                  ],
+                                  onChanged: (val) => setState(
+                                      () => _selectedCountry = val ?? 'ZA'),
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    labelText: "Country",
+                                    border: _roundedBorder,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                TextFormField(
+                                  controller: _phoneController,
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    labelText: t.phoneOptional,
+                                    prefixIcon: const Icon(Icons.phone),
+                                    border: _roundedBorder,
+                                  ),
+                                  keyboardType: TextInputType.phone,
+                                  validator: (value) {
+                                    if (value != null && value.isNotEmpty) {
+                                      final phoneRegex =
+                                          RegExp(r'^[0-9]{7,15}$');
+                                      if (!phoneRegex.hasMatch(value)) {
+                                        return t.errorInvalidPhone;
+                                      }
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                if (_selectedCountry == 'OTHER') ...[
+                                  const SizedBox(height: 12),
+                                  TextFormField(
+                                    controller: _otherCodeController,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      labelText: "Country Code (e.g. +44)",
+                                      border: _roundedBorder,
+                                    ),
+                                    keyboardType: TextInputType.phone,
+                                  ),
+                                ],
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+
+                            TextFormField(
+                              controller: _companyController,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                labelText: t.companyOptional,
+                                prefixIcon: const Icon(Icons.business),
+                                border: _roundedBorder,
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF3B5998),
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 14),
+                                  textStyle:
+                                      const TextStyle(fontSize: 16),
+                                ),
+                                onPressed: _isLoading ? null : _register,
+                                child: _isLoading
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white)
+                                    : Text(t.createAccount),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+
+                            // Link to login
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.pushNamed(context, '/login'),
                               child: Text(
-                                t.createAccount,
+                                t.alreadyRegistered,
                                 style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF333333),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          TextButton(
-                            onPressed: () =>
-                                Navigator.pushNamed(context, '/login'),
-                            child: Text(t.goToLogin),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

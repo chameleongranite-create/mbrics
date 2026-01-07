@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
       locale: _locale,
       theme: ThemeData(
         brightness: Brightness.light,
-        scaffoldBackgroundColor: Colors.white, // enforce white layout
+        scaffoldBackgroundColor: Colors.white,
       ),
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -69,7 +69,7 @@ class _MyAppState extends State<MyApp> {
         '/escrow': (context) => EscrowPage(onLocaleChange: _setLocale),
         '/pay': (context) => PayPage(onLocaleChange: _setLocale),
         '/settings': (context) => SettingsPage(onLocaleChange: _setLocale),
-        '/profile': (context) => const ProfilePage(),
+        '/profile': (context) => ProfilePage(), // ✅ removed const
       },
     );
   }
@@ -90,7 +90,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkSessionAndRoute() async {
-    await Future.delayed(const Duration(milliseconds: 800)); // smoother pause
+    await Future.delayed(const Duration(milliseconds: 800));
     final supabase = Supabase.instance.client;
 
     final session = supabase.auth.currentSession;
@@ -103,12 +103,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // white background
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Prominent logo during splash
             Image.asset('assets/mbrics_logo.png', height: 120),
             const SizedBox(height: 20),
             const CircularProgressIndicator(),
