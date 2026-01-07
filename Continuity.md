@@ -126,3 +126,11 @@ Continuity Entry: Profile Photo Integration (Deferred – 2026-01-06)
 	◦ Refactor ProfileScreen to display photo, name, email, phone, company
 • Future Extension: Enable “Edit Profile” to change photo and metadata once picker issue resolved.
 • Checkpoint Tag: defer-2026-01-06-avatar-picker
+
+2026-01-07 – Registration Screen Fix & Layout Discipline (MOBILE Project)
+• Issue: RegistrationScreen crashed due to invalid Flexible nesting inside Column.
+• Resolution: Refactored block to use a single Column with DropdownButtonFormField + TextFormField; removed Flexible.
+• Changes: Country/phone block simplified; flag emojis applied; imports corrected in main.dart; ARB keys verified.
+• State: Login and Registration flows now render correctly under MasterLayout; routing invariant confirmed (session → /mainmenu, else → /login).
+• Next: Integrate Supabase signInWithPassword for login; extend registration to support avatar_url once web picker issue is resolved.
+• Checkpoint Tag: chk-2026-01-07-registration-fix

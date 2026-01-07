@@ -94,3 +94,46 @@ Planned – Solidity + Hardhat Integration
 • Workflow Discipline: Golden copies created after initial Hardhat setup; STATUS.md and Continuity.md updated in sync
 • Next Steps: Scaffold Hardhat project and import Solidity templates for editing
 • Tag: chk-2026-01-06-hardhat-solidity-init
+
+# Guidelines for Tomorrow’s Rebuild (MOBILE Project)
+
+## STATUS.md Entry (Guideline)
+2026-01-07 – Login & Registration Polish
+• Checkpoint: LoginScreen and RegistrationScreen recreated under MasterLayout; brand palette applied; ARB keys aligned
+• State: Routing invariants verified (session → /mainmenu, else → /login)
+• Next: Supabase signInWithPassword integration; ProfileScreen photo support
+• Tag: chk-2026-01-07-login-registration
+
+## Continuity.md Entry (Guideline)
+2026-01-07 – Port Alignment & Layout Discipline
+• Invariant: Frontend bound to http://localhost:5442, backend to http://127.0.0.1:8000
+• State: MasterLayout restored with onLocaleChange param; LoginScreen polished with brand palette + accessibility
+• Rule: All new pages (registration, profile, main_menu) must inherit MasterLayout
+• Next: RegistrationScreen rollout with Supabase signInWithPassword
+• Tag: chk-2026-01-07-port-login
+
+## Anchors to Remember
+- MasterLayout discipline: no standalone Scaffolds, all pages wrapped in MasterLayout.
+- ARB keys: welcomeTitle, login, register, plus localized error messages for Supabase.
+- Routing invariant: session → /mainmenu, else → /login.
+- Profile photo: deferred on web, placeholder default_avatar.png remains.
+- Ports: always run with `flutter run -d chrome --web-port=5442` and backend `uvicorn main:app --reload --port 8000`.
+
+## Short Checklist for Tomorrow
+1. Restore LoginScreen under MasterLayout with onLocaleChange wired in.
+2. Re-add RegistrationScreen with same polish and localization.
+3. Confirm ARB keys exist (welcomeTitle, login, register).
+4. Verify routing invariants (session → /mainmenu, else → /login).
+5. Run frontend on port 5442 and backend on port 8000.
+6. Commit and tag checkpoint in Git (chk-2026-01-07-login-registration).
+7. Mirror entry in Continuity.md for port alignment and layout discipline.
+
+## Reminder
+These are guidelines, not rigid instructions. If you uncover missing pieces (widgets, ARB keys, Supabase handlers), add them back into STATUS.md and Continuity.md. The goal is to preserve workflow discipline: checkpoint, tag, and mirror in both files.
+
+2026-01-07 – Registration Screen Fix & Polish (MOBILE Project)
+• Checkpoint: RegistrationScreen stabilized under MasterLayout; overflow crash resolved (Flexible → Column refactor)
+• Changes: Country/phone block simplified; flag emojis applied; ARB keys verified; imports corrected in main.dart
+• State: Login and Registration flows now render correctly; routing invariant confirmed (session → /mainmenu, else → /login)
+• Next: Integrate Supabase signInWithPassword for login; extend registration to support avatar_url when web picker issue is resolved
+• Tag: chk-2026-01-07-registration-fix
