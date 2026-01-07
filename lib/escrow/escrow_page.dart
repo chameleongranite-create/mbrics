@@ -46,7 +46,7 @@ class _EscrowPageState extends State<EscrowPage> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
 
-    return Scaffold(
+    return MasterLayout(onLocaleChange: (locale) {}, child: Scaffold(
       appBar: AppBar(
         title: Text(t.escrow),
         actions: [
