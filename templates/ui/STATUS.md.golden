@@ -138,55 +138,75 @@ These are guidelines, not rigid instructions. If you uncover missing pieces (wid
 • Next: Integrate Supabase signInWithPassword for login; extend registration to support avatar_url when web picker issue is resolved
 • Tag: chk-2026-01-07-registration-fix
 
-# STATUS.md — mBrics Platform (MOBILE Project)
+# STATUS.md
 
 ## Checkpoint: January 7, 2026
 
 ### Updates
-- Bilingual toggle added in charcoal header bar:
-  - English (white, left) / Chinese (red accent, right)
-- Logo increased to 120px, pure white background
-- Microcopy under logo updated: *“Built for global trade. Designed for trust.”*
-- Card block refined: soft white tint (#FAFAFA), light gray border (#E0E0E0), subtle shadow
+- Added bilingual toggle in top charcoal header bar:
+  - Left: "Digital Currency Bridge Platform" (English, white)
+  - Right: "数字货币桥平台" (Chinese, red accent)
+  - Both act as language selection links.
+- Increased logo size to 120px, pure white background version (`assets/mbrics_logo.png`).
+- Updated microcopy under logo: "Built for global trade. Designed for trust."
+- Refined card block:
+  - Soft white tint (#FAFAFA) background
+  - Light gray (#E0E0E0) border
+  - Subtle shadow for depth
 - Button hierarchy confirmed:
-  - Gold (#C2994B) → Primary CTA
-  - Silver (#A7A9AC) → Secondary actions
-  - Charcoal Navy (#343A40) → Tertiary link
+  - Gold (#C2994B) → Primary CTA ("Continue to Site")
+  - Silver (#A7A9AC) → Secondary actions ("Upload Avatar", "Edit Details")
+  - Charcoal Navy (#343A40) → Tertiary link ("Logout")
+
+### Next Steps
+- Backup current project state (`PROJECT_CHECKPOINT.md`, Git commit).
+- Apply new color scheme to `login_screen.dart`:
+  - Pure white background
+  - Charcoal header bar with bilingual toggle
+  - Card block styled with soft white + gray border
+  - Buttons aligned with global scheme
+
+  ## 2026-01-07 – MasterLayout Applied to All Pages (MOBILE Project)
 
 ### Changes
-- All pages now wrapped in `MasterLayout`:
-  - login, registration, profile, settings, main_menu, forex, pay, dashboard, escrow
-- Consistent header with bilingual toggle across routes
-- Logo, microcopy, and button scheme unified
+- Wrapped all remaining pages in `MasterLayout`:
+  - settings_page.dart
+  - main_menu_page.dart
+  - forex_page.dart
+  - pay_page.dart
+  - dashboard_page.dart
+  - escrow_page.dart
+- Confirmed login_screen.dart, registration_screen.dart, and profile_page.dart already used `MasterLayout`.
+- Every page now inherits the charcoal header with bilingual toggle (English left, Chinese right).
+- Logo, microcopy, and button color scheme consistent across flows.
 
 ### State
-- Continuity achieved: screens visually and structurally aligned
-- Language toggle functional everywhere
-- Color discipline enforced (gold, silver, charcoal, white)
+- Continuity achieved: all screens visually and structurally aligned.
+- Language toggle functional across all routes.
+- Color discipline enforced (gold, silver, charcoal, white).
 
 ### Next
-- Extend Supabase login/register with localized error handling
-- Add avatar upload once web picker issue is resolved
-- Style main_menu and settings flows with same card rhythm
+- Extend Supabase login/register integration with localized error handling.
+- Apply avatar upload once web picker issue is resolved.
+- Begin styling main_menu and settings flows with same card rhythm.
 
 ### Tag
 `chk-2026-01-07-masterlayout-allpages`
-
----
-
 # Status & Continuity – Main Menu UI
 
 **Date:** January 7, 2026  
 **Owner:** Bennie Burger  
 
 ## Continuity Point
-- Conversational headings guide user flow
-- Platinum styling for core functions
-- White styling for secondary utilities
-- Logo consistency confirmed across all pages
+This marks a stable milestone for UI design.  
+- Conversational headings introduced to guide user flow.  
+- Platinum styling emphasizes the three core functions central to the platform.  
+- White styling differentiates secondary utilities.  
+- Logo consistency confirmed across all pages.  
 
 ## Continuity Notes
-- Maintain conversational tone in headings
-- Preserve platinum vs. white styling hierarchy
-- Ensure logo consistency across screens
-- Use this checkpoint as baseline for refinements (animations, microcopy)
+Future UI updates should build from this checkpoint:  
+- Maintain conversational tone in headings.  
+- Preserve platinum vs. white styling hierarchy.  
+- Ensure logo remains consistent across all screens.  
+- Use this checkpoint as the baseline for further refinements (e.g., animations, microcopy).

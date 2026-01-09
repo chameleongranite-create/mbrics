@@ -58,7 +58,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
 
     // ✅ Main functions (renamed)
     final mainFunctions = [
-      MenuItem("Get a logistics quote", '/ddp', Icons.local_shipping),
+      MenuItem("Get a quote", '/ddp', Icons.local_shipping),
       MenuItem("Send or receive money", '/pay', Icons.payment),
       MenuItem("Create a blockchain contract", '/escrow', Icons.security),
     ];
