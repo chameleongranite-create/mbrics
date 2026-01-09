@@ -41,6 +41,7 @@ flutter:
   generate: true
 
   assets:
+    - assets/icons/
     - assets/mbrics_logo.png
     - assets/google_logo.png
     - assets/default_avatar.png   # ✅ ensure this file exists
