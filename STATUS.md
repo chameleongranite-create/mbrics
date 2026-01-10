@@ -1,223 +1,68 @@
 STATUS.md — mBrics Platform (MOBILE Project)
----
 2026-01-04 – Continuity Activated in MOBILE
-• Checkpoint: Continuity anchors created in MOBILE project
-• Changes: STATUS.md and Continuity.md added at project root
-• State: Baseline established, Git initialized
-• Next: Begin MasterLayout shell integration
+• Baseline established, Git initialized
+• STATUS.md and Continuity.md added at project root
 • Tag: golden-2026-01-04-mobile
----
-Platform Polish Checklist
-• MasterLayout shell (AppBar, Drawer, Footer) wrapped around all pages
-• Design tokens centralized (colors, spacing, typography, radii)
-• Component library (buttons, inputs, feedback widgets)
-• go_router navigation with named routes + breadcrumbs
-• Environment/version badge in AppBar
-• AuthService wrapper for Supabase calls (login, registration, session)
-• Error localization via ARB (friendly messages for Supabase codes)
-• Profiles table with RLS policies (secure metadata storage)
-• ProfileForm UI with optimistic updates + rollback safety
-• Accessibility pass (contrast, focus rings, semantics, keyboard nav)
-• Microcopy + empty states (friendly messages, CTAs)
-• Skeleton loaders + success banners
-• LoadingOverlay for smoother transitions
-• Performance improvements (lazy load, caching, debounce requests)
-• Reliability guardrails (error boundaries, audit logs)
-• Security hardening (JWT handling, rate limiting middleware)
-• Analytics (screen views, error tracking, opt‑in privacy)
-• Help tray (FAQ + contact links)
-• Centralized content management (ARB + markdown snippets)
----
-Rituals
-• Update STATUS.md after each completed item
-• Commit + tag checkpoint (chk-YYYY-MM-DD-description)
-• Rollback safety: git checkout or VS Code Local History
-• Preserve golden copies in /templates and /db/migrations
----
-2026-01-04 – Platform Polish Integration Kickoff (MOBILE Project)
-• Checkpoint: MasterLayout shell + platform polish roadmap defined
-• Changes: Added /layout/master_layout.dart scaffold, feature flag (platform_shell), design_tokens.dart plan
-• State: Baseline flows intact, shell integration staged under feature flag
-• Next: Page-by-page rollout (login → registration → main_menu → ddp → forex → escrow → pay → settings → jobcard)
+2026-01-04 – Platform Polish Integration Kickoff
+• MasterLayout shell + polish roadmap defined
+• Added /layout/master_layout.dart scaffold, feature flag platform_shell, design tokens plan
 • Tag: v0.9.0-shell
----
-2026-01-04 – MasterLayout Split and Login Restoration (MOBILE)
-• Changes: Moved MasterLayout to lib/layout/master_layout.dart; recreated lib/login/login_screen.dart; imports aligned in main.dart; ARB updated (appTitle, navigation, footerText EN/ZN); l10n regenerated
-• State: Splash → Login → MainMenu works (demo credentials mbrics/mbrics); language toggle functional across shell
-• Next: Replace demo auth with Supabase signInWithPassword; localize Supabase errors; wrap registration and main_menu with MasterLayout
+2026-01-04 – MasterLayout Split and Login Restoration
+• MasterLayout moved to lib/layout/master_layout.dart
+• LoginScreen recreated, imports aligned, ARB updated and regenerated
+• Splash → Login → MainMenu works with demo credentials; language toggle functional
 • Tag: chk-2026-01-04-login-shell-split
----
 2026-01-05 – Auth Cycle & Profile Screen
-• Checkpoint: Login and Register screens aligned under MasterLayout
-• Changes: ProfileScreen scaffolded with Supabase user metadata + logout; routes in main.dart corrected to use ProfileScreen (removed ProfilePage); SplashScreen redirect confirmed (session → /mainmenu, else → /login)
-• State: Verified login flow works; ProfileScreen shows “Dashboard” with empty state when no metadata/session
-• Next: Wire ProfileScreen to fetch user details from Supabase users table for richer dashboard
+• Login and Register aligned under MasterLayout
+• ProfileScreen scaffolded with Supabase metadata + logout
+• Splash redirect confirmed (session → /mainmenu, else → /login)
 • Tag: chk-2026-01-05-auth-profile
----
 2026-01-06 – Project Scaffold
-• Changes: Created folders: screens, layout, l10n, services, widgets; added placeholder files for login, register, profile, master layout, auth service, header/footer widgets
-• Checkpoint Tag: chk-2026-01-06-project-scaffold
----
+• Folders created: screens, layout, l10n, services, widgets
+• Placeholder files added for login, register, profile, master layout, auth service, header/footer
+• Tag: chk-2026-01-06-project-scaffold
 2026-01-06 – Completed Profile Screen
-• Changes: Added ProfileScreen with user info + logout; integrated Supabase currentUser metadata; wrapped in MasterLayout for layout consistency
-• Checkpoint Tag: chk-2026-01-06-profile-screen
----
-2026-01-06 – Layout Discipline for New Pages
-• Note: All new screens (login, register, profile, ddp, forex, escrow, pay, settings, jobcard, etc.) must be wrapped in MasterLayout
-• Rule: Avoid standalone Scaffold definitions inside child pages — use MasterLayout as the single scaffold
-• Guarantee: Consistency in navigation, language toggle, and footer messaging across the platform
-• Checkpoint Tag: chk-2026-01-06-masterlayout-discipline
----
-2026-01-06 – Upcoming Task: Profile Photo Integration
-• Changes Planned:
-	◦ Add avatar_url field to users table in Supabase
-	◦ Create Supabase Storage bucket (avatars) for profile photo uploads
-	◦ Update registration flow to allow photo upload and store public URL in avatar_url
-	◦ Refactor ProfileScreen to display photo, name, email, phone, company
-	◦ Wrap profile screen in MasterLayout for consistent header/footer
-• Future Extension: Enable “Edit Profile” to change photo and metadata
-• Checkpoint Tag: todo-2026-01-06-profile-photo
----
-2026-01-06 – Deferred Task: Avatar Picker (Web)
-• Issue: file_picker dialog not opening in Flutter web (Chrome/macOS)
-• Decision: Defer avatar upload feature for now; placeholder default_avatar.png remains active
-• Workflow Discipline: Logged in STATUS.md; revisit post-demo with fallback (URL input or isolated test page)
-• Checkpoint Tag: defer-2026-01-06-avatar-picker
----
-Planned – Solidity + Hardhat Integration
-• Objective: Prepare for smart contract development using Solidity and Hardhat
-• Scope:
-	◦ Set up Hardhat project structure (contracts/, scripts/, tests/)
-	◦ Integrate OpenZeppelin templates (ERC-20, ERC-721, access control)
-	◦ Connect Supabase backend for off-chain data (profiles, trade metadata)
-	◦ Plan deployment routes (Ethereum, Polygon, or China-compliant chains)
-• Workflow Discipline: Golden copies created after initial Hardhat setup; STATUS.md and Continuity.md updated in sync
-• Next Steps: Scaffold Hardhat project and import Solidity templates for editing
-• Tag: chk-2026-01-06-hardhat-solidity-init
-
-# Guidelines for Tomorrow’s Rebuild (MOBILE Project)
-
-## STATUS.md Entry (Guideline)
-2026-01-07 – Login & Registration Polish
-• Checkpoint: LoginScreen and RegistrationScreen recreated under MasterLayout; brand palette applied; ARB keys aligned
-• State: Routing invariants verified (session → /mainmenu, else → /login)
-• Next: Supabase signInWithPassword integration; ProfileScreen photo support
-• Tag: chk-2026-01-07-login-registration
-
-## Continuity.md Entry (Guideline)
-2026-01-07 – Port Alignment & Layout Discipline
-• Invariant: Frontend bound to http://localhost:5442, backend to http://127.0.0.1:8000
-• State: MasterLayout restored with onLocaleChange param; LoginScreen polished with brand palette + accessibility
-• Rule: All new pages (registration, profile, main_menu) must inherit MasterLayout
-• Next: RegistrationScreen rollout with Supabase signInWithPassword
-• Tag: chk-2026-01-07-port-login
-
-## Anchors to Remember
-- MasterLayout discipline: no standalone Scaffolds, all pages wrapped in MasterLayout.
-- ARB keys: welcomeTitle, login, register, plus localized error messages for Supabase.
-- Routing invariant: session → /mainmenu, else → /login.
-- Profile photo: deferred on web, placeholder default_avatar.png remains.
-- Ports: always run with `flutter run -d chrome --web-port=5442` and backend `uvicorn main:app --reload --port 8000`.
-
-## Short Checklist for Tomorrow
-1. Restore LoginScreen under MasterLayout with onLocaleChange wired in.
-2. Re-add RegistrationScreen with same polish and localization.
-3. Confirm ARB keys exist (welcomeTitle, login, register).
-4. Verify routing invariants (session → /mainmenu, else → /login).
-5. Run frontend on port 5442 and backend on port 8000.
-6. Commit and tag checkpoint in Git (chk-2026-01-07-login-registration).
-7. Mirror entry in Continuity.md for port alignment and layout discipline.
-
-## Reminder
-These are guidelines, not rigid instructions. If you uncover missing pieces (widgets, ARB keys, Supabase handlers), add them back into STATUS.md and Continuity.md. The goal is to preserve workflow discipline: checkpoint, tag, and mirror in both files.
-
-2026-01-07 – Registration Screen Fix & Polish (MOBILE Project)
-• Checkpoint: RegistrationScreen stabilized under MasterLayout; overflow crash resolved (Flexible → Column refactor)
-• Changes: Country/phone block simplified; flag emojis applied; ARB keys verified; imports corrected in main.dart
-• State: Login and Registration flows now render correctly; routing invariant confirmed (session → /mainmenu, else → /login)
-• Next: Integrate Supabase signInWithPassword for login; extend registration to support avatar_url when web picker issue is resolved
+• ProfileScreen shows user info + logout, wrapped in MasterLayout
+• Supabase currentUser metadata integrated
+• Tag: chk-2026-01-06-profile-screen
+2026-01-06 – Layout Discipline
+• Rule: all new screens wrapped in MasterLayout (no standalone Scaffolds)
+• Guarantee: consistent navigation, language toggle, footer messaging
+• Tag: chk-2026-01-06-masterlayout-discipline
+2026-01-07 – Registration Screen Fix & Polish
+• RegistrationScreen stabilized under MasterLayout; Flexible crash resolved
+• Country/phone block simplified; ARB keys verified; imports corrected
+• Login + Registration flows render correctly; routing invariant confirmed
 • Tag: chk-2026-01-07-registration-fix
-
-# STATUS.md — mBrics Platform (MOBILE Project)
-
-## Checkpoint: January 7, 2026
-
-### Updates
-- Bilingual toggle added in charcoal header bar:
-  - English (white, left) / Chinese (red accent, right)
-- Logo increased to 120px, pure white background
-- Microcopy under logo updated: *“Built for global trade. Designed for trust.”*
-- Card block refined: soft white tint (#FAFAFA), light gray border (#E0E0E0), subtle shadow
-- Button hierarchy confirmed:
-  - Gold (#C2994B) → Primary CTA
-  - Silver (#A7A9AC) → Secondary actions
-  - Charcoal Navy (#343A40) → Tertiary link
-
-### Changes
-- All pages now wrapped in `MasterLayout`:
-  - login, registration, profile, settings, main_menu, forex, pay, dashboard, escrow
-- Consistent header with bilingual toggle across routes
-- Logo, microcopy, and button scheme unified
-
-### State
-- Continuity achieved: screens visually and structurally aligned
-- Language toggle functional everywhere
-- Color discipline enforced (gold, silver, charcoal, white)
-
-### Next
-- Extend Supabase login/register with localized error handling
-- Add avatar upload once web picker issue is resolved
-- Style main_menu and settings flows with same card rhythm
-
-### Tag
-`chk-2026-01-07-masterlayout-allpages`
-
----
-
-# Status & Continuity – Main Menu UI
-
-**Date:** January 7, 2026  
-**Owner:** Bennie Burger  
-
-## Continuity Point
-- Conversational headings guide user flow
-- Platinum styling for core functions
-- White styling for secondary utilities
-- Logo consistency confirmed across all pages
-
-## Continuity Notes
-- Maintain conversational tone in headings
-- Preserve platinum vs. white styling hierarchy
-- Ensure logo consistency across screens
-- Use this checkpoint as baseline for refinements (animations, microcopy)
-
-2026‑01‑09 – Login Screen Overflow Fix & Icon Resize
-• Checkpoint: LoginScreen stabilized under MasterLayout with overflow resolved on small screens
-• Changes:
-	◦ Right‑side trust pillar icons wrapped in Padding + Flexible to prevent horizontal overflow
-	◦ All trust pillar icons resized from 120px → 100px for balance
-	◦ mBrics logo enlarged to 140px for stronger brand presence
-	◦ LayoutBuilder branches cleaned and braces balanced (no more yellow overflow warnings)
-• State:
-	◦ Login flow renders cleanly across screen sizes (small and large)
-	◦ Visual hierarchy reinforced: logo prominence, trust pillars aligned, no clipping
-• Next:
-	◦ Extend Supabase login/register with localized error handling
-	◦ Style main_menu and settings flows with same card rhythm and overflow safety
+2026-01-07 – MasterLayout All Pages
+• All pages wrapped in MasterLayout: login, registration, profile, settings, main_menu, forex, pay, dashboard, escrow
+• Bilingual toggle added; logo + microcopy unified; button hierarchy confirmed
+• Continuity achieved: screens visually and structurally aligned
+• Tag: chk-2026-01-07-masterlayout-allpages
+2026-01-07 – Main Menu Conversational Flow
+• Conversational headings applied
+• Platinum styling for core functions, white for utilities
+• Logo consistency confirmed across all pages
+• Tag: chk-2026-01-07-mainmenu-conversational-hierarchy
+2026-01-09 – Login Screen Overflow Fix & Icon Resize
+• Overflow resolved on small screens with Padding + Flexible
+• Trust pillar icons resized to 100px; logo enlarged to 140px
+• LayoutBuilder branches cleaned; no overflow warnings
 • Tag: chk-2026-01-09-login-overflow-fix
-
-2026‑01‑09 – Trust Icon Polish & Overflow Discipline
-• Checkpoint: Trust pillar icons refined for visual consistency; overflow discipline enforced across layouts
-• Changes:
-	◦ Replaced icon_6.png with gold-silver polished version on pure white background
-	◦ Added new emblem icon_6a.png to desktop, then moved to assets/icons/ via terminal
-	◦ Verified layout consistency across screen sizes (no yellow overflow warnings)
-	◦ Logo enlarged to 140px for stronger brand presence
-• State:
-	◦ All trust pillar icons now match gold-silver styling standard
-	◦ Overflow discipline enforced via Padding + Flexible
-	◦ Layout validated across breakpoints
-• Next:
-	◦ Begin MainMenu trust pillar layout polish
-	◦ Style Get a Quote page with same rhythm and brand logic
+2026-01-09 – Trust Icon Polish & Overflow Discipline
+• Trust pillar icons refined to gold-silver standard on pure white background
+• Overflow discipline enforced via Padding + Flexible
+• Layout validated across breakpoints
 • Tag: chk-2026-01-09-trust-icons-polish
+2026-01-10 – Login Spinner Reset
+• Added finally block to stop loading spinner after failed login
+• Localized error messages applied consistently
+• Tag: chk-2026-01-10-login-spinner-reset
+2026-01-10 – Registration Slogan Duplication Fix
+• Removed duplicate slogan from inside registration card; slogan now only above block
+• Tag: chk-2026-01-10-registration-slogan-fix
+2026-01-10 – Registration Form Compile Fixes
+• Corrected identifiers (_emailController, _passwordController, _formKey, _obscurePassword)
+• Fixed try/catch/finally structure
+• Cleaned widget closures and validator syntax
+• Tag: chk-2026-01-10-registration-compile-fix

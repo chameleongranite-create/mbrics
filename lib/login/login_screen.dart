@@ -59,13 +59,31 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       }
     } catch (e) {
+      final t = AppLocalizations.of(context)!;
+      String message;
+      final errorText = e.toString().toLowerCase();
+
+      if (errorText.contains('invalid_credentials')) {
+        message = t.errorInvalidCredentials;
+      } else if (errorText.contains('user_not_found')) {
+        message = t.errorUserNotFound;
+      } else if (errorText.contains('network')) {
+        message = t.errorNetwork;
+      } else if (errorText.contains('too_many_attempts')) {
+        message = t.errorTooManyAttempts;
+      } else {
+        message = t.loginFailed(t.errorUnexpected);
+      }
+
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = message;
       });
     } finally {
-      setState(() {
-        _loading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _loading = false;
+        });
+      }
     }
   }
 
@@ -73,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
 
+    // Constants
     const Color backgroundWhite = Color(0xFFFFFFFF);
     const Color cardTint = Color(0xFFFAFAFA);
     const Color borderGray = Color(0xFFE0E0E0);
@@ -108,17 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    "数字货币桥平台",
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: silver,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
                   const SizedBox(height: 32),
-
                   LayoutBuilder(
                     builder: (context, constraints) {
                       final isSmall = constraints.maxWidth < 900;
@@ -128,35 +137,43 @@ class _LoginScreenState extends State<LoginScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               child: ConstrainedBox(
-                                constraints:
-                                    const BoxConstraints(maxWidth: sideMaxWidth),
+                                constraints: const BoxConstraints(
+                                    maxWidth: sideMaxWidth),
                                 child: _SideColumn(
                                   alignRight: true,
                                   children: [
-                                    _buildFeature('assets/icons/icon_1.png',
-                                        "Trade in Local Currency",
-                                        "Real-time quotes in Rand, Yuan, and more.",
-                                        "Transparent landed costs, no hidden conversions."),
-                                    _buildFeature('assets/icons/icon_2.png',
-                                        "Instant International Transfers",
-                                        "Instant money transfers in your currency.",
-                                        "Backed by central banks for safety."),
-                                    _buildFeature('assets/icons/icon_3.png',
-                                        "Blockchain Escrow — Policed",
-                                        "Smart contracts enforce trust automatically.",
-                                        "All transactions policed by blockchain oversight."),
+                                    _buildFeature(
+                                      'assets/icons/icon_1.png',
+                                      "Trade in Local Currency",
+                                      "Real-time quotes in Rand, Yuan, and more.",
+                                      "Transparent landed costs, no hidden conversions.",
+                                    ),
+                                    _buildFeature(
+                                      'assets/icons/icon_2.png',
+                                      "Instant International Transfers",
+                                      "Instant money transfers in your currency.",
+                                      "Backed by central banks for safety.",
+                                    ),
+                                    _buildFeature(
+                                      'assets/icons/icon_3.png',
+                                      "Blockchain Escrow - Policed",
+                                      "Smart contracts enforce trust automatically.",
+                                      "All transactions policed by blockchain oversight.",
+                                    ),
                                   ],
                                 ),
                               ),
                             ),
                             const SizedBox(height: 24),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               child: ConstrainedBox(
-                                constraints:
-                                    const BoxConstraints(maxWidth: centerMaxWidth),
+                                constraints: const BoxConstraints(
+                                    maxWidth: centerMaxWidth),
                                 child: _buildLoginCard(
                                   t,
                                   silver,
@@ -171,25 +188,32 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             const SizedBox(height: 24),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               child: ConstrainedBox(
-                                constraints:
-                                    const BoxConstraints(maxWidth: sideMaxWidth),
+                                constraints: const BoxConstraints(
+                                    maxWidth: sideMaxWidth),
                                 child: _SideColumn(
                                   alignRight: false,
                                   children: [
-                                    _buildFeature('assets/icons/icon_4.png',
-                                        "Trusted Logistics",
-                                        "Delivered by Global 500 providers.",
-                                        "State-owned carriers ensure reliability."),
-                                    _buildFeature('assets/icons/icon_5.png',
-                                        "Oversight & Security",
-                                        "Overseen by the Bank of China.",
-                                        "The watchdog of global trade."),
-                                    _buildFeature('assets/icons/icon_6.png',
-                                        "No More Costly L/Cs",
-                                        "Replace slow Letters of Credit.",
-                                        "Instant agreements, zero paperwork."),
+                                    _buildFeature(
+                                      'assets/icons/icon_4.png',
+                                      "Trusted Logistics",
+                                      "Delivered by Global 500 providers.",
+                                      "State-owned carriers ensure reliability.",
+                                    ),
+                                    _buildFeature(
+                                      'assets/icons/icon_5.png',
+                                      "Oversight & Security",
+                                      "Overseen by the Bank of China.",
+                                      "The watchdog of global trade.",
+                                    ),
+                                    _buildFeature(
+                                      'assets/icons/icon_6.png',
+                                      "No More Costly L/Cs",
+                                      "Replace slow Letters of Credit.",
+                                      "Instant agreements, zero paperwork.",
+                                    ),
                                   ],
                                 ),
                               ),
@@ -203,24 +227,32 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Flexible(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
                                 child: ConstrainedBox(
-                                  constraints: const BoxConstraints(maxWidth: sideMaxWidth),
+                                  constraints: const BoxConstraints(
+                                      maxWidth: sideMaxWidth),
                                   child: _SideColumn(
                                     alignRight: true,
                                     children: [
-                                      _buildFeature('assets/icons/icon_1.png',
-                                          "Trade in Local Currency",
-                                          "Real-time quotes in Rand, Yuan, and more.",
-                                          "Transparent landed costs, no hidden conversions."),
-                                      _buildFeature('assets/icons/icon_2.png',
-                                          "Instant International Transfers",
-                                          "Instant money transfers in your currency.",
-                                          "Backed by central banks for safety."),
-                                      _buildFeature('assets/icons/icon_3.png',
-                                          "Blockchain Escrow — Policed",
-                                          "Smart contracts enforce trust automatically.",
-                                          "All transactions policed by blockchain oversight."),
+                                      _buildFeature(
+                                        'assets/icons/icon_1.png',
+                                        "Trade in Local Currency",
+                                        "Real-time quotes in Rand, Yuan, and more.",
+                                        "Transparent landed costs, no hidden conversions.",
+                                      ),
+                                      _buildFeature(
+                                        'assets/icons/icon_2.png',
+                                        "Instant International Transfers",
+                                        "Instant money transfers in your currency.",
+                                        "Backed by central banks for safety.",
+                                      ),
+                                      _buildFeature(
+                                        'assets/icons/icon_3.png',
+                                        "Blockchain Escrow - Policed",
+                                        "Smart contracts enforce trust automatically.",
+                                        "All transactions policed by blockchain oversight.",
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -229,9 +261,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             const SizedBox(width: columnGap),
                             Flexible(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
                                 child: ConstrainedBox(
-                                  constraints: const BoxConstraints(maxWidth: centerMaxWidth),
+                                  constraints: const BoxConstraints(
+                                      maxWidth: centerMaxWidth),
                                   child: _buildLoginCard(
                                     t,
                                     silver,
@@ -248,24 +282,32 @@ class _LoginScreenState extends State<LoginScreen> {
                             const SizedBox(width: columnGap),
                             Flexible(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
                                 child: ConstrainedBox(
-                                  constraints: const BoxConstraints(maxWidth: sideMaxWidth),
+                                  constraints: const BoxConstraints(
+                                      maxWidth: sideMaxWidth),
                                   child: _SideColumn(
                                     alignRight: false,
                                     children: [
-                                      _buildFeature('assets/icons/icon_4.png',
-                                          "Trusted Logistics",
-                                          "Delivered by Global 500 providers.",
-                                          "State-owned carriers ensure reliability."),
-                                      _buildFeature('assets/icons/icon_5.png',
-                                          "Oversight & Security",
-                                          "Overseen by the Bank of China.",
-                                          "The watchdog of global trade."),
-                                      _buildFeature('assets/icons/icon_6.png',
-                                          "No More Costly L/Cs",
-                                          "Replace slow Letters of Credit.",
-                                          "Instant agreements, zero paperwork."),
+                                      _buildFeature(
+                                        'assets/icons/icon_4.png',
+                                        "Trusted Logistics",
+                                        "Delivered by Global 500 providers.",
+                                        "State-owned carriers ensure reliability.",
+                                      ),
+                                      _buildFeature(
+                                        'assets/icons/icon_5.png',
+                                        "Oversight & Security",
+                                        "Overseen by the Bank of China.",
+                                        "The watchdog of global trade.",
+                                      ),
+                                      _buildFeature(
+                                        'assets/icons/icon_6.png',
+                                        "No More Costly L/Cs",
+                                        "Replace slow Letters of Credit.",
+                                        "Instant agreements, zero paperwork.",
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -276,8 +318,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                   ),
-
-                  const SizedBox(height: 32),
                 ],
               ),
             ),
@@ -288,11 +328,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildFeature(
-    String imagePath,
-    String title,
-    String line1,
-    String line2,
-  ) {
+      String imagePath, String title, String line1, String line2) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(
@@ -308,7 +344,7 @@ class _LoginScreenState extends State<LoginScreen> {
               fit: BoxFit.contain,
             ),
           ),
-const SizedBox(width: 12),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

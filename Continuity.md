@@ -1,3 +1,4 @@
+Continuity.md
 Core Environment
 • IDE: VS Code (Local History active)
 • Framework: Flutter (Dart) for mobile/web
@@ -34,7 +35,7 @@ Rituals
 • Update STATUS.md after each milestone
 • Commit + tag checkpoints (chk-YYYY-MM-DD-description)
 • Preserve golden copies in /templates and /db/migrations
-• Continuity.md updated whenever headings, palette, or grouping logic change
+• Update Continuity.md whenever headings, palette, or grouping logic change
 Operational Notes
 • Localization: ARB files maintained in lib/l10n/ (EN/ZN)
 • Assets: replaced via golden-copy workflow
@@ -55,3 +56,15 @@ Current Checkpoints
 	◦ Trust pillar icons resized to 100px
 	◦ Logo enlarged to 140px
 	◦ Tag: chk-2026-01-09-login-overflow-fix
+• 2026-01-10 – Login Spinner Reset
+	◦ Added finally block to stop loading spinner after failed login
+	◦ Localized error messages applied consistently
+	◦ Tag: chk-2026-01-10-login-spinner-reset
+• 2026-01-10 – Registration Slogan Duplication Fix
+	◦ Removed duplicate slogan from inside registration card; slogan now only above block
+	◦ Tag: chk-2026-01-10-registration-slogan-fix
+• 2026-01-10 – Registration Form Compile Fixes
+	◦ Corrected identifiers (_emailController, _passwordController, _formKey, _obscurePassword)
+	◦ Fixed try/catch/finally structure
+	◦ Cleaned widget closures and validator syntax
+	◦ Tag: chk-2026-01-10-registration-compile-fix
