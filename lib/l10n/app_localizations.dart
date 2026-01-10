@@ -116,18 +116,6 @@ abstract class AppLocalizations {
   /// **'Welcome to mBrics'**
   String get welcome;
 
-  /// No description provided for @errorInvalidEmailFormat.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter a valid email address.'**
-  String get errorInvalidEmailFormat;
-
-  /// No description provided for @errorInvalidPhone.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter a valid phone number.'**
-  String get errorInvalidPhone;
-
   /// No description provided for @loginTitle.
   ///
   /// In en, this message translates to:
@@ -230,29 +218,11 @@ abstract class AppLocalizations {
   /// **'Demo login: username = mbrics, password = mbrics'**
   String get loginHint;
 
-  /// No description provided for @invalidCredentials.
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid credentials'**
-  String get invalidCredentials;
-
   /// Shown when login fails
   ///
   /// In en, this message translates to:
   /// **'Login failed: {error}'**
   String loginFailed(String error);
-
-  /// No description provided for @registrationSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Account created successfully. Please verify your email and log in.'**
-  String get registrationSuccess;
-
-  /// Shown when registration fails
-  ///
-  /// In en, this message translates to:
-  /// **'Registration failed: {error}'**
-  String registrationFailed(String error);
 
   /// No description provided for @errorInvalidCredentials.
   ///
@@ -289,6 +259,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Too many failed login attempts. Please wait a few minutes before trying again.'**
   String get errorTooManyAttempts;
+
+  /// No description provided for @errorUnexpected.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again later.'**
+  String get errorUnexpected;
+
+  /// No description provided for @errorInvalidEmailFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address.'**
+  String get errorInvalidEmailFormat;
+
+  /// No description provided for @errorInvalidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid phone number.'**
+  String get errorInvalidPhone;
+
+  /// No description provided for @registrationSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created successfully. Please verify your email and log in.'**
+  String get registrationSuccess;
+
+  /// Shown when registration fails
+  ///
+  /// In en, this message translates to:
+  /// **'Registration failed: {error}'**
+  String registrationFailed(String error);
 
   /// No description provided for @ddp.
   ///

@@ -18,12 +18,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get welcome => '欢迎来到 mBrics';
 
   @override
-  String get errorInvalidEmailFormat => '请输入有效的电子邮箱地址。';
-
-  @override
-  String get errorInvalidPhone => '请输入有效的电话号码。';
-
-  @override
   String get loginTitle => '登录';
 
   @override
@@ -75,19 +69,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get loginHint => '演示登录：用户名 = mbrics, 密码 = mbrics';
 
   @override
-  String get invalidCredentials => '凭证无效';
-
-  @override
   String loginFailed(String error) {
     return '登录失败：$error';
-  }
-
-  @override
-  String get registrationSuccess => '账户创建成功。请验证邮箱并登录。';
-
-  @override
-  String registrationFailed(String error) {
-    return '注册失败：$error';
   }
 
   @override
@@ -107,6 +90,23 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get errorTooManyAttempts => '登录失败次数过多，请稍后再试。';
+
+  @override
+  String get errorUnexpected => '发生未知错误，请稍后再试。';
+
+  @override
+  String get errorInvalidEmailFormat => '请输入有效的电子邮箱地址。';
+
+  @override
+  String get errorInvalidPhone => '请输入有效的电话号码。';
+
+  @override
+  String get registrationSuccess => '账户创建成功。请验证邮箱并登录。';
+
+  @override
+  String registrationFailed(String error) {
+    return '注册失败：$error';
+  }
 
   @override
   String get ddp => 'DDP 平台';

@@ -5,9 +5,6 @@
   "welcomeTitle": "Welcome to mBrics",
   "welcome": "Welcome to mBrics",
 
-  "errorInvalidEmailFormat": "Please enter a valid email address.",
-  "errorInvalidPhone": "Please enter a valid phone number.",
-
   "loginTitle": "Login",
   "login": "Login",
   "loginBtn": "Login",
@@ -27,21 +24,11 @@
   "companyOptional": "Company (optional)",
 
   "loginHint": "Demo login: username = mbrics, password = mbrics",
-  "invalidCredentials": "Invalid credentials",
   "loginFailed": "Login failed: {error}",
   "@loginFailed": {
     "description": "Shown when login fails",
     "placeholders": {
       "error": { "type": "String", "example": "Invalid password" }
-    }
-  },
-
-  "registrationSuccess": "Account created successfully. Please verify your email and log in.",
-  "registrationFailed": "Registration failed: {error}",
-  "@registrationFailed": {
-    "description": "Shown when registration fails",
-    "placeholders": {
-      "error": { "type": "String", "example": "Email already registered" }
     }
   },
 
@@ -51,6 +38,18 @@
   "errorWeakPassword": "Password must be at least 8 characters.",
   "errorNetwork": "We couldn’t reach the server. Check your connection and try again.",
   "errorTooManyAttempts": "Too many failed login attempts. Please wait a few minutes before trying again.",
+  "errorUnexpected": "Something went wrong. Please try again later.",
+  "errorInvalidEmailFormat": "Please enter a valid email address.",
+  "errorInvalidPhone": "Please enter a valid phone number.",
+
+  "registrationSuccess": "Account created successfully. Please verify your email and log in.",
+  "registrationFailed": "Registration failed: {error}",
+  "@registrationFailed": {
+    "description": "Shown when registration fails",
+    "placeholders": {
+      "error": { "type": "String", "example": "Email already registered" }
+    }
+  },
 
   "ddp": "DDP Platform",
   "ddp_subtitle": "Transparent landed cost quoting",

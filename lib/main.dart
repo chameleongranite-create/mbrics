@@ -12,6 +12,7 @@ import 'package:mbrics/escrow/escrow_page.dart';
 import 'package:mbrics/pay/pay_page.dart';
 import 'package:mbrics/settings/settings_page.dart';
 import 'package:mbrics/profile/profile_page.dart';
+import 'package:mbrics/profile/edit_profile_page.dart'; // ✅ new import
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -69,7 +70,8 @@ class _MyAppState extends State<MyApp> {
         '/escrow': (context) => EscrowPage(onLocaleChange: _setLocale),
         '/pay': (context) => PayPage(onLocaleChange: _setLocale),
         '/settings': (context) => SettingsPage(onLocaleChange: _setLocale),
-        '/profile': (context) => ProfilePage(), // ✅ removed const
+        '/profile': (context) => const ProfilePage(),
+        '/editprofile': (context) => const EditProfilePage(), // ✅ new route
       },
     );
   }

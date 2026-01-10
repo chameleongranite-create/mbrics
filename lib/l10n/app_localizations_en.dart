@@ -18,12 +18,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get welcome => 'Welcome to mBrics';
 
   @override
-  String get errorInvalidEmailFormat => 'Please enter a valid email address.';
-
-  @override
-  String get errorInvalidPhone => 'Please enter a valid phone number.';
-
-  @override
   String get loginTitle => 'Login';
 
   @override
@@ -75,20 +69,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginHint => 'Demo login: username = mbrics, password = mbrics';
 
   @override
-  String get invalidCredentials => 'Invalid credentials';
-
-  @override
   String loginFailed(String error) {
     return 'Login failed: $error';
-  }
-
-  @override
-  String get registrationSuccess =>
-      'Account created successfully. Please verify your email and log in.';
-
-  @override
-  String registrationFailed(String error) {
-    return 'Registration failed: $error';
   }
 
   @override
@@ -113,6 +95,24 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorTooManyAttempts =>
       'Too many failed login attempts. Please wait a few minutes before trying again.';
+
+  @override
+  String get errorUnexpected => 'Something went wrong. Please try again later.';
+
+  @override
+  String get errorInvalidEmailFormat => 'Please enter a valid email address.';
+
+  @override
+  String get errorInvalidPhone => 'Please enter a valid phone number.';
+
+  @override
+  String get registrationSuccess =>
+      'Account created successfully. Please verify your email and log in.';
+
+  @override
+  String registrationFailed(String error) {
+    return 'Registration failed: $error';
+  }
 
   @override
   String get ddp => 'DDP Platform';

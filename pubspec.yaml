@@ -45,3 +45,9 @@ flutter:
     - assets/mbrics_logo.png
     - assets/google_logo.png
     - assets/default_avatar.png   # ✅ ensure this file exists
+    - assets/icons/register_1.png
+    - assets/icons/register_2.png
+    - assets/icons/register_3.png
+    - assets/icons/register_4.png
+    - assets/icons/register_5.png
+    - assets/icons/register_6.png
