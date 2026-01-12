@@ -1,0 +1,175 @@
+{
+  "@@locale": "en",
+
+  "section_welcome": "Welcome page strings",
+
+  "appTitle": "mBrics Platform",
+  "welcomeTitle": "Welcome to mBrics",
+  "welcome": "Welcome to mBrics",
+
+  "section_login": "Login page strings",
+
+  "loginTitle": "Login",
+  "login": "Login",
+  "loginBtn": "Login",
+  "register": "Register",
+  "registerTitle": "Register",
+  "createAccount": "Create account",
+  "alreadyHaveAccount": "Already have an account? Log in",
+  "goToLogin": "Already have an account? Log in",
+  "noAccountRegister": "Don't have an account? Register",
+  "alreadyRegistered": "Already registered? Log in here",
+
+  "username": "Username",
+  "email": "Email",
+  "password": "Password",
+  "fullName": "Full Name",
+  "phoneOptional": "Phone (optional)",
+  "companyOptional": "Company (optional)",
+
+  "loginHint": "Demo login: username = mbrics, password = mbrics",
+  "loginFailed": "Login failed: {error}",
+  "@loginFailed": {
+    "description": "Shown when login fails",
+    "placeholders": {
+      "error": { "type": "String", "example": "Invalid password" }
+    }
+  },
+
+  "section_errors": "Error messages",
+
+  "errorInvalidCredentials": "Incorrect email or password. Please try again.",
+  "errorUserNotFound": "No account exists with this email. Would you like to register instead?",
+  "errorEmailTaken": "This email is already registered. Try logging in instead.",
+  "errorWeakPassword": "Password must be at least 8 characters.",
+  "errorNetwork": "We couldn’t reach the server. Check your connection and try again.",
+  "errorTooManyAttempts": "Too many failed login attempts. Please wait a few minutes before trying again.",
+  "errorUnexpected": "Something went wrong. Please try again later.",
+  "errorInvalidEmailFormat": "Please enter a valid email address.",
+  "errorInvalidPhone": "Please enter a valid phone number.",
+
+  "section_registration": "Registration messages",
+
+  "registrationSuccess": "Account created successfully. Please verify your email and log in.",
+  "registrationFailed": "Registration failed: {error}",
+  "@registrationFailed": {
+    "description": "Shown when registration fails",
+    "placeholders": {
+      "error": { "type": "String", "example": "Email already registered" }
+    }
+  },
+
+  "section_login_screen_slogans": "Login screen slogans",
+
+  "globalTradeSlogan": "Global trade, secured by blockchain",
+  "loginSubtitle": "Built for global trade. Designed for trust.",
+
+  "section_login_features": "Login screen feature highlights",
+
+  "feature1Title": "Trade in Local Currency",
+  "feature1Line1": "Real-time quotes in Rand, Yuan, and more.",
+  "feature1Line2": "Transparent landed costs, no hidden conversions.",
+
+  "feature2Title": "Instant International Transfers",
+  "feature2Line1": "Instant money transfers in your currency.",
+  "feature2Line2": "Backed by central banks for safety.",
+
+  "feature3Title": "Blockchain Escrow - Policed",
+  "feature3Line1": "Smart contracts enforce trust automatically.",
+  "feature3Line2": "All transactions policed by blockchain oversight.",
+
+  "feature4Title": "Trusted Logistics",
+  "feature4Line1": "Delivered by Global 500 providers.",
+  "feature4Line2": "State-owned carriers ensure reliability.",
+
+  "feature5Title": "Oversight & Security",
+  "feature5Line1": "Overseen by the Bank of China.",
+  "feature5Line2": "The watchdog of global trade.",
+
+  "feature6Title": "No More Costly L/Cs",
+  "feature6Line1": "Replace slow Letters of Credit.",
+  "feature6Line2": "Instant agreements, zero paperwork.",
+
+  "section_ddp": "DDP Platform strings",
+
+  "ddp": "DDP Platform",
+  "ddp_subtitle": "Transparent landed cost quoting",
+  "originCountry": "Origin Country",
+  "destinationCountry": "Destination Country",
+  "incoterm": "Incoterm",
+  "shipmentType": "Shipment Type",
+  "containerType": "Container Type",
+  "volume": "Volume (CBM)",
+  "goodsValue": "Goods Value",
+  "hsCode": "HS Code",
+  "weight": "Weight (kg)",
+  "generateQuote": "Generate Quote",
+
+  "section_forex": "Forex strings",
+
+  "forex": "Forex Exchange Rates",
+  "forex_subtitle": "USD, RMB, ZAR",
+  "usdToCny": "USD → CNY",
+  "usdToZar": "USD → ZAR",
+  "cnyToZar": "CNY → ZAR",
+  "currency": "Currency",
+  "amount": "Amount",
+  "convertedAmount": "Converted Amount",
+
+  "section_escrow": "Escrow strings",
+
+  "escrow": "Create Escrow Contract",
+  "escrowTitle": "Escrow",
+
+  "section_pay": "Pay strings",
+
+  "pay": "Pay Someone",
+  "payTitle": "Pay Feature",
+  "recipientLabel": "Recipient Name",
+  "amountLabel": "Amount",
+  "confirmPayment": "Confirm Payment",
+  "payBtn": "Pay",
+  "paySuccess": "Payment Successful",
+  "paymentConfirmation": "Payment demo: {recipient} received {amount}",
+  "@paymentConfirmation": {
+    "description": "Confirmation message after submitting payment",
+    "placeholders": {
+      "recipient": { "type": "String", "example": "Alice" },
+      "amount": { "type": "String", "example": "100" }
+    }
+  },
+
+  "section_misc": "Miscellaneous strings",
+
+  "hintTitle": "Hint",
+  "hintSubtitle": "This page is a payment demo, not connected to real payment channels.",
+  "noData": "No data",
+  "method": "Payment Method",
+
+  "section_navigation": "Navigation strings",
+
+  "dashboardTitle": "Dashboard",
+  "homeTitle": "Main Menu",
+  "settings": "Settings",
+  "preferredCurrency": "Preferred Currency",
+  "apiSource": "API Source",
+  "logout": "Logout",
+  "darkMode": "Dark Mode",
+  "notifications": "Notifications",
+  "navigation": "Navigation",
+
+  "toggleLang": "中文",
+
+  "terms": "Terms",
+  "privacyPolicy": "Privacy Policy",
+
+  "editProfile": "Edit Profile",
+
+  "footerText": "© {year} mBrics",
+  "@footerText": {
+    "description": "Footer copyright with year",
+    "placeholders": {
+      "year": { "type": "String", "example": "2026" }
+    }
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "@@locale": "zh",
+
+  "section_welcome": "Welcome page strings",
+
+  "appTitle": "mBrics 平台",
+  "welcomeTitle": "欢迎来到 mBrics",
+  "welcome": "欢迎来到 mBrics",
+
+  "section_login": "Login page strings",
+
+  "loginTitle": "登录",
+  "login": "登录",
+  "loginBtn": "登录",
+  "register": "注册",
+  "registerTitle": "注册",
+  "createAccount": "创建账户",
+  "alreadyHaveAccount": "已有账户？登录",
+  "goToLogin": "已有账户？登录",
+  "noAccountRegister": "没有账户？立即注册",
+  "alreadyRegistered": "已经注册？在此登录",
+
+  "username": "用户名",
+  "email": "电子邮箱",
+  "password": "密码",
+  "fullName": "姓名",
+  "phoneOptional": "电话（可选）",
+  "companyOptional": "公司（可选）",
+
+  "loginHint": "演示登录：用户名 = mbrics，密码 = mbrics",
+  "loginFailed": "登录失败：{error}",
+  "@loginFailed": {
+    "description": "登录失败时显示",
+    "placeholders": {
+      "error": { "type": "String", "example": "密码错误" }
+    }
+  },
+
+  "section_errors": "Error messages",
+
+  "errorInvalidCredentials": "邮箱或密码错误，请重试。",
+  "errorUserNotFound": "该邮箱未注册。要立即注册吗？",
+  "errorEmailTaken": "该邮箱已注册，请尝试登录。",
+  "errorWeakPassword": "密码至少需要 8 个字符。",
+  "errorNetwork": "无法连接服务器，请检查网络后重试。",
+  "errorTooManyAttempts": "登录失败次数过多，请稍后再试。",
+  "errorUnexpected": "出现问题，请稍后再试。",
+  "errorInvalidEmailFormat": "请输入有效的邮箱地址。",
+  "errorInvalidPhone": "请输入有效的电话号码。",
+
+  "section_registration": "Registration messages",
+
+  "registrationSuccess": "账户创建成功。请验证邮箱后登录。",
+  "registrationFailed": "注册失败：{error}",
+  "@registrationFailed": {
+    "description": "注册失败时显示",
+    "placeholders": {
+      "error": { "type": "String", "example": "邮箱已注册" }
+    }
+  },
+
+  "section_login_screen_slogans": "Login screen slogans",
+
+  "globalTradeSlogan": "全球贸易，由区块链保障",
+  "loginSubtitle": "为全球贸易而建，为信任而生。",
+
+  "section_login_features": "Login screen feature highlights",
+
+  "feature1Title": "本地货币交易",
+  "feature1Line1": "实时报价：兰特、人民币等。",
+  "feature1Line2": "透明到岸成本，无隐藏换算。",
+
+  "feature2Title": "即时国际转账",
+  "feature2Line1": "即时到账，支持本币。",
+  "feature2Line2": "由央行保障安全。",
+
+  "feature3Title": "区块链托管 - 监管",
+  "feature3Line1": "智能合约自动执行信任。",
+  "feature3Line2": "所有交易由区块链监管。",
+
+  "feature4Title": "可信物流",
+  "feature4Line1": "由全球 500 强提供服务。",
+  "feature4Line2": "国有承运人确保可靠性。",
+
+  "feature5Title": "监管与安全",
+  "feature5Line1": "由中国银行监管。",
+  "feature5Line2": "全球贸易的守护者。",
+
+  "feature6Title": "不再需要昂贵的信用证",
+  "feature6Line1": "替代缓慢的信用证流程。",
+  "feature6Line2": "即时协议，无需纸质文件。",
+
+  "section_ddp": "DDP Platform strings",
+
+  "ddp": "DDP 平台",
+  "ddp_subtitle": "透明的到岸成本报价",
+  "originCountry": "起运国",
+  "destinationCountry": "目的国",
+  "incoterm": "国际贸易术语",
+  "shipmentType": "运输类型",
+  "containerType": "集装箱类型",
+  "volume": "体积 (立方米)",
+  "goodsValue": "货值",
+  "hsCode": "HS 编码",
+  "weight": "重量 (公斤)",
+  "generateQuote": "生成报价",
+
+  "section_forex": "Forex strings",
+
+  "forex": "外汇汇率",
+  "forex_subtitle": "美元、人民币、兰特",
+  "usdToCny": "美元 → 人民币",
+  "usdToZar": "美元 → 兰特",
+  "cnyToZar": "人民币 → 兰特",
+  "currency": "货币",
+  "amount": "金额",
+  "convertedAmount": "换算金额",
+
+  "section_escrow": "Escrow strings",
+
+  "escrow": "创建托管合约",
+  "escrowTitle": "托管",
+
+  "section_pay": "Pay strings",
+
+  "pay": "付款",
+  "payTitle": "支付功能",
+  "recipientLabel": "收款人姓名",
+  "amountLabel": "金额",
+  "confirmPayment": "确认付款",
+  "payBtn": "支付",
+  "paySuccess": "付款成功",
+  "paymentConfirmation": "支付演示：{recipient} 已收到 {amount}",
+  "@paymentConfirmation": {
+    "description": "提交付款后显示的确认信息",
+    "placeholders": {
+      "recipient": { "type": "String", "example": "Alice" },
+      "amount": { "type": "String", "example": "100" }
+    }
+  },
+
+  "section_misc": "Miscellaneous strings",
+
+  "hintTitle": "提示",
+  "hintSubtitle": "此页面为支付演示，不连接真实支付渠道。",
+  "noData": "暂无数据",
+  "method": "支付方式",
+
+  "section_navigation": "Navigation strings",
+
+  "dashboardTitle": "仪表盘",
+  "homeTitle": "主菜单",
+  "settings": "设置",
+  "preferredCurrency": "首选货币",
+  "apiSource": "API 来源",
+  "logout": "退出登录",
+  "darkMode": "深色模式",
+  "notifications": "通知",
+  "navigation": "导航",
+
+  "toggleLang": "EN",
+
+  "terms": "条款",
+  "privacyPolicy": "隐私政策",
+
+  "editProfile": "编辑资料",
+
+  "footerText": "© {year} mBrics",
+  "@footerText": {
+    "description": "页脚版权年份",
+    "placeholders": {
+      "year": { "type": "String", "example": "2026" }
+    }
+  }
+}
