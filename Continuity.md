@@ -81,3 +81,18 @@ Current Checkpoints
   ◦ Golden welcome block simplified: removed redundant “Open Platform” button, added tagline instead
   ◦ Right side “Core Features Explained” overflow noted (yellow lines) — fix deferred to next session
   ◦ Tag: chk-2026-01-10-mainmenu-icons-welcome-update
+
+  ## Rituals
+· Maintain ARB files for EN/ZN (Chinese) alongside STATUS.md checkpoints
+· Every new heading/explanation moved into ARB with both English and Chinese entries
+· Golden copies preserved before each localization batch
+
+## Operational Notes
+· Localization scope expanded: includes headings, feature explanations, trust pillar text, slogans
+· All hard-coded strings in Dart replaced with AppLocalizations keys
+· Testing: toggle EN/CN icons to validate full-site language swap
+
+### Continuity Log — 2026-01-12
+- SettingsPage polished: icon alignment fixed, scroll-safe layout ensured.
+- Golden copy prepared for rollback safety.
+- Workflow discipline maintained: every fix mirrored in documentation.

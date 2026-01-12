@@ -56,17 +56,19 @@ class _MainMenuPageState extends State<MainMenuPage> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
     final isWide = MediaQuery.of(context).size.width >= 1000;
+    final userName =
+        Supabase.instance.client.auth.currentUser?.userMetadata?['full_name'] ??
+            'User';
 
-    final mainFunctions = [
-      MenuItem("Get a logistics quote", '/ddp', Icons.local_shipping),
-      MenuItem("Send or receive money", '/pay', Icons.payment),
-      MenuItem("Create a blockchain contract", '/escrow', Icons.security),
+    final primaryFunctions = [
+      MenuItem(t.pay, '/pay', Icons.payment),
+      MenuItem(t.forex, '/forex', Icons.currency_exchange),
+      MenuItem(t.escrow, '/escrow', Icons.lock),
     ];
 
     final secondaryFunctions = [
-      MenuItem("Live forex rates", '/forex', Icons.currency_exchange),
-      MenuItem("Edit personal details", '/editprofile', Icons.edit),
-      MenuItem(t.settings, '/settings', Icons.settings),
+      MenuItem(t.editProfile, '/editprofile', Icons.edit),
+      MenuItem(t.menuSettings, '/settings', Icons.settings),
     ];
 
     return MasterLayout(
@@ -77,120 +79,93 @@ class _MainMenuPageState extends State<MainMenuPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (isWide)
-              Expanded(
+              Flexible(
                 flex: 1,
-                child: _SidePanel(
-                  title: "Trust & Innovation",
-                  items: [
-                    {
-                      "heading": "CBDC Settlement",
-                      "text":
-                          "Backed by China’s Central Bank Digital Currency — secure, auditable, borderless."
-                    },
-                    {
-                      "heading": "Transparent Costs",
-                      "text":
-                          "Every quote shows duties, VAT, and net landed cost clearly."
-                    },
-                    {
-                      "heading": "Global Reach",
-                      "text":
-                          "Designed for cross-border trade with modern Web3 infrastructure."
-                    },
-                  ],
-                  icon: Icons.verified,
-                  imagePath: 'assets/icons/trust_01.png',
-                ),
-              ),
-            Expanded(
-              flex: 2,
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 480),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        _HeroBlock(userData),
-                        const SizedBox(height: 24),
-                        if (!isWide)
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: flashySilver.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              "Powered by China’s Central Bank Digital Currency — secure, auditable, borderless.",
-                              style: GoogleFonts.inter(
-                                fontSize: 13,
-                                color: textSoft,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        if (!isWide) const SizedBox(height: 16),
-                        _FunctionBlock(
-                          title: "Core Functions",
-                          items: mainFunctions,
-                          cardColor: platinumFill,
-                          iconColor: silver,
-                        ),
-                        const SizedBox(height: 24),
-                        _FunctionBlock(
-                          title: "Tools & Settings",
-                          items: secondaryFunctions,
-                          cardColor: backgroundWhite,
-                          iconColor: gold,
-                        ),
-                        if (!isWide) const SizedBox(height: 16),
-                        if (!isWide)
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: gold),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              "Instant DDP Quotes: tariffs, freight, clearance, and inland transport in one click.",
-                              style: GoogleFonts.inter(
-                                fontSize: 13,
-                                color: textDark,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        if (!isWide) const SizedBox(height: 16),
-                        _FooterBlock(t),
-                      ],
-                    ),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: _SidePanel(
+                    title: "Trust & Innovation",
+                    items: [
+                      {
+                        "heading": "CBDC Settlement",
+                        "text":
+                            "Backed by China's Central Bank Digital Currency - secure, auditable, borderless."
+                      },
+                      {
+                        "heading": "Transparent Costs",
+                        "text":
+                            "Every quote shows duties, VAT, and net landed cost clearly."
+                      },
+                      {
+                        "heading": "Global Reach",
+                        "text":
+                            "Designed for cross-border trade with modern Web3 infrastructure."
+                      },
+                    ],
+                    icon: Icons.verified,
+                    imagePath: 'assets/icons/trust_01.png',
                   ),
                 ),
               ),
+            Flexible(
+  flex: 2,
+  child: Center(
+    child: ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 480),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 24),
+            _HeroBlock(userData),
+            const SizedBox(height: 24),
+            _FunctionBlock(
+              title: t.mainMenuCoreFunctionsTitle,
+              items: primaryFunctions,
+              cardColor: platinumFill,
+              iconColor: silver,
             ),
+            const SizedBox(height: 24),
+            _FunctionBlock(
+              title: t.mainMenuUtilitiesTitle,
+              items: secondaryFunctions,
+              cardColor: backgroundWhite,
+              iconColor: gold,
+            ),
+            const SizedBox(height: 16),
+            _FooterBlock(t),
+          ],
+        ),
+      ),
+    ),
+  ),
+),
             if (isWide)
-              Expanded(
+              Flexible(
                 flex: 1,
-                child: _SidePanel(
-                  title: "Core Features Explained",
-                  items: [
-                    {
-                      "heading": "DDP Quotes",
-                      "text":
-                          "Instant logistics quotes covering tariffs, freight, clearance, and inland transport."
-                    },
-                    {
-                      "heading": "Send Money",
-                      "text":
-                          "Fast transfers powered by Central Bank Digital Currency — instant, secure, reliable."
-                    },
-                    {
-                      "heading": "Blockchain Contracts",
-                      "text":
-                          "Smart contracts replacing Letters of Credit — milestone-based, auditable, trusted."
-                    },
-                  ],
-                  icon: Icons.star,
-                  imagePath: 'assets/icons/core_functions.png',
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: _SidePanel(
+                    title: "Core Features",
+                    items: [
+                      {
+                        "heading": "DDP Quotes",
+                        "text":
+                            "Instant logistics quotes covering tariffs, freight, clearance, and inland transport."
+                      },
+                      {
+                        "heading": "Send Money",
+                        "text":
+                            "Fast transfers powered by Central Bank Digital Currency - instant, secure, reliable."
+                      },
+                      {
+                        "heading": "Blockchain Contracts",
+                        "text":
+                            "Smart contracts replacing Letters of Credit - milestone-based, auditable, trusted."
+                      },
+                    ],
+                    icon: Icons.star,
+                    imagePath: 'assets/icons/core_functions.png',
+                  ),
                 ),
               ),
           ],
@@ -203,7 +178,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
 // Hero greeting block
 class _HeroBlock extends StatelessWidget {
   final Map<String, dynamic>? userData;
-  const _HeroBlock(this.userData);
+  const _HeroBlock(this.userData, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +194,7 @@ class _HeroBlock extends StatelessWidget {
           Image.asset('assets/mbrics_logo.png', height: 80),
           const SizedBox(height: 16),
           Text(
-            "Hi ${userData?['full_name'] ?? ''}, ready to get started?",
+            "Hi ${userData?['full_name'] ?? 'User'}, ready to get started?",
             style: GoogleFonts.inter(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -250,7 +225,7 @@ class _HeroBlock extends StatelessWidget {
   }
 }
 
-// Function block (core/tools)
+// Function block
 class _FunctionBlock extends StatelessWidget {
   final String title;
   final List<MenuItem> items;
@@ -258,11 +233,12 @@ class _FunctionBlock extends StatelessWidget {
   final Color iconColor;
 
   const _FunctionBlock({
+    Key? key,
     required this.title,
     required this.items,
     required this.cardColor,
     required this.iconColor,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -313,7 +289,8 @@ class _FunctionBlock extends StatelessWidget {
 // Footer block
 class _FooterBlock extends StatelessWidget {
   final AppLocalizations t;
-  const _FooterBlock(this.t);
+
+  const _FooterBlock(this.t, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -352,7 +329,7 @@ class _FooterBlock extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            "Escrow releases only on milestones\nPayments protected with audit trails",
+            "Escrow releases only on milestones \nPayments protected with audit trails",
             style: GoogleFonts.inter(
               fontSize: 13,
               color: footerTextSoft,
@@ -361,7 +338,7 @@ class _FooterBlock extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            "© 2026 mBrics",
+            "@ 2026 mBrics",
             style: GoogleFonts.inter(
               fontSize: 12,
               color: footerTextSoft,
@@ -381,11 +358,12 @@ class _SidePanel extends StatelessWidget {
   final String imagePath;
 
   const _SidePanel({
+    Key? key,
     required this.title,
     required this.items,
     required this.icon,
     required this.imagePath,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -402,7 +380,6 @@ class _SidePanel extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Centered round icon image
             ClipOval(
               child: Image.asset(
                 imagePath,
@@ -415,7 +392,14 @@ class _SidePanel extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, color: panelGold, size: 32),
+                Container(
+                  width: 10,
+                  height: 10,
+                  decoration: const BoxDecoration(
+                    color: panelGold,
+                    shape: BoxShape.circle,
+                  ),
+                ),
                 const SizedBox(width: 8),
                 Text(
                   title,
@@ -431,27 +415,31 @@ class _SidePanel extends StatelessWidget {
             ...items.map(
               (entry) => Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.start,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.circle, size: 8, color: panelGold),
-                    const SizedBox(width: 8),
-                    Text.rich(
-                      TextSpan(
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: panelTextDark,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "${entry['heading']}: ",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                    Row(
+                      children: [
+                        Icon(Icons.circle, size: 8, color: panelGold),
+                        const SizedBox(width: 8),
+                        Text(
+                          entry['heading'] ?? '',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: panelTextDark,
                           ),
-                          TextSpan(text: entry['text'] ?? ""),
-                        ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      entry['text'] ?? '',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: panelTextDark,
                       ),
+                      softWrap: true,
                     ),
                   ],
                 ),

@@ -89,3 +89,36 @@ STATUS.md — mBrics Platform (MOBILE Project)
 • Tag: chk-2026-01-10-mainmenu-icons-welcome-update
 
 “Storage bucket ‘avatars’ created, public access enabled.”
+
+STATUS.md — mBrics Platform (MOBILE Project)
+
+2026-01-10 – Main Menu Icon Integration & Welcome Block Update
+• Large round icons (trust_01.png, core_functions.png) centered in left/right side panels
+• Golden welcome block simplified: removed redundant “Open Platform” button, added tagline instead
+• Right side “Core Features Explained” overflow noted (yellow lines) — fix deferred to next session
+• Next: polish remaining pages, verify bilingual toggle (English/中文) works smoothly, refine ARB entries for natural Chinese phrasing
+• Tag: chk-2026-01-10-mainmenu-icons-welcome-update
+
+2026-01-11 - Localization Kickoff
+· ARB files confirmed: app_en.arb, app_zh.arb
+· Workflow: replace hard-coded English headings/explanations with localized keys
+· Translation discipline: polished Chinese phrasing, not machine-translated
+· Tag: chk-2026-01-11-localization-kickoff
+
+Status Update
+• Edit Profile EN/ZH: ✅ Completed and working inside app_en.arb / app_zh.arb.
+• Main Menu EN/ZH: Strings drafted and corrected JSON structure provided. Needs to be pasted into app_en.arb / app_zh.arb (no separate files).
+• Settings, Pay, Forex, Escrow: ⏳ Not yet added. Next in line once Main Menu is stable.
+• ARB file structure: Must keep one file per locale (app_en.arb, app_zh.arb). No extra *_en.arb or *_zh.arb files — Flutter enforces this.
+• Next action when you return:
+	1. Paste the Main Menu block into both ARB files (before the final }).
+	2. Run flutter gen-l10n to confirm it compiles cleanly.
+	3. Then we’ll move on to Settings EN/ZH strings.
+
+  ## 2026-01-12
+- Completed SettingsPage corrections:
+  - Fixed overflow with SingleChildScrollView
+  - Constrained and centered settings icon
+  - Neutralized borders/dividers for clean visuals
+- Verified main menu greeting duplication removed
+- All code compiled and running cleanly
