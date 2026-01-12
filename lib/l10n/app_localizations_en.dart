@@ -9,6 +9,9 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get section_welcome => 'Welcome page strings';
+
+  @override
   String get appTitle => 'mBrics Platform';
 
   @override
@@ -16,6 +19,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcome => 'Welcome to mBrics';
+
+  @override
+  String get section_login => 'Login page strings';
 
   @override
   String get loginTitle => 'Login';
@@ -74,6 +80,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get section_errors => 'Error messages';
+
+  @override
   String get errorInvalidCredentials =>
       'Incorrect email or password. Please try again.';
 
@@ -106,6 +115,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorInvalidPhone => 'Please enter a valid phone number.';
 
   @override
+  String get section_registration => 'Registration messages';
+
+  @override
   String get registrationSuccess =>
       'Account created successfully. Please verify your email and log in.';
 
@@ -113,6 +125,77 @@ class AppLocalizationsEn extends AppLocalizations {
   String registrationFailed(String error) {
     return 'Registration failed: $error';
   }
+
+  @override
+  String get section_login_screen_slogans => 'Login screen slogans';
+
+  @override
+  String get globalTradeSlogan => 'Global trade, secured by blockchain';
+
+  @override
+  String get loginSubtitle => 'Built for global trade. Designed for trust.';
+
+  @override
+  String get section_login_features => 'Login screen feature highlights';
+
+  @override
+  String get feature1Title => 'Trade in Local Currency';
+
+  @override
+  String get feature1Line1 => 'Real-time quotes in Rand, Yuan, and more.';
+
+  @override
+  String get feature1Line2 =>
+      'Transparent landed costs, no hidden conversions.';
+
+  @override
+  String get feature2Title => 'Instant International Transfers';
+
+  @override
+  String get feature2Line1 => 'Instant money transfers in your currency.';
+
+  @override
+  String get feature2Line2 => 'Backed by central banks for safety.';
+
+  @override
+  String get feature3Title => 'Blockchain Escrow - Policed';
+
+  @override
+  String get feature3Line1 => 'Smart contracts enforce trust automatically.';
+
+  @override
+  String get feature3Line2 =>
+      'All transactions policed by blockchain oversight.';
+
+  @override
+  String get feature4Title => 'Trusted Logistics';
+
+  @override
+  String get feature4Line1 => 'Delivered by Global 500 providers.';
+
+  @override
+  String get feature4Line2 => 'State-owned carriers ensure reliability.';
+
+  @override
+  String get feature5Title => 'Oversight & Security';
+
+  @override
+  String get feature5Line1 => 'Overseen by the Bank of China.';
+
+  @override
+  String get feature5Line2 => 'The watchdog of global trade.';
+
+  @override
+  String get feature6Title => 'No More Costly L/Cs';
+
+  @override
+  String get feature6Line1 => 'Replace slow Letters of Credit.';
+
+  @override
+  String get feature6Line2 => 'Instant agreements, zero paperwork.';
+
+  @override
+  String get section_ddp => 'DDP Platform strings';
 
   @override
   String get ddp => 'DDP Platform';
@@ -151,6 +234,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generateQuote => 'Generate Quote';
 
   @override
+  String get section_forex => 'Forex strings';
+
+  @override
   String get forex => 'Forex Exchange Rates';
 
   @override
@@ -175,10 +261,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get convertedAmount => 'Converted Amount';
 
   @override
+  String get section_escrow => 'Escrow strings';
+
+  @override
   String get escrow => 'Create Escrow Contract';
 
   @override
   String get escrowTitle => 'Escrow';
+
+  @override
+  String get section_pay => 'Pay strings';
 
   @override
   String get pay => 'Pay Someone';
@@ -207,6 +299,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get section_misc => 'Miscellaneous strings';
+
+  @override
   String get hintTitle => 'Hint';
 
   @override
@@ -218,6 +313,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get method => 'Payment Method';
+
+  @override
+  String get section_navigation => 'Navigation strings';
 
   @override
   String get dashboardTitle => 'Dashboard';

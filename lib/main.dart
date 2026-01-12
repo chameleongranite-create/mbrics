@@ -49,6 +49,12 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,
+        fontFamily: 'Inter',
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(fontFamily: 'Inter'),
+          bodyLarge: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
+          titleLarge: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold),
+        ),
       ),
       localizationsDelegates: const [
         AppLocalizations.delegate,

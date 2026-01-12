@@ -1,9 +1,13 @@
 {
   "@@locale": "en",
 
+  "section_welcome": "Welcome page strings",
+
   "appTitle": "mBrics Platform",
   "welcomeTitle": "Welcome to mBrics",
   "welcome": "Welcome to mBrics",
+
+  "section_login": "Login page strings",
 
   "loginTitle": "Login",
   "login": "Login",
@@ -32,6 +36,8 @@
     }
   },
 
+  "section_errors": "Error messages",
+
   "errorInvalidCredentials": "Incorrect email or password. Please try again.",
   "errorUserNotFound": "No account exists with this email. Would you like to register instead?",
   "errorEmailTaken": "This email is already registered. Try logging in instead.",
@@ -42,6 +48,8 @@
   "errorInvalidEmailFormat": "Please enter a valid email address.",
   "errorInvalidPhone": "Please enter a valid phone number.",
 
+  "section_registration": "Registration messages",
+
   "registrationSuccess": "Account created successfully. Please verify your email and log in.",
   "registrationFailed": "Registration failed: {error}",
   "@registrationFailed": {
@@ -50,6 +58,39 @@
       "error": { "type": "String", "example": "Email already registered" }
     }
   },
+
+  "section_login_screen_slogans": "Login screen slogans",
+
+  "globalTradeSlogan": "Global trade, secured by blockchain",
+  "loginSubtitle": "Built for global trade. Designed for trust.",
+
+  "section_login_features": "Login screen feature highlights",
+
+  "feature1Title": "Trade in Local Currency",
+  "feature1Line1": "Real-time quotes in Rand, Yuan, and more.",
+  "feature1Line2": "Transparent landed costs, no hidden conversions.",
+
+  "feature2Title": "Instant International Transfers",
+  "feature2Line1": "Instant money transfers in your currency.",
+  "feature2Line2": "Backed by central banks for safety.",
+
+  "feature3Title": "Blockchain Escrow - Policed",
+  "feature3Line1": "Smart contracts enforce trust automatically.",
+  "feature3Line2": "All transactions policed by blockchain oversight.",
+
+  "feature4Title": "Trusted Logistics",
+  "feature4Line1": "Delivered by Global 500 providers.",
+  "feature4Line2": "State-owned carriers ensure reliability.",
+
+  "feature5Title": "Oversight & Security",
+  "feature5Line1": "Overseen by the Bank of China.",
+  "feature5Line2": "The watchdog of global trade.",
+
+  "feature6Title": "No More Costly L/Cs",
+  "feature6Line1": "Replace slow Letters of Credit.",
+  "feature6Line2": "Instant agreements, zero paperwork.",
+
+  "section_ddp": "DDP Platform strings",
 
   "ddp": "DDP Platform",
   "ddp_subtitle": "Transparent landed cost quoting",
@@ -64,6 +105,8 @@
   "weight": "Weight (kg)",
   "generateQuote": "Generate Quote",
 
+  "section_forex": "Forex strings",
+
   "forex": "Forex Exchange Rates",
   "forex_subtitle": "USD, RMB, ZAR",
   "usdToCny": "USD → CNY",
@@ -73,8 +116,12 @@
   "amount": "Amount",
   "convertedAmount": "Converted Amount",
 
+  "section_escrow": "Escrow strings",
+
   "escrow": "Create Escrow Contract",
   "escrowTitle": "Escrow",
+
+  "section_pay": "Pay strings",
 
   "pay": "Pay Someone",
   "payTitle": "Pay Feature",
@@ -92,10 +139,14 @@
     }
   },
 
+  "section_misc": "Miscellaneous strings",
+
   "hintTitle": "Hint",
   "hintSubtitle": "This page is a payment demo, not connected to real payment channels.",
   "noData": "No data",
   "method": "Payment Method",
+
+  "section_navigation": "Navigation strings",
 
   "dashboardTitle": "Dashboard",
   "homeTitle": "Main Menu",

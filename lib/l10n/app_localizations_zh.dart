@@ -9,6 +9,9 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
+  String get section_welcome => 'Welcome page strings';
+
+  @override
   String get appTitle => 'mBrics 平台';
 
   @override
@@ -16,6 +19,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get welcome => '欢迎来到 mBrics';
+
+  @override
+  String get section_login => 'Login page strings';
 
   @override
   String get loginTitle => '登录';
@@ -42,10 +48,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get goToLogin => '已有账户？登录';
 
   @override
-  String get noAccountRegister => '没有账户？注册';
+  String get noAccountRegister => '没有账户？立即注册';
 
   @override
-  String get alreadyRegistered => '已经注册？点击这里登录';
+  String get alreadyRegistered => '已经注册？在此登录';
 
   @override
   String get username => '用户名';
@@ -66,7 +72,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get companyOptional => '公司（可选）';
 
   @override
-  String get loginHint => '演示登录：用户名 = mbrics, 密码 = mbrics';
+  String get loginHint => '演示登录：用户名 = mbrics，密码 = mbrics';
 
   @override
   String loginFailed(String error) {
@@ -74,16 +80,19 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get errorInvalidCredentials => '电子邮箱或密码不正确，请重试。';
+  String get section_errors => 'Error messages';
 
   @override
-  String get errorUserNotFound => '没有找到该电子邮箱的账户。要注册吗？';
+  String get errorInvalidCredentials => '邮箱或密码错误，请重试。';
 
   @override
-  String get errorEmailTaken => '该电子邮箱已注册，请尝试登录。';
+  String get errorUserNotFound => '该邮箱未注册。要立即注册吗？';
 
   @override
-  String get errorWeakPassword => '密码必须至少包含8个字符。';
+  String get errorEmailTaken => '该邮箱已注册，请尝试登录。';
+
+  @override
+  String get errorWeakPassword => '密码至少需要 8 个字符。';
 
   @override
   String get errorNetwork => '无法连接服务器，请检查网络后重试。';
@@ -92,21 +101,93 @@ class AppLocalizationsZh extends AppLocalizations {
   String get errorTooManyAttempts => '登录失败次数过多，请稍后再试。';
 
   @override
-  String get errorUnexpected => '发生未知错误，请稍后再试。';
+  String get errorUnexpected => '出现问题，请稍后再试。';
 
   @override
-  String get errorInvalidEmailFormat => '请输入有效的电子邮箱地址。';
+  String get errorInvalidEmailFormat => '请输入有效的邮箱地址。';
 
   @override
   String get errorInvalidPhone => '请输入有效的电话号码。';
 
   @override
-  String get registrationSuccess => '账户创建成功。请验证邮箱并登录。';
+  String get section_registration => 'Registration messages';
+
+  @override
+  String get registrationSuccess => '账户创建成功。请验证邮箱后登录。';
 
   @override
   String registrationFailed(String error) {
     return '注册失败：$error';
   }
+
+  @override
+  String get section_login_screen_slogans => 'Login screen slogans';
+
+  @override
+  String get globalTradeSlogan => '全球贸易，由区块链保障';
+
+  @override
+  String get loginSubtitle => '为全球贸易而建，为信任而生。';
+
+  @override
+  String get section_login_features => 'Login screen feature highlights';
+
+  @override
+  String get feature1Title => '本地货币交易';
+
+  @override
+  String get feature1Line1 => '实时报价：兰特、人民币等。';
+
+  @override
+  String get feature1Line2 => '透明到岸成本，无隐藏换算。';
+
+  @override
+  String get feature2Title => '即时国际转账';
+
+  @override
+  String get feature2Line1 => '即时到账，支持本币。';
+
+  @override
+  String get feature2Line2 => '由央行保障安全。';
+
+  @override
+  String get feature3Title => '区块链托管 - 监管';
+
+  @override
+  String get feature3Line1 => '智能合约自动执行信任。';
+
+  @override
+  String get feature3Line2 => '所有交易由区块链监管。';
+
+  @override
+  String get feature4Title => '可信物流';
+
+  @override
+  String get feature4Line1 => '由全球 500 强提供服务。';
+
+  @override
+  String get feature4Line2 => '国有承运人确保可靠性。';
+
+  @override
+  String get feature5Title => '监管与安全';
+
+  @override
+  String get feature5Line1 => '由中国银行监管。';
+
+  @override
+  String get feature5Line2 => '全球贸易的守护者。';
+
+  @override
+  String get feature6Title => '不再需要昂贵的信用证';
+
+  @override
+  String get feature6Line1 => '替代缓慢的信用证流程。';
+
+  @override
+  String get feature6Line2 => '即时协议，无需纸质文件。';
+
+  @override
+  String get section_ddp => 'DDP Platform strings';
 
   @override
   String get ddp => 'DDP 平台';
@@ -121,7 +202,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get destinationCountry => '目的国';
 
   @override
-  String get incoterm => '贸易术语';
+  String get incoterm => '国际贸易术语';
 
   @override
   String get shipmentType => '运输类型';
@@ -133,7 +214,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get volume => '体积 (立方米)';
 
   @override
-  String get goodsValue => '货物价值';
+  String get goodsValue => '货值';
 
   @override
   String get hsCode => 'HS 编码';
@@ -145,19 +226,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String get generateQuote => '生成报价';
 
   @override
+  String get section_forex => 'Forex strings';
+
+  @override
   String get forex => '外汇汇率';
 
   @override
-  String get forex_subtitle => '美元, 人民币, 南非兰特';
+  String get forex_subtitle => '美元、人民币、兰特';
 
   @override
   String get usdToCny => '美元 → 人民币';
 
   @override
-  String get usdToZar => '美元 → 南非兰特';
+  String get usdToZar => '美元 → 兰特';
 
   @override
-  String get cnyToZar => '人民币 → 南非兰特';
+  String get cnyToZar => '人民币 → 兰特';
 
   @override
   String get currency => '货币';
@@ -166,16 +250,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String get amount => '金额';
 
   @override
-  String get convertedAmount => '转换金额';
+  String get convertedAmount => '换算金额';
 
   @override
-  String get escrow => '创建托管合同';
+  String get section_escrow => 'Escrow strings';
+
+  @override
+  String get escrow => '创建托管合约';
 
   @override
   String get escrowTitle => '托管';
 
   @override
-  String get pay => '支付给某人';
+  String get section_pay => 'Pay strings';
+
+  @override
+  String get pay => '付款';
 
   @override
   String get payTitle => '支付功能';
@@ -187,18 +277,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get amountLabel => '金额';
 
   @override
-  String get confirmPayment => '确认支付';
+  String get confirmPayment => '确认付款';
 
   @override
   String get payBtn => '支付';
 
   @override
-  String get paySuccess => '支付成功';
+  String get paySuccess => '付款成功';
 
   @override
   String paymentConfirmation(String recipient, String amount) {
-    return '支付演示：$recipient 收到 $amount';
+    return '支付演示：$recipient 已收到 $amount';
   }
+
+  @override
+  String get section_misc => 'Miscellaneous strings';
 
   @override
   String get hintTitle => '提示';
@@ -207,10 +300,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get hintSubtitle => '此页面为支付演示，不连接真实支付渠道。';
 
   @override
-  String get noData => '没有数据';
+  String get noData => '暂无数据';
 
   @override
   String get method => '支付方式';
+
+  @override
+  String get section_navigation => 'Navigation strings';
 
   @override
   String get dashboardTitle => '仪表盘';
@@ -240,7 +336,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get navigation => '导航';
 
   @override
-  String get toggleLang => 'English';
+  String get toggleLang => 'EN';
 
   @override
   String get terms => '条款';

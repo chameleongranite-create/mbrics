@@ -98,6 +98,12 @@ abstract class AppLocalizations {
     Locale('zh')
   ];
 
+  /// No description provided for @section_welcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome page strings'**
+  String get section_welcome;
+
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
@@ -115,6 +121,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome to mBrics'**
   String get welcome;
+
+  /// No description provided for @section_login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login page strings'**
+  String get section_login;
 
   /// No description provided for @loginTitle.
   ///
@@ -224,6 +236,12 @@ abstract class AppLocalizations {
   /// **'Login failed: {error}'**
   String loginFailed(String error);
 
+  /// No description provided for @section_errors.
+  ///
+  /// In en, this message translates to:
+  /// **'Error messages'**
+  String get section_errors;
+
   /// No description provided for @errorInvalidCredentials.
   ///
   /// In en, this message translates to:
@@ -278,6 +296,12 @@ abstract class AppLocalizations {
   /// **'Please enter a valid phone number.'**
   String get errorInvalidPhone;
 
+  /// No description provided for @section_registration.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration messages'**
+  String get section_registration;
+
   /// No description provided for @registrationSuccess.
   ///
   /// In en, this message translates to:
@@ -289,6 +313,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Registration failed: {error}'**
   String registrationFailed(String error);
+
+  /// No description provided for @section_login_screen_slogans.
+  ///
+  /// In en, this message translates to:
+  /// **'Login screen slogans'**
+  String get section_login_screen_slogans;
+
+  /// No description provided for @globalTradeSlogan.
+  ///
+  /// In en, this message translates to:
+  /// **'Global trade, secured by blockchain'**
+  String get globalTradeSlogan;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Built for global trade. Designed for trust.'**
+  String get loginSubtitle;
+
+  /// No description provided for @section_login_features.
+  ///
+  /// In en, this message translates to:
+  /// **'Login screen feature highlights'**
+  String get section_login_features;
+
+  /// No description provided for @feature1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade in Local Currency'**
+  String get feature1Title;
+
+  /// No description provided for @feature1Line1.
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time quotes in Rand, Yuan, and more.'**
+  String get feature1Line1;
+
+  /// No description provided for @feature1Line2.
+  ///
+  /// In en, this message translates to:
+  /// **'Transparent landed costs, no hidden conversions.'**
+  String get feature1Line2;
+
+  /// No description provided for @feature2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant International Transfers'**
+  String get feature2Title;
+
+  /// No description provided for @feature2Line1.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant money transfers in your currency.'**
+  String get feature2Line1;
+
+  /// No description provided for @feature2Line2.
+  ///
+  /// In en, this message translates to:
+  /// **'Backed by central banks for safety.'**
+  String get feature2Line2;
+
+  /// No description provided for @feature3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Blockchain Escrow - Policed'**
+  String get feature3Title;
+
+  /// No description provided for @feature3Line1.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart contracts enforce trust automatically.'**
+  String get feature3Line1;
+
+  /// No description provided for @feature3Line2.
+  ///
+  /// In en, this message translates to:
+  /// **'All transactions policed by blockchain oversight.'**
+  String get feature3Line2;
+
+  /// No description provided for @feature4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Trusted Logistics'**
+  String get feature4Title;
+
+  /// No description provided for @feature4Line1.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered by Global 500 providers.'**
+  String get feature4Line1;
+
+  /// No description provided for @feature4Line2.
+  ///
+  /// In en, this message translates to:
+  /// **'State-owned carriers ensure reliability.'**
+  String get feature4Line2;
+
+  /// No description provided for @feature5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Oversight & Security'**
+  String get feature5Title;
+
+  /// No description provided for @feature5Line1.
+  ///
+  /// In en, this message translates to:
+  /// **'Overseen by the Bank of China.'**
+  String get feature5Line1;
+
+  /// No description provided for @feature5Line2.
+  ///
+  /// In en, this message translates to:
+  /// **'The watchdog of global trade.'**
+  String get feature5Line2;
+
+  /// No description provided for @feature6Title.
+  ///
+  /// In en, this message translates to:
+  /// **'No More Costly L/Cs'**
+  String get feature6Title;
+
+  /// No description provided for @feature6Line1.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace slow Letters of Credit.'**
+  String get feature6Line1;
+
+  /// No description provided for @feature6Line2.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant agreements, zero paperwork.'**
+  String get feature6Line2;
+
+  /// No description provided for @section_ddp.
+  ///
+  /// In en, this message translates to:
+  /// **'DDP Platform strings'**
+  String get section_ddp;
 
   /// No description provided for @ddp.
   ///
@@ -362,6 +524,12 @@ abstract class AppLocalizations {
   /// **'Generate Quote'**
   String get generateQuote;
 
+  /// No description provided for @section_forex.
+  ///
+  /// In en, this message translates to:
+  /// **'Forex strings'**
+  String get section_forex;
+
   /// No description provided for @forex.
   ///
   /// In en, this message translates to:
@@ -410,6 +578,12 @@ abstract class AppLocalizations {
   /// **'Converted Amount'**
   String get convertedAmount;
 
+  /// No description provided for @section_escrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Escrow strings'**
+  String get section_escrow;
+
   /// No description provided for @escrow.
   ///
   /// In en, this message translates to:
@@ -421,6 +595,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Escrow'**
   String get escrowTitle;
+
+  /// No description provided for @section_pay.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay strings'**
+  String get section_pay;
 
   /// No description provided for @pay.
   ///
@@ -470,6 +650,12 @@ abstract class AppLocalizations {
   /// **'Payment demo: {recipient} received {amount}'**
   String paymentConfirmation(String recipient, String amount);
 
+  /// No description provided for @section_misc.
+  ///
+  /// In en, this message translates to:
+  /// **'Miscellaneous strings'**
+  String get section_misc;
+
   /// No description provided for @hintTitle.
   ///
   /// In en, this message translates to:
@@ -493,6 +679,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Payment Method'**
   String get method;
+
+  /// No description provided for @section_navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigation strings'**
+  String get section_navigation;
 
   /// No description provided for @dashboardTitle.
   ///

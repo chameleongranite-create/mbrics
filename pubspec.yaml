@@ -37,6 +37,19 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter_24pt-Regular.ttf
+        - asset: assets/fonts/Inter_24pt-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter_24pt-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter_24pt-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Inter_24pt-Italic.ttf
+          style: italic
+
   # ✅ enables l10n code generation via l10n.yaml
   generate: true
 
@@ -51,3 +64,5 @@ flutter:
     - assets/icons/register_4.png
     - assets/icons/register_5.png
     - assets/icons/register_6.png
+    - assets/icons/lang_en.png
+    - assets/icons/lang_cn.png

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../layout/master_layout.dart';
 import '../l10n/app_localizations.dart';
 
@@ -55,14 +54,15 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       } else {
         setState(() {
-          _errorMessage = "Login failed. Please check your credentials.";
+          _errorMessage = AppLocalizations.of(context)!.loginFailed(
+            AppLocalizations.of(context)!.errorInvalidCredentials,
+          );
         });
       }
     } catch (e) {
       final t = AppLocalizations.of(context)!;
-      String message;
       final errorText = e.toString().toLowerCase();
-
+      String message;
       if (errorText.contains('invalid_credentials')) {
         message = t.errorInvalidCredentials;
       } else if (errorText.contains('user_not_found')) {
@@ -74,7 +74,6 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         message = t.loginFailed(t.errorUnexpected);
       }
-
       setState(() {
         _errorMessage = message;
       });
@@ -91,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
 
-    // Constants
+    // Brand colors
     const Color backgroundWhite = Color(0xFFFFFFFF);
     const Color cardTint = Color(0xFFFAFAFA);
     const Color borderGray = Color(0xFFE0E0E0);
@@ -105,230 +104,267 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return MasterLayout(
       onLocaleChange: widget.onLocaleChange,
-      child: Container(
-        color: backgroundWhite,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 1200),
-              padding: const EdgeInsets.symmetric(vertical: 32),
-              child: Column(
-                children: [
-                  const SizedBox(height: 32),
-                  Image.asset('assets/mbrics_logo.png', height: 140),
-                  const SizedBox(height: 12),
-                  Text(
-                    "Global trade, secured by blockchain",
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: silver,
-                    ),
-                    textAlign: TextAlign.center,
+      child: Stack(
+        children: [
+          // Main content
+          Container(
+            color: backgroundWhite,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SingleChildScrollView(
+              child: Center(
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  padding: const EdgeInsets.symmetric(vertical: 32),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 32),
+                      Image.asset('assets/mbrics_logo.png', height: 140),
+                      const SizedBox(height: 12),
+                      Text(
+                        t.globalTradeSlogan,
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: silver,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 32),
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          final isSmall = constraints.maxWidth < 900;
+                          if (isSmall) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                        maxWidth: sideMaxWidth),
+                                    child: _SideColumn(
+                                      alignRight: true,
+                                      children: [
+                                        _buildFeature(
+                                          'assets/icons/icon_1.png',
+                                          t.feature1Title,
+                                          t.feature1Line1,
+                                          t.feature1Line2,
+                                        ),
+                                        _buildFeature(
+                                          'assets/icons/icon_2.png',
+                                          t.feature2Title,
+                                          t.feature2Line1,
+                                          t.feature2Line2,
+                                        ),
+                                        _buildFeature(
+                                          'assets/icons/icon_3.png',
+                                          t.feature3Title,
+                                          t.feature3Line1,
+                                          t.feature3Line2,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                        maxWidth: centerMaxWidth),
+                                    child: _buildLoginCard(
+                                      t,
+                                      silver,
+                                      gold,
+                                      backgroundWhite,
+                                      borderGray,
+                                      cardTint,
+                                      textDark,
+                                      key: _loginCardKey,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                        maxWidth: sideMaxWidth),
+                                    child: _SideColumn(
+                                      alignRight: false,
+                                      children: [
+                                        _buildFeature(
+                                          'assets/icons/icon_4.png',
+                                          t.feature4Title,
+                                          t.feature4Line1,
+                                          t.feature4Line2,
+                                        ),
+                                        _buildFeature(
+                                          'assets/icons/icon_5.png',
+                                          t.feature5Title,
+                                          t.feature5Line1,
+                                          t.feature5Line2,
+                                        ),
+                                        _buildFeature(
+                                          'assets/icons/icon_6.png',
+                                          t.feature6Title,
+                                          t.feature6Line1,
+                                          t.feature6Line2,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: ConstrainedBox(
+                                      constraints: const BoxConstraints(
+                                          maxWidth: sideMaxWidth),
+                                      child: _SideColumn(
+                                        alignRight: true,
+                                        children: [
+                                          _buildFeature(
+                                            'assets/icons/icon_1.png',
+                                            t.feature1Title,
+                                            t.feature1Line1,
+                                            t.feature1Line2,
+                                          ),
+                                          _buildFeature(
+                                            'assets/icons/icon_2.png',
+                                            t.feature2Title,
+                                            t.feature2Line1,
+                                            t.feature2Line2,
+                                          ),
+                                          _buildFeature(
+                                            'assets/icons/icon_3.png',
+                                            t.feature3Title,
+                                            t.feature3Line1,
+                                            t.feature3Line2,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: columnGap),
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: ConstrainedBox(
+                                      constraints: const BoxConstraints(
+                                          maxWidth: centerMaxWidth),
+                                      child: _buildLoginCard(
+                                        t,
+                                        silver,
+                                        gold,
+                                        backgroundWhite,
+                                        borderGray,
+                                        cardTint,
+                                        textDark,
+                                        key: _loginCardKey,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: columnGap),
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: ConstrainedBox(
+                                      constraints: const BoxConstraints(
+                                          maxWidth: sideMaxWidth),
+                                      child: _SideColumn(
+                                        alignRight: false,
+                                        children: [
+                                          _buildFeature(
+                                            'assets/icons/icon_4.png',
+                                            t.feature4Title,
+                                            t.feature4Line1,
+                                            t.feature4Line2,
+                                          ),
+                                          _buildFeature(
+                                            'assets/icons/icon_5.png',
+                                            t.feature5Title,
+                                            t.feature5Line1,
+                                            t.feature5Line2,
+                                          ),
+                                          _buildFeature(
+                                            'assets/icons/icon_6.png',
+                                            t.feature6Title,
+                                            t.feature6Line1,
+                                            t.feature6Line2,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                        },
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 32),
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      final isSmall = constraints.maxWidth < 900;
-
-                      if (isSmall) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                    maxWidth: sideMaxWidth),
-                                child: _SideColumn(
-                                  alignRight: true,
-                                  children: [
-                                    _buildFeature(
-                                      'assets/icons/icon_1.png',
-                                      "Trade in Local Currency",
-                                      "Real-time quotes in Rand, Yuan, and more.",
-                                      "Transparent landed costs, no hidden conversions.",
-                                    ),
-                                    _buildFeature(
-                                      'assets/icons/icon_2.png',
-                                      "Instant International Transfers",
-                                      "Instant money transfers in your currency.",
-                                      "Backed by central banks for safety.",
-                                    ),
-                                    _buildFeature(
-                                      'assets/icons/icon_3.png',
-                                      "Blockchain Escrow - Policed",
-                                      "Smart contracts enforce trust automatically.",
-                                      "All transactions policed by blockchain oversight.",
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                    maxWidth: centerMaxWidth),
-                                child: _buildLoginCard(
-                                  t,
-                                  silver,
-                                  gold,
-                                  backgroundWhite,
-                                  borderGray,
-                                  cardTint,
-                                  textDark,
-                                  key: _loginCardKey,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                    maxWidth: sideMaxWidth),
-                                child: _SideColumn(
-                                  alignRight: false,
-                                  children: [
-                                    _buildFeature(
-                                      'assets/icons/icon_4.png',
-                                      "Trusted Logistics",
-                                      "Delivered by Global 500 providers.",
-                                      "State-owned carriers ensure reliability.",
-                                    ),
-                                    _buildFeature(
-                                      'assets/icons/icon_5.png',
-                                      "Oversight & Security",
-                                      "Overseen by the Bank of China.",
-                                      "The watchdog of global trade.",
-                                    ),
-                                    _buildFeature(
-                                      'assets/icons/icon_6.png',
-                                      "No More Costly L/Cs",
-                                      "Replace slow Letters of Credit.",
-                                      "Instant agreements, zero paperwork.",
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      } else {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Flexible(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                      maxWidth: sideMaxWidth),
-                                  child: _SideColumn(
-                                    alignRight: true,
-                                    children: [
-                                      _buildFeature(
-                                        'assets/icons/icon_1.png',
-                                        "Trade in Local Currency",
-                                        "Real-time quotes in Rand, Yuan, and more.",
-                                        "Transparent landed costs, no hidden conversions.",
-                                      ),
-                                      _buildFeature(
-                                        'assets/icons/icon_2.png',
-                                        "Instant International Transfers",
-                                        "Instant money transfers in your currency.",
-                                        "Backed by central banks for safety.",
-                                      ),
-                                      _buildFeature(
-                                        'assets/icons/icon_3.png',
-                                        "Blockchain Escrow - Policed",
-                                        "Smart contracts enforce trust automatically.",
-                                        "All transactions policed by blockchain oversight.",
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: columnGap),
-                            Flexible(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                      maxWidth: centerMaxWidth),
-                                  child: _buildLoginCard(
-                                    t,
-                                    silver,
-                                    gold,
-                                    backgroundWhite,
-                                    borderGray,
-                                    cardTint,
-                                    textDark,
-                                    key: _loginCardKey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: columnGap),
-                            Flexible(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                      maxWidth: sideMaxWidth),
-                                  child: _SideColumn(
-                                    alignRight: false,
-                                    children: [
-                                      _buildFeature(
-                                        'assets/icons/icon_4.png',
-                                        "Trusted Logistics",
-                                        "Delivered by Global 500 providers.",
-                                        "State-owned carriers ensure reliability.",
-                                      ),
-                                      _buildFeature(
-                                        'assets/icons/icon_5.png',
-                                        "Oversight & Security",
-                                        "Overseen by the Bank of China.",
-                                        "The watchdog of global trade.",
-                                      ),
-                                      _buildFeature(
-                                        'assets/icons/icon_6.png',
-                                        "No More Costly L/Cs",
-                                        "Replace slow Letters of Credit.",
-                                        "Instant agreements, zero paperwork.",
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      }
-                    },
-                  ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
+
+          // Language selector: English (left)
+          Positioned(
+            top: 20,
+            left: 20,
+            child: GestureDetector(
+              onTap: () => widget.onLocaleChange?.call(const Locale('en')),
+              child: Image.asset(
+                'assets/icons/lang_en.png',
+                width: 80,
+                height: 80,
+              ),
+            ),
+          ),
+
+          // Language selector: Chinese (right)
+          Positioned(
+            top: 20,
+            right: 20,
+            child: GestureDetector(
+              onTap: () => widget.onLocaleChange?.call(const Locale('zh')),
+              child: Image.asset(
+                'assets/icons/lang_cn.png',
+                width: 80,
+                height: 80,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildFeature(
-      String imagePath, String title, String line1, String line2) {
+    String imagePath,
+    String title,
+    String line1,
+    String line2,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(
@@ -351,25 +387,28 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.inter(
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFF343A40),
+                    color: Color(0xFF343A40),
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   line1,
-                  style: GoogleFonts.inter(
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
                     fontSize: 13,
-                    color: const Color(0xFF343A40),
+                    color: Color(0xFF343A40),
                   ),
                 ),
                 Text(
                   line2,
-                  style: GoogleFonts.inter(
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
                     fontSize: 13,
-                    color: const Color(0xFF343A40),
+                    color: Color(0xFF343A40),
                   ),
                 ),
               ],
@@ -408,20 +447,57 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            "Built for global trade. Designed for trust.",
-            style: GoogleFonts.inter(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: silver,
-              letterSpacing: 0.4,
+          // Grey header bar with subtitle + language icons
+          Container(
+            color: cardTint,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // English icon (left)
+                GestureDetector(
+                  onTap: () =>
+                      widget.onLocaleChange?.call(const Locale('en')),
+                  child: Image.asset(
+                    'assets/icons/lang_en.png',
+                    width: 32,
+                    height: 32,
+                  ),
+                ),
+                // Subtitle (center)
+                Expanded(
+                  child: Text(
+                    t.loginSubtitle, // "Built for global trade. Designed for trust."
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: silver,
+                      letterSpacing: 0.4,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                // Chinese icon (right)
+                GestureDetector(
+                  onTap: () =>
+                      widget.onLocaleChange?.call(const Locale('zh')),
+                  child: Image.asset(
+                    'assets/icons/lang_cn.png',
+                    width: 32,
+                    height: 32,
+                  ),
+                ),
+              ],
             ),
-            textAlign: TextAlign.center,
           ),
+
           const SizedBox(height: 24),
           Text(
             t.loginTitle,
-            style: GoogleFonts.inter(
+            style: TextStyle(
+              fontFamily: 'Inter',
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: textDark,
@@ -466,8 +542,8 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: _loading ? null : _login,
               child: _loading
                   ? CircularProgressIndicator(
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(backgroundWhite),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          backgroundWhite),
                     )
                   : Text(t.login),
             ),
