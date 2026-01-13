@@ -222,18 +222,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ],
                             );
-                          } else {
+                         } else {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Flexible(
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
+                                    padding: const EdgeInsets.symmetric(horizontal: 8),
                                     child: ConstrainedBox(
-                                      constraints: const BoxConstraints(
-                                          maxWidth: sideMaxWidth),
+                                      constraints: const BoxConstraints(maxWidth: sideMaxWidth),
                                       child: _SideColumn(
                                         alignRight: true,
                                         children: [
@@ -263,11 +261,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 const SizedBox(width: columnGap),
                                 Flexible(
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
+                                    padding: const EdgeInsets.symmetric(horizontal: 8),
                                     child: ConstrainedBox(
-                                      constraints: const BoxConstraints(
-                                          maxWidth: centerMaxWidth),
+                                      constraints: const BoxConstraints(maxWidth: centerMaxWidth),
                                       child: _buildLoginCard(
                                         t,
                                         silver,
@@ -284,11 +280,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 const SizedBox(width: columnGap),
                                 Flexible(
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
+                                    padding: const EdgeInsets.symmetric(horizontal: 8),
                                     child: ConstrainedBox(
-                                      constraints: const BoxConstraints(
-                                          maxWidth: sideMaxWidth),
+                                      constraints: const BoxConstraints(maxWidth: sideMaxWidth),
                                       child: _SideColumn(
                                         alignRight: false,
                                         children: [
@@ -358,7 +352,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
   Widget _buildFeature(
     String imagePath,
     String title,
@@ -447,52 +440,6 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Grey header bar with subtitle + language icons
-          Container(
-            color: cardTint,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // English icon (left)
-                GestureDetector(
-                  onTap: () =>
-                      widget.onLocaleChange?.call(const Locale('en')),
-                  child: Image.asset(
-                    'assets/icons/lang_en.png',
-                    width: 32,
-                    height: 32,
-                  ),
-                ),
-                // Subtitle (center)
-                Expanded(
-                  child: Text(
-                    t.loginSubtitle, // "Built for global trade. Designed for trust."
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: silver,
-                      letterSpacing: 0.4,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                // Chinese icon (right)
-                GestureDetector(
-                  onTap: () =>
-                      widget.onLocaleChange?.call(const Locale('zh')),
-                  child: Image.asset(
-                    'assets/icons/lang_cn.png',
-                    width: 32,
-                    height: 32,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
           const SizedBox(height: 24),
           Text(
             t.loginTitle,
@@ -542,8 +489,7 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: _loading ? null : _login,
               child: _loading
                   ? CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          backgroundWhite),
+                      valueColor: AlwaysStoppedAnimation<Color>(backgroundWhite),
                     )
                   : Text(t.login),
             ),

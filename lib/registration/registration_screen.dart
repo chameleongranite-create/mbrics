@@ -47,7 +47,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       OutlineInputBorder(borderRadius: BorderRadius.circular(12));
 
   Future<void> _register() async {
-    // Validate form first
     final form = _formKey.currentState;
     if (form == null || !form.validate()) return;
 
@@ -103,9 +102,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       }
     } catch (e) {
       final t = AppLocalizations.of(context)!;
-      String message;
       final errorText = e.toString().toLowerCase();
-
+      String message;
       if (errorText.contains('duplicate') ||
           errorText.contains('users_email_key')) {
         message = t.errorEmailTaken;
@@ -140,7 +138,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
   }
 
-  Widget _buildFeature(String imagePath, String title, String line1, String line2) {
+  Widget _buildFeature(
+    String imagePath,
+    String title,
+    String line1,
+    String line2,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(
@@ -195,9 +198,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget _buildRegistrationCard(AppLocalizations t) {
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -205,7 +206,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           key: _formKey,
           child: Column(
             children: [
-              // Slogan removed here to avoid duplication; it stays above the card.
               Text(
                 t.registerTitle,
                 style: const TextStyle(
@@ -215,7 +215,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
-
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -225,10 +224,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   border: _roundedBorder,
                 ),
                 validator: (value) =>
-                    (value == null || value.isEmpty) ? "Name is required" : null,
+                    (value == null || value.isEmpty) ? t.errorNameRequired : null,
               ),
               const SizedBox(height: 16),
-
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -240,7 +238,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Email is required";
+                    return t.errorEmailRequired;
                   }
                   final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
                   if (!emailRegex.hasMatch(value)) {
@@ -250,7 +248,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 },
               ),
               const SizedBox(height: 16),
-
               TextFormField(
                 controller: _passwordController,
                 obscureText: _obscurePassword,
@@ -259,7 +256,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   labelText: t.password,
                   prefixIcon: const Icon(Icons.lock),
                   border: _roundedBorder,
-                  helperText: "Password must be at least 8 characters",
+                  helperText: t.passwordHelper,
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscurePassword
@@ -275,7 +272,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Password is required";
+                    return t.errorPasswordRequired;
                   }
                   if (value.length < 8) {
                     return t.errorWeakPassword;
@@ -284,63 +281,54 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 },
               ),
               const SizedBox(height: 16),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  DropdownButtonFormField<String>(
-                    value: _selectedCountry,
-                    items: const [
-                      DropdownMenuItem(value: 'ZA', child: Text('South Africa')),
-                      DropdownMenuItem(value: 'CN', child: Text('China')),
-                      DropdownMenuItem(value: 'OTHER', child: Text('Other')),
-                    ],
-                    onChanged: (val) =>
-                        setState(() => _selectedCountry = val ?? 'ZA'),
-                    decoration: InputDecoration(
-                      isDense: true,
-                      labelText: "Country",
-                      border: _roundedBorder,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  TextFormField(
-                    controller: _phoneController,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      labelText: t.phoneOptional,
-                      prefixIcon: const Icon(Icons.phone),
-                      border: _roundedBorder,
-                    ),
-                    keyboardType: TextInputType.phone,
-                    validator: (value) {
-                      if (value != null && value.isNotEmpty) {
-                        final phoneRegex = RegExp(r'^[0-9]{7,15}$');
-                        if (!phoneRegex.hasMatch(value)) {
-                          return t.errorInvalidPhone;
-                        }
-                      }
-                      return null;
-                    },
-                  ),
-
-                  if (_selectedCountry == 'OTHER') ...[
-                    const SizedBox(height: 12),
-                    TextFormField(
-                      controller: _otherCodeController,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        labelText: "Country Code (e.g. +44)",
-                        border: _roundedBorder,
-                      ),
-                      keyboardType: TextInputType.phone,
-                    ),
-                  ],
+              DropdownButtonFormField<String>(
+                value: _selectedCountry,
+                items: [
+                  DropdownMenuItem(value: 'ZA', child: Text(t.countrySouthAfrica)),
+                  DropdownMenuItem(value: 'CN', child: Text(t.countryChina)),
+                  DropdownMenuItem(value: 'OTHER', child: Text(t.countryOther)),
                 ],
+                onChanged: (val) =>
+                    setState(() => _selectedCountry = val ?? 'ZA'),
+                decoration: InputDecoration(
+                  isDense: true,
+                  labelText: t.countryLabel,
+                  border: _roundedBorder,
+                ),
               ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _phoneController,
+                decoration: InputDecoration(
+                  isDense: true,
+                  labelText: t.phoneOptional,
+                  prefixIcon: const Icon(Icons.phone),
+                  border: _roundedBorder,
+                ),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    final phoneRegex = RegExp(r'^[0-9]{7,15}$');
+                    if (!phoneRegex.hasMatch(value)) {
+                      return t.errorInvalidPhone;
+                    }
+                  }
+                  return null;
+                },
+              ),
+              if (_selectedCountry == 'OTHER') ...[
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _otherCodeController,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    labelText: t.countryCodeHint,
+                    border: _roundedBorder,
+                  ),
+                  keyboardType: TextInputType.phone,
+                ),
+              ],
               const SizedBox(height: 16),
-
               TextFormField(
                 controller: _companyController,
                 decoration: InputDecoration(
@@ -351,7 +339,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -370,14 +357,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   onPressed: _isLoading ? null : _register,
                   child: _isLoading
                       ? const CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.white),
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         )
                       : Text(t.createAccount),
                 ),
               ),
               const SizedBox(height: 12),
-
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/login'),
                 child: Text(
@@ -400,6 +385,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
 
+    // Layout constants
     const double centerMaxWidth = 420;
     const double sideMaxWidth = 360;
     const double columnGap = 24;
@@ -412,7 +398,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         child: SingleChildScrollView(
           child: Center(
             child: Container(
-              constraints: const BoxConstraints(maxWidth: 1200),
+              constraints: BoxConstraints(maxWidth: 1200),
               padding: const EdgeInsets.symmetric(vertical: 32),
               child: Column(
                 children: [
@@ -420,7 +406,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   Image.asset('assets/mbrics_logo.png', height: 140),
                   const SizedBox(height: 12),
                   Text(
-                    "Built for global trade. Designed for trust.",
+                    t.globalTradeSlogan,
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -430,42 +416,37 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
-
                   LayoutBuilder(
                     builder: (context, constraints) {
                       final isSmall = constraints.maxWidth < 900;
-
                       if (isSmall) {
-                        // Column: left features -> card -> right features
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
                               child: ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                    maxWidth: sideMaxWidth),
+                                constraints: BoxConstraints(maxWidth: sideMaxWidth),
                                 child: _SideColumn(
                                   alignRight: true,
                                   children: [
                                     _buildFeature(
-                                      'assets/icons/register_1.png',
-                                      "Secure Identity",
-                                      "Your details are encrypted end-to-end.",
-                                      "No leaks, no compromises.",
+                                      'assets/icons/icon_1.png',
+                                      t.registrationFeature1Title,
+                                      t.registrationFeature1Line1,
+                                      t.registrationFeature1Line2,
                                     ),
                                     _buildFeature(
-                                      'assets/icons/register_2.png',
-                                      "Global Compliance",
-                                      "Meets international KYC/AML standards.",
-                                      "Trusted by regulators worldwide.",
+                                      'assets/icons/icon_2.png',
+                                      t.registrationFeature2Title,
+                                      t.registrationFeature2Line1,
+                                      t.registrationFeature2Line2,
                                     ),
                                     _buildFeature(
-                                      'assets/icons/register_3.png',
-                                      "Instant Verification",
-                                      "Accounts verified in seconds.",
-                                      "No waiting, no delays.",
+                                      'assets/icons/icon_3.png',
+                                      t.registrationFeature3Title,
+                                      t.registrationFeature3Line1,
+                                      t.registrationFeature3Line2,
                                     ),
                                   ],
                                 ),
@@ -473,41 +454,37 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                             const SizedBox(height: 24),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
                               child: ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                    maxWidth: centerMaxWidth),
+                                constraints: BoxConstraints(maxWidth: centerMaxWidth),
                                 child: _buildRegistrationCard(t),
                               ),
                             ),
                             const SizedBox(height: 24),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
                               child: ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                    maxWidth: sideMaxWidth),
+                                constraints: BoxConstraints(maxWidth: sideMaxWidth),
                                 child: _SideColumn(
                                   alignRight: false,
                                   children: [
                                     _buildFeature(
-                                      'assets/icons/register_4.png',
-                                      "Smart Contracts Ready",
-                                      "Future-proof onboarding.",
-                                      "Seamless integration with blockchain escrow.",
+                                      'assets/icons/icon_4.png',
+                                      t.registrationFeature4Title,
+                                      t.registrationFeature4Line1,
+                                      t.registrationFeature4Line2,
                                     ),
                                     _buildFeature(
-                                      'assets/icons/register_5.png',
-                                      "Cross-Border Friendly",
-                                      "Register once, trade globally.",
-                                      "Supports multiple currencies and regions.",
+                                      'assets/icons/icon_5.png',
+                                      t.registrationFeature5Title,
+                                      t.registrationFeature5Line1,
+                                      t.registrationFeature5Line2,
                                     ),
                                     _buildFeature(
-                                      'assets/icons/register_6.png',
-                                      "Audit Trail Transparency",
-                                      "Every registration logged immutably.",
-                                      "Proof of trust for partners and investors.",
+                                      'assets/icons/icon_6.png',
+                                      t.registrationFeature6Title,
+                                      t.registrationFeature6Line1,
+                                      t.registrationFeature6Line2,
                                     ),
                                   ],
                                 ),
@@ -516,84 +493,77 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ],
                         );
                       } else {
-                        // Row: left features | center card | right features
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Flexible(
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
                                 child: ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                      maxWidth: sideMaxWidth),
+                                  constraints: BoxConstraints(maxWidth: sideMaxWidth),
                                   child: _SideColumn(
                                     alignRight: true,
                                     children: [
                                       _buildFeature(
-                                        'assets/icons/register_1.png',
-                                        "Secure Identity",
-                                        "Your details are encrypted end-to-end.",
-                                        "No leaks, no compromises.",
+                                        'assets/icons/icon_1.png',
+                                        t.registrationFeature1Title,
+                                        t.registrationFeature1Line1,
+                                        t.registrationFeature1Line2,
                                       ),
                                       _buildFeature(
-                                        'assets/icons/register_2.png',
-                                        "Global Compliance",
-                                        "Meets international KYC/AML standards.",
-                                        "Trusted by regulators worldwide.",
+                                        'assets/icons/icon_2.png',
+                                        t.registrationFeature2Title,
+                                        t.registrationFeature2Line1,
+                                        t.registrationFeature2Line2,
                                       ),
                                       _buildFeature(
-                                        'assets/icons/register_3.png',
-                                        "Instant Verification",
-                                        "Accounts verified in seconds.",
-                                        "No waiting, no delays.",
+                                        'assets/icons/icon_3.png',
+                                        t.registrationFeature3Title,
+                                        t.registrationFeature3Line1,
+                                        t.registrationFeature3Line2,
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
                             ),
-                            const SizedBox(width: columnGap),
+                            SizedBox(width: columnGap),
                             Flexible(
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
                                 child: ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                      maxWidth: centerMaxWidth),
+                                  constraints: BoxConstraints(maxWidth: centerMaxWidth),
                                   child: _buildRegistrationCard(t),
                                 ),
                               ),
                             ),
-                            const SizedBox(width: columnGap),
+                            SizedBox(width: columnGap),
                             Flexible(
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
                                 child: ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                      maxWidth: sideMaxWidth),
+                                  constraints: BoxConstraints(maxWidth: sideMaxWidth),
                                   child: _SideColumn(
                                     alignRight: false,
                                     children: [
                                       _buildFeature(
-                                        'assets/icons/register_4.png',
-                                        "Smart Contracts Ready",
-                                        "Future-proof onboarding.",
-                                        "Seamless integration with blockchain escrow.",
+                                        'assets/icons/icon_4.png',
+                                        t.registrationFeature4Title,
+                                        t.registrationFeature4Line1,
+                                        t.registrationFeature4Line2,
                                       ),
                                       _buildFeature(
-                                        'assets/icons/register_5.png',
-                                        "Cross-Border Friendly",
-                                        "Register once, trade globally.",
-                                        "Supports multiple currencies and regions.",
+                                        'assets/icons/icon_5.png',
+                                        t.registrationFeature5Title,
+                                        t.registrationFeature5Line1,
+                                        t.registrationFeature5Line2,
                                       ),
                                       _buildFeature(
-                                        'assets/icons/register_6.png',
-                                        "Audit Trail Transparency",
-                                        "Every registration logged immutably.",
-                                        "Proof of trust for partners and investors.",
+                                        'assets/icons/icon_6.png',
+                                        t.registrationFeature6Title,
+                                        t.registrationFeature6Line1,
+                                        t.registrationFeature6Line2,
                                       ),
                                     ],
                                   ),
@@ -605,8 +575,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       }
                     },
                   ),
-
-                  const SizedBox(height: 32),
                 ],
               ),
             ),

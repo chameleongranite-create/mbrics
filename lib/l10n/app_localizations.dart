@@ -158,11 +158,17 @@ abstract class AppLocalizations {
   /// **'Register'**
   String get registerTitle;
 
-  /// No description provided for @createAccount.
+  /// No description provided for @globalTradeSlogan.
   ///
   /// In en, this message translates to:
-  /// **'Create account'**
-  String get createAccount;
+  /// **'Global trade, secured by blockchain'**
+  String get globalTradeSlogan;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Built for global trade. Designed for trust.'**
+  String get loginSubtitle;
 
   /// No description provided for @alreadyHaveAccount.
   ///
@@ -182,10 +188,22 @@ abstract class AppLocalizations {
   /// **'Don\'t have an account? Register'**
   String get noAccountRegister;
 
+  /// No description provided for @alreadyRegisteredLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Already registered? Log in'**
+  String get alreadyRegisteredLogin;
+
+  /// No description provided for @createAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get createAccount;
+
   /// No description provided for @alreadyRegistered.
   ///
   /// In en, this message translates to:
-  /// **'Already registered? Log in here'**
+  /// **'Already registered? Log in'**
   String get alreadyRegistered;
 
   /// No description provided for @username.
@@ -302,6 +320,174 @@ abstract class AppLocalizations {
   /// **'Registration messages'**
   String get section_registration;
 
+  /// No description provided for @errorNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get errorNameRequired;
+
+  /// No description provided for @errorEmailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get errorEmailRequired;
+
+  /// No description provided for @errorPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get errorPasswordRequired;
+
+  /// No description provided for @passwordHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get passwordHelper;
+
+  /// No description provided for @countryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get countryLabel;
+
+  /// No description provided for @countrySouthAfrica.
+  ///
+  /// In en, this message translates to:
+  /// **'South Africa'**
+  String get countrySouthAfrica;
+
+  /// No description provided for @countryChina.
+  ///
+  /// In en, this message translates to:
+  /// **'China'**
+  String get countryChina;
+
+  /// No description provided for @countryOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get countryOther;
+
+  /// No description provided for @countryCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Country Code (e.g. +44)'**
+  String get countryCodeHint;
+
+  /// No description provided for @registrationSlogan.
+  ///
+  /// In en, this message translates to:
+  /// **'Built for global trade. Designed for trust.'**
+  String get registrationSlogan;
+
+  /// No description provided for @registrationFeature1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure Identity'**
+  String get registrationFeature1Title;
+
+  /// No description provided for @registrationFeature1Line1.
+  ///
+  /// In en, this message translates to:
+  /// **'Your details are encrypted end-to-end.'**
+  String get registrationFeature1Line1;
+
+  /// No description provided for @registrationFeature1Line2.
+  ///
+  /// In en, this message translates to:
+  /// **'No leaks, no compromises.'**
+  String get registrationFeature1Line2;
+
+  /// No description provided for @registrationFeature2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Global Compliance'**
+  String get registrationFeature2Title;
+
+  /// No description provided for @registrationFeature2Line1.
+  ///
+  /// In en, this message translates to:
+  /// **'Meets international KYC/AML standards.'**
+  String get registrationFeature2Line1;
+
+  /// No description provided for @registrationFeature2Line2.
+  ///
+  /// In en, this message translates to:
+  /// **'Trusted by regulators worldwide.'**
+  String get registrationFeature2Line2;
+
+  /// No description provided for @registrationFeature3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Verification'**
+  String get registrationFeature3Title;
+
+  /// No description provided for @registrationFeature3Line1.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts verified in seconds.'**
+  String get registrationFeature3Line1;
+
+  /// No description provided for @registrationFeature3Line2.
+  ///
+  /// In en, this message translates to:
+  /// **'No waiting, no delays.'**
+  String get registrationFeature3Line2;
+
+  /// No description provided for @registrationFeature4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Contracts Ready'**
+  String get registrationFeature4Title;
+
+  /// No description provided for @registrationFeature4Line1.
+  ///
+  /// In en, this message translates to:
+  /// **'Future-proof onboarding.'**
+  String get registrationFeature4Line1;
+
+  /// No description provided for @registrationFeature4Line2.
+  ///
+  /// In en, this message translates to:
+  /// **'Seamless integration with blockchain escrow.'**
+  String get registrationFeature4Line2;
+
+  /// No description provided for @registrationFeature5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Cross-Border Friendly'**
+  String get registrationFeature5Title;
+
+  /// No description provided for @registrationFeature5Line1.
+  ///
+  /// In en, this message translates to:
+  /// **'Register once, trade globally.'**
+  String get registrationFeature5Line1;
+
+  /// No description provided for @registrationFeature5Line2.
+  ///
+  /// In en, this message translates to:
+  /// **'Supports multiple currencies and regions.'**
+  String get registrationFeature5Line2;
+
+  /// No description provided for @registrationFeature6Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Audit Trail Transparency'**
+  String get registrationFeature6Title;
+
+  /// No description provided for @registrationFeature6Line1.
+  ///
+  /// In en, this message translates to:
+  /// **'Every registration logged immutably.'**
+  String get registrationFeature6Line1;
+
+  /// No description provided for @registrationFeature6Line2.
+  ///
+  /// In en, this message translates to:
+  /// **'Proof of trust for partners and investors.'**
+  String get registrationFeature6Line2;
+
   /// No description provided for @registrationSuccess.
   ///
   /// In en, this message translates to:
@@ -313,24 +499,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Registration failed: {error}'**
   String registrationFailed(String error);
-
-  /// No description provided for @section_login_screen_slogans.
-  ///
-  /// In en, this message translates to:
-  /// **'Login screen slogans'**
-  String get section_login_screen_slogans;
-
-  /// No description provided for @globalTradeSlogan.
-  ///
-  /// In en, this message translates to:
-  /// **'Global trade, secured by blockchain'**
-  String get globalTradeSlogan;
-
-  /// No description provided for @loginSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Built for global trade. Designed for trust.'**
-  String get loginSubtitle;
 
   /// No description provided for @section_login_features.
   ///

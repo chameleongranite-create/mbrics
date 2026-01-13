@@ -39,7 +39,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registerTitle => 'Register';
 
   @override
-  String get createAccount => 'Create account';
+  String get globalTradeSlogan => 'Global trade, secured by blockchain';
+
+  @override
+  String get loginSubtitle => 'Built for global trade. Designed for trust.';
 
   @override
   String get alreadyHaveAccount => 'Already have an account? Log in';
@@ -51,7 +54,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noAccountRegister => 'Don\'t have an account? Register';
 
   @override
-  String get alreadyRegistered => 'Already registered? Log in here';
+  String get alreadyRegisteredLogin => 'Already registered? Log in';
+
+  @override
+  String get createAccount => 'Create Account';
+
+  @override
+  String get alreadyRegistered => 'Already registered? Log in';
 
   @override
   String get username => 'Username';
@@ -118,6 +127,97 @@ class AppLocalizationsEn extends AppLocalizations {
   String get section_registration => 'Registration messages';
 
   @override
+  String get errorNameRequired => 'Name is required';
+
+  @override
+  String get errorEmailRequired => 'Email is required';
+
+  @override
+  String get errorPasswordRequired => 'Password is required';
+
+  @override
+  String get passwordHelper => 'Password must be at least 8 characters';
+
+  @override
+  String get countryLabel => 'Country';
+
+  @override
+  String get countrySouthAfrica => 'South Africa';
+
+  @override
+  String get countryChina => 'China';
+
+  @override
+  String get countryOther => 'Other';
+
+  @override
+  String get countryCodeHint => 'Country Code (e.g. +44)';
+
+  @override
+  String get registrationSlogan =>
+      'Built for global trade. Designed for trust.';
+
+  @override
+  String get registrationFeature1Title => 'Secure Identity';
+
+  @override
+  String get registrationFeature1Line1 =>
+      'Your details are encrypted end-to-end.';
+
+  @override
+  String get registrationFeature1Line2 => 'No leaks, no compromises.';
+
+  @override
+  String get registrationFeature2Title => 'Global Compliance';
+
+  @override
+  String get registrationFeature2Line1 =>
+      'Meets international KYC/AML standards.';
+
+  @override
+  String get registrationFeature2Line2 => 'Trusted by regulators worldwide.';
+
+  @override
+  String get registrationFeature3Title => 'Instant Verification';
+
+  @override
+  String get registrationFeature3Line1 => 'Accounts verified in seconds.';
+
+  @override
+  String get registrationFeature3Line2 => 'No waiting, no delays.';
+
+  @override
+  String get registrationFeature4Title => 'Smart Contracts Ready';
+
+  @override
+  String get registrationFeature4Line1 => 'Future-proof onboarding.';
+
+  @override
+  String get registrationFeature4Line2 =>
+      'Seamless integration with blockchain escrow.';
+
+  @override
+  String get registrationFeature5Title => 'Cross-Border Friendly';
+
+  @override
+  String get registrationFeature5Line1 => 'Register once, trade globally.';
+
+  @override
+  String get registrationFeature5Line2 =>
+      'Supports multiple currencies and regions.';
+
+  @override
+  String get registrationFeature6Title => 'Audit Trail Transparency';
+
+  @override
+  String get registrationFeature6Line1 =>
+      'Every registration logged immutably.';
+
+  @override
+  String get registrationFeature6Line2 =>
+      'Proof of trust for partners and investors.';
+
+  @override
   String get registrationSuccess =>
       'Account created successfully. Please verify your email and log in.';
 
@@ -125,15 +225,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String registrationFailed(String error) {
     return 'Registration failed: $error';
   }
-
-  @override
-  String get section_login_screen_slogans => 'Login screen slogans';
-
-  @override
-  String get globalTradeSlogan => 'Global trade, secured by blockchain';
-
-  @override
-  String get loginSubtitle => 'Built for global trade. Designed for trust.';
 
   @override
   String get section_login_features => 'Login screen feature highlights';

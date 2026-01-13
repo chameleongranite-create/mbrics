@@ -1,131 +1,63 @@
-STATUS.md — mBrics Platform (MOBILE Project)
-
-2026-01-04 – Continuity Activated in MOBILE
+📌 STATUS.md — mBrics Platform (MOBILE Project)
+2026‑01‑04 – Project Initialization
 • Baseline established, Git initialized
 • STATUS.md and Continuity.md added at project root
 • Tag: golden-2026-01-04-mobile
-
-2026-01-04 – Platform Polish Integration Kickoff
-• MasterLayout shell + polish roadmap defined
-• Added /layout/master_layout.dart scaffold, feature flag platform_shell, design tokens plan
+2026‑01‑04 – Shell & MasterLayout
+• MasterLayout scaffold created (lib/layout/master_layout.dart)
+• Feature flag platform_shell defined, design tokens planned
 • Tag: v0.9.0-shell
-
-2026-01-04 – MasterLayout Split and Login Restoration
-• MasterLayout moved to lib/layout/master_layout.dart
-• LoginScreen recreated, imports aligned, ARB updated and regenerated
-• Splash → Login → MainMenu works with demo credentials; language toggle functional
-• Tag: chk-2026-01-04-login-shell-split
-
-2026-01-05 – Auth Cycle & Profile Screen
-• Login and Register aligned under MasterLayout
+2026‑01‑05 – Auth Cycle & Profile Screen
+• Login + Register aligned under MasterLayout
 • ProfileScreen scaffolded with Supabase metadata + logout
-• Splash redirect confirmed (session → /mainmenu, else → /login)
+• Splash redirect confirmed (session → mainmenu, else → login)
 • Tag: chk-2026-01-05-auth-profile
-
-2026-01-06 – Project Scaffold
+2026‑01‑06 – Project Scaffold
 • Folders created: screens, layout, l10n, services, widgets
 • Placeholder files added for login, register, profile, master layout, auth service, header/footer
 • Tag: chk-2026-01-06-project-scaffold
-
-2026-01-06 – Completed Profile Screen
+2026‑01‑06 – Profile Screen Completion
 • ProfileScreen shows user info + logout, wrapped in MasterLayout
 • Supabase currentUser metadata integrated
 • Tag: chk-2026-01-06-profile-screen
-
-2026-01-06 – Layout Discipline
-• Rule: all new screens wrapped in MasterLayout (no standalone Scaffolds)
-• Guarantee: consistent navigation, language toggle, footer messaging
-• Tag: chk-2026-01-06-masterlayout-discipline
-
-2026-01-07 – Registration Screen Fix & Polish
+2026‑01‑07 – Registration Screen Fix & MasterLayout Discipline
 • RegistrationScreen stabilized under MasterLayout; Flexible crash resolved
-• Country/phone block simplified; ARB keys verified; imports corrected
-• Login + Registration flows render correctly; routing invariant confirmed
+• ARB keys verified; imports corrected
+• Rule enforced: all new screens wrapped in MasterLayout
 • Tag: chk-2026-01-07-registration-fix
-
-2026-01-07 – MasterLayout All Pages
+• Tag: chk-2026-01-06-masterlayout-discipline
+2026‑01‑07 – MasterLayout All Pages
 • All pages wrapped in MasterLayout: login, registration, profile, settings, main_menu, forex, pay, dashboard, escrow
 • Bilingual toggle added; logo + microcopy unified; button hierarchy confirmed
 • Continuity achieved: screens visually and structurally aligned
 • Tag: chk-2026-01-07-masterlayout-allpages
-
-2026-01-07 – Main Menu Conversational Flow
+2026‑01‑07 – Main Menu Conversational Flow
 • Conversational headings applied
 • Platinum styling for core functions, white for utilities
 • Logo consistency confirmed across all pages
 • Tag: chk-2026-01-07-mainmenu-conversational-hierarchy
-
-2026-01-09 – Login Screen Overflow Fix & Icon Resize
+2026‑01‑09 – Login Overflow & Trust Icons Polish
 • Overflow resolved on small screens with Padding + Flexible
 • Trust pillar icons resized to 100px; logo enlarged to 140px
-• LayoutBuilder branches cleaned; no overflow warnings
-• Tag: chk-2026-01-09-login-overflow-fix
-
-2026-01-09 – Trust Icon Polish & Overflow Discipline
-• Trust pillar icons refined to gold-silver standard on pure white background
-• Overflow discipline enforced via Padding + Flexible
+• Trust pillar icons refined to gold‑silver standard on pure white background
 • Layout validated across breakpoints
+• Tag: chk-2026-01-09-login-overflow-fix
 • Tag: chk-2026-01-09-trust-icons-polish
-
-2026-01-10 – Login Spinner Reset
+2026‑01‑10 – Login & Registration Polish
 • Added finally block to stop loading spinner after failed login
 • Localized error messages applied consistently
+• Removed duplicate slogan from inside registration card
+• Registration form compile fixes: identifiers corrected, try/catch/finally fixed, widget closures cleaned
 • Tag: chk-2026-01-10-login-spinner-reset
-
-2026-01-10 – Registration Slogan Duplication Fix
-• Removed duplicate slogan from inside registration card; slogan now only above block
 • Tag: chk-2026-01-10-registration-slogan-fix
-
-2026-01-10 – Registration Form Compile Fixes
-• Corrected identifiers (_emailController, _passwordController, _formKey, _obscurePassword)
-• Fixed try/catch/finally structure
-• Cleaned widget closures and validator syntax
 • Tag: chk-2026-01-10-registration-compile-fix
-
-2026-01-10 – Main Menu Icon Integration & Welcome Block Update
-• Large round icons (trust_01.png, core_functions.png) centered in left/right side panels
-• Golden welcome block simplified: removed redundant “Open Platform” button, added tagline instead
-• Right side “Core Features Explained” overflow noted (yellow lines) — fix deferred to next session
+2026‑01‑10 – Main Menu Icon Integration
+• Large round icons centered in side panels
+• Golden welcome block simplified (removed redundant button, added tagline)
+• Overflow noted in “Core Features Explained” block (fix deferred)
 • Tag: chk-2026-01-10-mainmenu-icons-welcome-update
-
-“Storage bucket ‘avatars’ created, public access enabled.”
-
-# Project Status – mBrics MOBILE
-
-## Files Still Needing Language Integration
-The following Dart pages still require the **language toggle icons** and ARB‑driven text updates (similar to what we’ve just done for `login_screen.dart`):
-
-- `registration_screen.dart` → Add EN/CN toggle in header bar, ensure all labels (`name`, `email`, `password`, etc.) are ARB‑driven.
-- `forex_page.dart` → Integrate toggle, localize currency labels, headings, and error messages.
-- `escrow_page.dart` → Add toggle, localize trust/legal copy and transaction status messages.
-- `pay_page.dart` → Add toggle, localize payment instructions, confirmation, and error flows.
-- `profile_page.dart` → Add toggle, localize headings, field labels, and error messages.
-- `edit_profile_page.dart` → Add toggle, localize form labels and validation messages.
-- `settings_page.dart` → Add toggle, localize headings, options, and tooltips.
-
-✅ Logos are now rendering correctly across pages — this is locked in as a continuity checkpoint.
-
 ---
-
-## ARB File Design
-- **Keys:** CamelCase, no spaces (e.g. `feature1Title`, `feature1Line1`).
-- **Placeholders:** Use `{variable}` for dynamic values (e.g. `"loginFailed": "Login failed: {reason}"`).
-- **Consistency:** English and Chinese ARBs must mirror each other in structure.
-- **Narrative polish:** Error messages and slogans should remain friendly, trust‑enhancing, and reproducible.
-
----
-
-## General Update
-- **Main Menu redesign:** Conversational headings stable, logo placement consistent.
-- **Color palette:** Financial Gold, Charcoal Navy, Brushed Silver, Pure White applied consistently.
-- **UI kit:** Flutter Admin Dashboard template adopted for integration.
-- **DDP quoting engine:** Architecture validated with APIs and agent fee tables; VAT separation logic confirmed.
-
----
-
-## Continuity Checkpoint
-This marks a **golden save**:
-- Logos are confirmed working.
-- ARB design rules are locked.
-- Remaining work is localized to the listed Dart files for language toggle integration.
-- Documentation and STATUS.md are now in sync with code and design.
+🚀 Current Focus
+• Language Integration: Remaining Dart pages (registration_screen.dart, forex_page.dart, escrow_page.dart, pay_page.dart, profile_page.dart, edit_profile_page.dart, settings_page.dart) need EN/CN toggle and ARB‑driven text.
+• ARB Polish: English and Chinese ARBs must mirror exactly; translations refined for trust‑enhancing tone.
+• China Launch: After all pages are polished and translations verified, publish live in China for validation.
