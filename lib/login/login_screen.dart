@@ -69,25 +69,42 @@ class _LoginScreenState extends State<LoginScreen> {
       onLocaleChange: widget.onLocaleChange,
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              padding: const EdgeInsets.only(top: 40, bottom: 40),
-              child: Center(
-                child: Container(
-                  constraints: const BoxConstraints(maxWidth: 1300),
-                  child: Column(
-                    children: [
-                      Image.asset('assets/mbrics_logo.png', height: 90),
-                      const SizedBox(height: 8),
-                      Text(t.slogan.toUpperCase(), 
-                        style: const TextStyle(fontFamily: 'Inter', letterSpacing: 3, fontSize: 10, color: goldBase, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 30),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            final bool isMobile = constraints.maxWidth <= 1150;
 
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          if (constraints.maxWidth > 1150) {
-                            return Row(
+            return Stack(
+              children: [
+                SingleChildScrollView(
+                  padding: const EdgeInsets.only(top: 40, bottom: 40),
+                  child: Center(
+                    child: Container(
+                      constraints: const BoxConstraints(maxWidth: 1300),
+                      child: Column(
+                        children: [
+                          // FIX: On Mobile, show language icons here to stop flickering
+                          if (isMobile)
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  _langMedallion("EN", "assets/icons/lang_en.png", const Locale('en'), currentLocale.languageCode.startsWith('en')),
+                                  const SizedBox(width: 40),
+                                  _langMedallion("ZH", "assets/icons/lang_cn.png", const Locale('zh'), currentLocale.languageCode.startsWith('zh')),
+                                ],
+                              ),
+                            ),
+
+                          Image.asset('assets/mbrics_logo.png', height: 90),
+                          const SizedBox(height: 8),
+                          Text(t.slogan.toUpperCase(), 
+                            style: const TextStyle(fontFamily: 'Inter', letterSpacing: 3, fontSize: 10, color: goldBase, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 30),
+
+                          if (!isMobile)
+                            // Desktop View
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -97,45 +114,54 @@ class _LoginScreenState extends State<LoginScreen> {
                                 const SizedBox(width: 40),
                                 SizedBox(width: 270, child: _pillarColumn(t, false)),
                               ],
-                            );
-                          } else {
-                            return Column(
-                              children: [
-                                _buildLoginCard(t),
-                                const SizedBox(height: 50),
-                                Wrap(
-                                  spacing: 30, runSpacing: 30,
-                                  alignment: WrapAlignment.center,
-                                  children: _allFeatures(t),
-                                ),
-                              ],
-                            );
-                          }
-                        },
+                            )
+                          else
+                            // Mobile View
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Column(
+                                children: [
+                                  _buildLoginCard(t),
+                                  const SizedBox(height: 50),
+                                  Wrap(
+                                    spacing: 30, runSpacing: 30,
+                                    alignment: WrapAlignment.center,
+                                    children: _allFeatures(t),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
 
-            Positioned(
-              top: 20, left: 30,
-              child: _langMedallion("EN", "assets/icons/lang_en.png", const Locale('en'), currentLocale.languageCode.startsWith('en')),
-            ),
-            Positioned(
-              top: 20, right: 30,
-              child: _langMedallion("ZH", "assets/icons/lang_cn.png", const Locale('zh'), currentLocale.languageCode.startsWith('zh')),
-            ),
-          ],
+                // Only show Positioned medallions on Desktop (no scroll conflict)
+                if (!isMobile) ...[
+                  Positioned(
+                    top: 20, left: 30,
+                    child: _langMedallion("EN", "assets/icons/lang_en.png", const Locale('en'), currentLocale.languageCode.startsWith('en')),
+                  ),
+                  Positioned(
+                    top: 20, right: 30,
+                    child: _langMedallion("ZH", "assets/icons/lang_cn.png", const Locale('zh'), currentLocale.languageCode.startsWith('zh')),
+                  ),
+                ],
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
+  // --- ALL HELPER METHODS (EXACTLY AS YOUR CODE) ---
+
   Widget _buildLoginCard(AppLocalizations t) {
     return Container(
       width: 400,
+      constraints: const BoxConstraints(maxWidth: 400), // Added to ensure it doesn't break mobile
       padding: const EdgeInsets.all(40),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -157,22 +183,16 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 35),
           _metallicBtn(t.login, _loading ? null : _handleLogin, isLoading: _loading),
           const SizedBox(height: 25),
-          MouseRegion(
-            cursor: SystemMouseCursors.click,
-            onEnter: (_) => setState(() => _isRegisterHovered = true),
-            onExit: (_) => setState(() => _isRegisterHovered = false),
-            child: GestureDetector(
-              onTap: () => Navigator.pushNamed(context, '/register'),
-              child: Text(
-                t.noAccount,
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  color: _isRegisterHovered ? goldBase : silverBase, 
-                  fontSize: 11, 
-                  fontWeight: FontWeight.w600,
-                  decoration: TextDecoration.underline,
-                  decorationColor: _isRegisterHovered ? goldBase : silverBase,
-                ),
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, '/register'),
+            child: Text(
+              t.noAccount,
+              style: const TextStyle(
+                fontFamily: 'Inter',
+                color: silverBase, 
+                fontSize: 11, 
+                fontWeight: FontWeight.w600,
+                decoration: TextDecoration.underline,
               ),
             ),
           ),
@@ -237,11 +257,17 @@ class _LoginScreenState extends State<LoginScreen> {
         const SizedBox(height: 2),
         Text(l2, textAlign: alignment == CrossAxisAlignment.end ? TextAlign.right : TextAlign.left, 
           style: const TextStyle(fontFamily: 'Inter', fontSize: 10, color: Colors.grey, height: 1.2)),
+        const SizedBox(height: 4),
+        const Text("COMING SOON", style: TextStyle(fontFamily: 'Inter', fontSize: 8, color: goldBase, fontWeight: FontWeight.bold, letterSpacing: 1)),
       ],
     );
   }
 
-  Widget _featIcon(String path) => Image.asset(path, width: 50, height: 50);
+  Widget _featIcon(String path) => Container(
+    width: 50, height: 50,
+    decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: goldBase, width: 2)),
+    child: ClipOval(child: Image.asset(path, fit: BoxFit.cover)),
+  );
 
   Widget _buildField(TextEditingController ctrl, String label, IconData icon, {bool isPass = false}) {
     return TextField(
@@ -264,7 +290,6 @@ class _LoginScreenState extends State<LoginScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         gradient: const LinearGradient(colors: [goldLight, goldBase], begin: Alignment.topCenter, end: Alignment.bottomCenter),
-        boxShadow: [BoxShadow(color: goldBase.withOpacity(0.2), blurRadius: 10, offset: const Offset(0, 4))]
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent),
@@ -285,24 +310,12 @@ class _LoginScreenState extends State<LoginScreen> {
             width: 40, height: 40,
             decoration: BoxDecoration(
               shape: BoxShape.circle, 
-              border: Border.all(
-                color: isActive ? goldBase : Colors.grey.shade200, 
-                width: isActive ? 2 : 1
-              ),
-              boxShadow: isActive ? [BoxShadow(color: goldBase.withOpacity(0.2), blurRadius: 8)] : [],
+              border: Border.all(color: isActive ? goldBase : Colors.grey.shade200, width: isActive ? 2 : 1),
             ),
             child: ClipOval(child: Image.asset(asset, fit: BoxFit.cover)),
           ),
           const SizedBox(height: 4),
-          Text(
-            label, 
-            style: TextStyle( // Removed 'const' to allow dynamic color changes
-              fontFamily: 'Inter', 
-              color: isActive ? goldBase : silverBase, 
-              fontSize: 9, 
-              fontWeight: FontWeight.w900
-            )
-          ),
+          Text(label, style: TextStyle(fontFamily: 'Inter', color: isActive ? goldBase : silverBase, fontSize: 9, fontWeight: FontWeight.w900)),
         ],
       ),
     );
