@@ -101,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 12),
                   Text(
                     "Global trade, secured by blockchain",
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'Inter',
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: silver,
@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Text(
                     "数字货币桥平台",
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'Inter',
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: silver,
@@ -315,7 +315,7 @@ const SizedBox(width: 12),
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'Inter',
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: const Color(0xFF343A40),
@@ -324,14 +324,14 @@ const SizedBox(width: 12),
                 const SizedBox(height: 4),
                 Text(
                   line1,
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'Inter',
                     fontSize: 13,
                     color: const Color(0xFF343A40),
                   ),
                 ),
                 Text(
                   line2,
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'Inter',
                     fontSize: 13,
                     color: const Color(0xFF343A40),
                   ),
@@ -374,7 +374,7 @@ const SizedBox(width: 12),
         children: [
           Text(
             "Built for global trade. Designed for trust.",
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'Inter',
               fontSize: 14,
               fontWeight: FontWeight.w500,
               color: silver,
@@ -385,7 +385,7 @@ const SizedBox(width: 12),
           const SizedBox(height: 24),
           Text(
             t.loginTitle,
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'Inter',
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: textDark,

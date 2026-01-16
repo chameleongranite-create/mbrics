@@ -1,11 +1,10 @@
 name: mbrics
 description: A cross-border digital trade and payment platform.
 publish_to: 'none'
-
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: '^3.10.0'
 
 dependencies:
   flutter:
@@ -14,28 +13,24 @@ dependencies:
     sdk: flutter
   intl: ^0.20.2
   http: ^1.2.0
-
-  # ✅ Supabase v2 for auth + backend
   supabase_flutter: ^2.0.0
-
-  # ✅ Router for clean navigation (context.go)
   go_router: ^14.0.1
-
-  # ✅ Avatar/photo support
-  image_picker: ^1.0.7        # iOS/Android
-  file_picker: ^10.3.8        # Web/Desktop
-  image: ^4.2.0               # cropping/resizing
-
-  # ✅ Typography polish
+  image_picker: ^1.0.7
+  file_picker: ^10.3.8
+  image: ^4.2.0
+  # Note: Keeping google_fonts in dependencies for now to avoid breakages, 
+  # but our code will now bypass it to use local assets.
   google_fonts: ^6.2.1
+  dio: ^5.9.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0       # latest lint rules
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true
+  generate: true
 
   fonts:
     - family: Inter
@@ -50,19 +45,15 @@ flutter:
         - asset: assets/fonts/Inter_24pt-Italic.ttf
           style: italic
 
-  # ✅ enables l10n code generation via l10n.yaml
-  generate: true
+    - family: ShareTechMono
+      fonts:
+        - asset: assets/fonts/ShareTechMono-Regular.ttf
 
   assets:
-    - assets/icons/
     - assets/mbrics_logo.png
     - assets/google_logo.png
-    - assets/default_avatar.png   # ✅ ensure this file exists
-    - assets/icons/register_1.png
-    - assets/icons/register_2.png
-    - assets/icons/register_3.png
-    - assets/icons/register_4.png
-    - assets/icons/register_5.png
-    - assets/icons/register_6.png
-    - assets/icons/lang_en.png
-    - assets/icons/lang_cn.png
+    - assets/default_avatar.png
+    - assets/icons/
+    - assets/fonts/
+    - assets/escrow_explain.png
+    - assets/ddp_explain.png

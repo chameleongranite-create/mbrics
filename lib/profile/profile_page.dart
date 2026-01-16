@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 import '../layout/master_layout.dart';
 
@@ -15,14 +15,12 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   Map<String, dynamic>? userData;
 
-  // Palette constants
+  // mBrics Institutional Palette
   static const Color backgroundWhite = Color(0xFFFFFFFF);
-  static const Color cardTint = Color(0xFFFAFAFA);
-  static const Color borderGray = Color(0xFFE0E0E0);
-  static const Color silver = Color(0xFFA7A9AC);
   static const Color gold = Color(0xFFC2994B);
-  static const Color textDark = Color(0xFF343A40);
-  static const Color textSoft = Color(0xFF666666);
+  static const Color charcoal = Color(0xFF121212);
+  static const Color silver = Color(0xFFA7A9AC);
+  static const Color borderGray = Color(0xFFEEEEEE);
 
   @override
   void initState() {
@@ -33,81 +31,48 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _fetchProfile() async {
     final uid = Supabase.instance.client.auth.currentUser?.id;
     if (uid == null) return;
-
     try {
       final data = await Supabase.instance.client
           .from('users')
           .select('full_name, email, phone, company, avatar_url')
           .eq('id', uid)
           .single();
-      setState(() {
-        userData = data;
-      });
+      setState(() { userData = data; });
     } catch (e) {
-      debugPrint('Error fetching profile: $e');
+      debugPrint('Sync Error: $e');
     }
   }
 
   Future<void> _logout() async {
     await Supabase.instance.client.auth.signOut();
-    if (mounted) {
-      Navigator.pushReplacementNamed(context, '/login');
-    }
+    if (mounted) Navigator.pushReplacementNamed(context, '/login');
   }
 
-  /// ✅ Upload Avatar function
   Future<void> _uploadAvatar() async {
     final uid = Supabase.instance.client.auth.currentUser?.id;
     if (uid == null) return;
-
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
     if (pickedFile == null) return;
 
     final fileBytes = await pickedFile.readAsBytes();
-    final fileName = '$uid.png';
+    final fileName = 'avatar_$uid.png';
 
     try {
-      // Upload to Supabase Storage bucket "avatars"
       await Supabase.instance.client.storage
           .from('avatars')
-          .uploadBinary(
-            fileName,
-            fileBytes,
-            fileOptions: const FileOptions(upsert: true),
-          );
+          .uploadBinary(fileName, fileBytes, fileOptions: const FileOptions(upsert: true));
 
-      // Get public URL
-      final publicUrl =
-          Supabase.instance.client.storage.from('avatars').getPublicUrl(fileName);
+      final publicUrl = Supabase.instance.client.storage.from('avatars').getPublicUrl(fileName);
 
-      // Update user record in database
-      await Supabase.instance.client
-          .from('users')
-          .update({'avatar_url': publicUrl}).eq('id', uid);
+      await Supabase.instance.client.from('users').update({'avatar_url': publicUrl}).eq('id', uid);
 
-      // ✅ Update local state immediately so UI refreshes
-      setState(() {
-        userData?['avatar_url'] = publicUrl;
-      });
-
-      // Show success confirmation
+      setState(() { userData?['avatar_url'] = publicUrl; });
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Avatar uploaded successfully!')),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Identity Image Synchronized')));
       }
-
-      // Re-fetch from DB to stay in sync
-      await _fetchProfile();
     } catch (e) {
-      debugPrint('Error uploading avatar: $e');
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error uploading avatar: $e')),
-        );
-      }
+      debugPrint('Upload Error: $e');
     }
   }
 
@@ -115,56 +80,39 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
     if (userData == null) {
-      return const MasterLayout(
-        onLocaleChange: null,
-        child: Center(child: CircularProgressIndicator()),
-      );
+      return const MasterLayout(onLocaleChange: null, child: Center(child: CircularProgressIndicator(color: gold)));
     }
 
     final avatarUrl = userData!['avatar_url'] as String?;
     final avatarImage = avatarUrl != null && avatarUrl.isNotEmpty
         ? NetworkImage(avatarUrl)
-        : const AssetImage('assets/default_avatar.png') as ImageProvider;
+        : null;
 
     return MasterLayout(
       onLocaleChange: (locale) {},
-      child: Container(
-        color: backgroundWhite,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SingleChildScrollView(
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 900),
-              child: Column(
-                children: [
-                  const SizedBox(height: 32),
-                  Image.asset('assets/mbrics_logo.png', height: 120),
-                  const SizedBox(height: 8),
-                  Text(
-                    "Built for global trade. Designed for trust.",
-                    style: const TextStyle(fontSize: 13, color: textSoft),
-                  ),
-                  const SizedBox(height: 32),
-
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      final isSmall = constraints.maxWidth < 700;
-                      if (isSmall) {
-                        return _buildStackedLayout(avatarImage, t);
-                      } else {
-                        return _buildTwoColumnLayout(avatarImage, t);
-                      }
-                    },
-                  ),
-
-                  const SizedBox(height: 24),
-                  const Text(
-                    "© 2026 mBrics",
-                    style: TextStyle(fontSize: 12, color: textDark),
-                  ),
-                  const SizedBox(height: 12),
-                ],
-              ),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1000),
+            child: Column(
+              children: [
+                _buildHeader(),
+                const SizedBox(height: 40),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    return constraints.maxWidth < 800
+                        ? Column(children: [_buildIdentityCard(avatarImage), const SizedBox(height: 30), _buildActionPanel(t)])
+                        : Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                            Expanded(flex: 2, child: _buildIdentityCard(avatarImage)),
+                            const SizedBox(width: 40),
+                            Expanded(flex: 3, child: _buildActionPanel(t)),
+                          ]);
+                  },
+                ),
+                const SizedBox(height: 60),
+                _buildStatusFooter(),
+              ],
             ),
           ),
         ),
@@ -172,183 +120,135 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildStackedLayout(ImageProvider avatarImage, AppLocalizations t) {
+  Widget _buildHeader() {
     return Column(
       children: [
-        _buildAvatarBlock(avatarImage),
-        const SizedBox(height: 24),
-        _buildActionTiles(t),
+        Image.asset('assets/mbrics_logo.png', height: 80),
+        const SizedBox(height: 16),
+        Text("VERIFIED MEMBER IDENTITY",
+            style: TextStyle(fontFamily: 'Inter',letterSpacing: 3, fontSize: 11, fontWeight: FontWeight.w900, color: gold)),
       ],
     );
   }
 
-  Widget _buildTwoColumnLayout(ImageProvider avatarImage, AppLocalizations t) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(child: _buildAvatarBlock(avatarImage)),
-        const SizedBox(width: 32),
-        Expanded(child: _buildActionTiles(t)),
-      ],
-    );
-  }
-
-  Widget _buildAvatarBlock(ImageProvider avatarImage) {
+  Widget _buildIdentityCard(ImageProvider? avatarImage) {
     return Container(
+      padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: gold,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white, width: 2),
+        color: charcoal,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [BoxShadow(color: gold.withOpacity(0.15), blurRadius: 30, offset: const Offset(0, 10))],
       ),
-      padding: const EdgeInsets.all(24),
       child: Column(
         children: [
-          CircleAvatar(
-            radius: 60,
-            backgroundImage: avatarImage,
-            backgroundColor: textDark,
+          Stack(
+            children: [
+              CircleAvatar(
+                radius: 70,
+                backgroundColor: gold.withOpacity(0.1),
+                backgroundImage: avatarImage,
+                child: avatarImage == null ? const Icon(Icons.person, size: 60, color: gold) : null,
+              ),
+              Positioned(
+                bottom: 0, right: 0,
+                child: GestureDetector(
+                  onTap: _uploadAvatar,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: const BoxDecoration(color: gold, shape: BoxShape.circle),
+                    child: const Icon(Icons.camera_alt, color: Colors.white, size: 20),
+                  ),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
-          const Text(
-            "Your Profile",
-            style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
+          const SizedBox(height: 24),
+          Text(userData!['full_name']?.toUpperCase() ?? "UNKNOWN ENTITY",
+              style: TextStyle(fontFamily: 'Inter',color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 1)),
           const SizedBox(height: 8),
-          const Text(
-            "Personalize your account or jump straight into trading.",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 13, color: Colors.white),
-          ),
+          Text(userData!['company'] ?? "No Company Linked",
+              style: TextStyle(fontFamily: 'Inter',color: gold, fontSize: 12, fontWeight: FontWeight.w600)),
+          const Divider(color: Colors.white10, height: 40),
+          _identityRow("NETWORK ID", Supabase.instance.client.auth.currentUser?.id.substring(0, 12).toUpperCase() ?? ""),
+          _identityRow("NODE STATUS", "ACTIVE / VERIFIED"),
         ],
       ),
     );
   }
 
-  Widget _buildActionTiles(AppLocalizations t) {
+  Widget _identityRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: TextStyle(fontFamily: 'ShareTechMono',color: silver, fontSize: 10)),
+          Text(value, style: TextStyle(fontFamily: 'ShareTechMono',color: Colors.white, fontSize: 10)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionPanel(AppLocalizations t) {
     return Column(
       children: [
-        _buildActionTile(
-          icon: Icons.photo_camera_outlined,
-          title: "Upload Avatar",
-          description: "Add a photo so partners recognize you instantly.",
-          buttonText: "Upload",
-          buttonColor: silver,
-          textColor: backgroundWhite,
-          onPressed: _uploadAvatar,
-        ),
+        _buildActionTile(Icons.hub_outlined, "ACCESS TRADE TERMINAL", "Enter the main mBrics dashboard to manage trades.", "GO TO TERMINAL", gold, () {
+          Navigator.pushReplacementNamed(context, '/mainmenu');
+        }),
         const SizedBox(height: 16),
-        _buildActionTile(
-          icon: Icons.edit_note,
-          title: "Edit Personal Details",
-          description: "Update name, phone, company — kept secure and in sync.",
-          buttonText: "Edit details",
-          buttonColor: silver,
-          textColor: backgroundWhite,
-          onPressed: () {
-            Navigator.pushNamed(context, '/editprofile');
-          },
-        ),
-        const SizedBox(height: 16),
-        _buildActionTile(
-          icon: Icons.arrow_forward_rounded,
-          title: "Continue to the Platform",
-          description: "Access quotes, escrow, and payments — all in one place.",
-          buttonText: "Continue",
-          buttonColor: gold,
-          textColor: backgroundWhite,
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, '/mainmenu');
-          },
-        ),
-        const SizedBox(height: 24),
-        OutlinedButton.icon(
-          style: OutlinedButton.styleFrom(
-            foregroundColor: textDark,
-            side: const BorderSide(color: borderGray),
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8)),
-          ),
-          icon: const Icon(Icons.logout),
-          label: const Text("Sign out safely"),
+        _buildActionTile(Icons.settings_suggest_outlined, "ACCOUNT CONFIGURATION", "Modify contact details and notification protocols.", "EDIT DETAILS", silver, () {
+          Navigator.pushNamed(context, '/editprofile');
+        }),
+        const SizedBox(height: 40),
+        TextButton.icon(
           onPressed: _logout,
+          icon: const Icon(Icons.power_settings_new, color: Colors.redAccent, size: 18),
+          label: Text("TERMINATE SESSION", style: TextStyle(fontFamily: 'Inter',color: Colors.redAccent, fontWeight: FontWeight.w900, fontSize: 11, letterSpacing: 1)),
         ),
       ],
     );
   }
 
-  Widget _buildActionTile({
-    required IconData icon,
-    required String title,
-    required String description,
-    required String buttonText,
-    required Color buttonColor,
-    required Color textColor,
-    required VoidCallback onPressed,
-  }) {
+  Widget _buildActionTile(IconData icon, String title, String desc, String btn, Color color, VoidCallback onTap) {
     return Container(
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: borderGray),
       ),
-      padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          Container(
-            height: 48,
-            width: 48,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: borderGray),
-            ),
-            child: Icon(icon, color: textDark),
-          ),
-          const SizedBox(width: 16),
+          Icon(icon, color: charcoal, size: 28),
+          const SizedBox(width: 20),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: textDark,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: textSoft,
-                  ),
-                ),
+                Text(title, style: TextStyle(fontFamily: 'Inter',fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 0.5)),
+                Text(desc, style: TextStyle(fontFamily: 'Inter',color: silver, fontSize: 11)),
               ],
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 10),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: buttonColor,
-              foregroundColor: textColor,
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              textStyle: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            onPressed: onPressed,
-            child: Text(buttonText),
+            onPressed: onTap,
+            style: ElevatedButton.styleFrom(backgroundColor: color, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
+            child: Text(btn, style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildStatusFooter() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(Icons.shield, color: Colors.green, size: 14),
+        const SizedBox(width: 8),
+        Text("END-TO-END ENCRYPTED CONNECTION", style: TextStyle(fontFamily: 'ShareTechMono',fontSize: 10, color: silver)),
+      ],
     );
   }
 }
