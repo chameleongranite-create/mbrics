@@ -1,618 +1,346 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart'; 
 import '../layout/master_layout.dart';
 
-class _SideColumn extends StatelessWidget {
-  final bool alignRight;
-  final List<Widget> children;
-
-  const _SideColumn({required this.alignRight, required this.children, Key? key})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment:
-          alignRight ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-      children: children,
-    );
-  }
-}
-
 class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({super.key, this.onLocaleChange});
   final void Function(Locale)? onLocaleChange;
+  const RegistrationScreen({super.key, this.onLocaleChange});
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _phoneController = TextEditingController();
   final _companyController = TextEditingController();
-  final _otherCodeController = TextEditingController();
+  bool _loading = false;
+  bool _formSubmitted = false;
+  bool _isLoginHovered = false; 
 
-  bool _obscurePassword = true;
-  bool _isLoading = false;
-  String _selectedCountry = 'ZA';
+  static const Color goldBase = Color(0xFFC2994B);
+  static const Color goldLight = Color(0xFFE5C17A);
+  static const Color silverBase = Color(0xFFA7A9AC);
+  static const Color terminalBlack = Color(0xFF121212);
 
-  OutlineInputBorder get _roundedBorder =>
-      OutlineInputBorder(borderRadius: BorderRadius.circular(12));
+  // --- LOGIC & VALIDATION ---
+  String? _validateRequired(String? value, String errorMsg) {
+    if (value == null || value.isEmpty) return errorMsg;
+    return null;
+  }
 
-  Future<void> _register() async {
-    // Validate form first
-    final form = _formKey.currentState;
-    if (form == null || !form.validate()) return;
+  String? _validateEmail(String? value, AppLocalizations t) {
+    if (value == null || value.isEmpty) return t.errorEmailRequired;
+    if (!RegExp(r'^[\w-\.\+]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) return t.errorInvalidEmailFormat;
+    return null;
+  }
 
-    final supabase = Supabase.instance.client;
+  Future<void> _handleRegister() async {
     final t = AppLocalizations.of(context)!;
-    setState(() => _isLoading = true);
+    final isChinese = Localizations.localeOf(context).languageCode == 'zh';
+    setState(() => _formSubmitted = true);
 
+    if (_validateRequired(_companyController.text, isChinese ? "请填写公司名称" : "Company name required") != null ||
+        _validateEmail(_emailController.text, t) != null ||
+        _validateRequired(_passwordController.text, t.errorPasswordRequired) != null) return;
+
+    setState(() => _loading = true);
     try {
-      final response = await supabase.auth.signUp(
+      await Supabase.instance.client.auth.signUp(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
-        emailRedirectTo: 'http://localhost:5442',
-      );
-
-      final userId = response.user?.id;
-      if (userId != null) {
-        String phoneNumber = _phoneController.text.trim();
-        if (_selectedCountry == 'ZA') {
-          phoneNumber = '+27 $phoneNumber';
-        } else if (_selectedCountry == 'CN') {
-          phoneNumber = '+86 $phoneNumber';
-        } else if (_otherCodeController.text.isNotEmpty) {
-          phoneNumber = '${_otherCodeController.text.trim()} $phoneNumber';
-        }
-
-        await supabase.from('users').insert({
-          'id': userId,
-          'full_name': _nameController.text.trim(),
-          'email': _emailController.text.trim(),
-          'phone': phoneNumber,
+        data: {
           'company': _companyController.text.trim(),
-        });
-
-        if (!mounted) return;
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(t.registerTitle),
-              content: Text(t.registrationSuccess),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, '/login');
-                  },
-                  child: Text(t.loginBtn),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } catch (e) {
-      final t = AppLocalizations.of(context)!;
-      String message;
-      final errorText = e.toString().toLowerCase();
-
-      if (errorText.contains('duplicate') ||
-          errorText.contains('users_email_key')) {
-        message = t.errorEmailTaken;
-      } else if (errorText.contains('password')) {
-        message = t.errorWeakPassword;
-      } else if (errorText.contains('network')) {
-        message = t.errorNetwork;
-      } else {
-        message = t.registrationFailed(t.errorUnexpected);
-      }
-
-      if (!mounted) return;
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(t.registerTitle),
-            content: Text(message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
-              ),
-            ],
-          );
+          'language': Localizations.localeOf(context).languageCode,
         },
       );
+      
+      if (mounted) _showSuccessDialog(isChinese);
+    } on AuthException catch (e) {
+      _showSnackBar(e.message);
+    } catch (e) {
+      _showSnackBar(t.errorUnexpected);
     } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
+      if (mounted) setState(() => _loading = false);
     }
-  }
-
-  Widget _buildFeature(String imagePath, String title, String line1, String line2) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(4),
-            child: Image.asset(
-              imagePath,
-              height: 100,
-              width: 100,
-              fit: BoxFit.contain,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.inter(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF343A40),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  line1,
-                  style: GoogleFonts.inter(
-                    fontSize: 13,
-                    color: const Color(0xFF343A40),
-                  ),
-                ),
-                Text(
-                  line2,
-                  style: GoogleFonts.inter(
-                    fontSize: 13,
-                    color: const Color(0xFF343A40),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRegistrationCard(AppLocalizations t) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              // Slogan removed here to avoid duplication; it stays above the card.
-              Text(
-                t.registerTitle,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  isDense: true,
-                  labelText: t.fullName,
-                  prefixIcon: const Icon(Icons.person),
-                  border: _roundedBorder,
-                ),
-                validator: (value) =>
-                    (value == null || value.isEmpty) ? "Name is required" : null,
-              ),
-              const SizedBox(height: 16),
-
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  isDense: true,
-                  labelText: t.email,
-                  prefixIcon: const Icon(Icons.email),
-                  border: _roundedBorder,
-                ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Email is required";
-                  }
-                  final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
-                  if (!emailRegex.hasMatch(value)) {
-                    return t.errorInvalidEmailFormat;
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-
-              TextFormField(
-                controller: _passwordController,
-                obscureText: _obscurePassword,
-                decoration: InputDecoration(
-                  isDense: true,
-                  labelText: t.password,
-                  prefixIcon: const Icon(Icons.lock),
-                  border: _roundedBorder,
-                  helperText: "Password must be at least 8 characters",
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Password is required";
-                  }
-                  if (value.length < 8) {
-                    return t.errorWeakPassword;
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  DropdownButtonFormField<String>(
-                    value: _selectedCountry,
-                    items: const [
-                      DropdownMenuItem(value: 'ZA', child: Text('South Africa')),
-                      DropdownMenuItem(value: 'CN', child: Text('China')),
-                      DropdownMenuItem(value: 'OTHER', child: Text('Other')),
-                    ],
-                    onChanged: (val) =>
-                        setState(() => _selectedCountry = val ?? 'ZA'),
-                    decoration: InputDecoration(
-                      isDense: true,
-                      labelText: "Country",
-                      border: _roundedBorder,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  TextFormField(
-                    controller: _phoneController,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      labelText: t.phoneOptional,
-                      prefixIcon: const Icon(Icons.phone),
-                      border: _roundedBorder,
-                    ),
-                    keyboardType: TextInputType.phone,
-                    validator: (value) {
-                      if (value != null && value.isNotEmpty) {
-                        final phoneRegex = RegExp(r'^[0-9]{7,15}$');
-                        if (!phoneRegex.hasMatch(value)) {
-                          return t.errorInvalidPhone;
-                        }
-                      }
-                      return null;
-                    },
-                  ),
-
-                  if (_selectedCountry == 'OTHER') ...[
-                    const SizedBox(height: 12),
-                    TextFormField(
-                      controller: _otherCodeController,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        labelText: "Country Code (e.g. +44)",
-                        border: _roundedBorder,
-                      ),
-                      keyboardType: TextInputType.phone,
-                    ),
-                  ],
-                ],
-              ),
-              const SizedBox(height: 16),
-
-              TextFormField(
-                controller: _companyController,
-                decoration: InputDecoration(
-                  isDense: true,
-                  labelText: t.companyOptional,
-                  prefixIcon: const Icon(Icons.business),
-                  border: _roundedBorder,
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFC2994B),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: _isLoading ? null : _register,
-                  child: _isLoading
-                      ? const CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.white),
-                        )
-                      : Text(t.createAccount),
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              TextButton(
-                onPressed: () => Navigator.pushNamed(context, '/login'),
-                child: Text(
-                  t.alreadyRegistered,
-                  style: const TextStyle(
-                    color: Color(0xFF333333),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
-
-    const double centerMaxWidth = 420;
-    const double sideMaxWidth = 360;
-    const double columnGap = 24;
+    final currentLocale = Localizations.localeOf(context);
 
     return MasterLayout(
       onLocaleChange: widget.onLocaleChange,
-      child: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 1200),
-              padding: const EdgeInsets.symmetric(vertical: 32),
-              child: Column(
-                children: [
-                  const SizedBox(height: 24),
-                  Image.asset('assets/mbrics_logo.png', height: 140),
-                  const SizedBox(height: 12),
-                  Text(
-                    "Built for global trade. Designed for trust.",
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFFA7A9AC),
-                      letterSpacing: 0.4,
-                    ),
-                    textAlign: TextAlign.center,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              child: Center(
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 1300),
+                  child: Column(
+                    children: [
+                      Image.asset('assets/mbrics_logo.png', height: 90),
+                      const SizedBox(height: 8),
+                      Text(t.slogan.toUpperCase(), 
+                        style: const TextStyle(fontFamily: 'Inter', letterSpacing: 3, fontSize: 10, color: goldBase, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 30),
+
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          if (constraints.maxWidth > 1150) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(width: 270, child: _pillarColumn(t, true)),
+                                const SizedBox(width: 40),
+                                _buildRegisterCard(t),
+                                const SizedBox(width: 40),
+                                SizedBox(width: 270, child: _pillarColumn(t, false)),
+                              ],
+                            );
+                          } else {
+                            return Column(
+                              children: [
+                                _buildRegisterCard(t),
+                                const SizedBox(height: 50),
+                                Wrap(spacing: 30, runSpacing: 30, alignment: WrapAlignment.center, children: _allFeatures(t)),
+                              ],
+                            );
+                          }
+                        },
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 32),
-
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      final isSmall = constraints.maxWidth < 900;
-
-                      if (isSmall) {
-                        // Column: left features -> card -> right features
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                    maxWidth: sideMaxWidth),
-                                child: _SideColumn(
-                                  alignRight: true,
-                                  children: [
-                                    _buildFeature(
-                                      'assets/icons/register_1.png',
-                                      "Secure Identity",
-                                      "Your details are encrypted end-to-end.",
-                                      "No leaks, no compromises.",
-                                    ),
-                                    _buildFeature(
-                                      'assets/icons/register_2.png',
-                                      "Global Compliance",
-                                      "Meets international KYC/AML standards.",
-                                      "Trusted by regulators worldwide.",
-                                    ),
-                                    _buildFeature(
-                                      'assets/icons/register_3.png',
-                                      "Instant Verification",
-                                      "Accounts verified in seconds.",
-                                      "No waiting, no delays.",
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                    maxWidth: centerMaxWidth),
-                                child: _buildRegistrationCard(t),
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                    maxWidth: sideMaxWidth),
-                                child: _SideColumn(
-                                  alignRight: false,
-                                  children: [
-                                    _buildFeature(
-                                      'assets/icons/register_4.png',
-                                      "Smart Contracts Ready",
-                                      "Future-proof onboarding.",
-                                      "Seamless integration with blockchain escrow.",
-                                    ),
-                                    _buildFeature(
-                                      'assets/icons/register_5.png',
-                                      "Cross-Border Friendly",
-                                      "Register once, trade globally.",
-                                      "Supports multiple currencies and regions.",
-                                    ),
-                                    _buildFeature(
-                                      'assets/icons/register_6.png',
-                                      "Audit Trail Transparency",
-                                      "Every registration logged immutably.",
-                                      "Proof of trust for partners and investors.",
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      } else {
-                        // Row: left features | center card | right features
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Flexible(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                      maxWidth: sideMaxWidth),
-                                  child: _SideColumn(
-                                    alignRight: true,
-                                    children: [
-                                      _buildFeature(
-                                        'assets/icons/register_1.png',
-                                        "Secure Identity",
-                                        "Your details are encrypted end-to-end.",
-                                        "No leaks, no compromises.",
-                                      ),
-                                      _buildFeature(
-                                        'assets/icons/register_2.png',
-                                        "Global Compliance",
-                                        "Meets international KYC/AML standards.",
-                                        "Trusted by regulators worldwide.",
-                                      ),
-                                      _buildFeature(
-                                        'assets/icons/register_3.png',
-                                        "Instant Verification",
-                                        "Accounts verified in seconds.",
-                                        "No waiting, no delays.",
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: columnGap),
-                            Flexible(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                      maxWidth: centerMaxWidth),
-                                  child: _buildRegistrationCard(t),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: columnGap),
-                            Flexible(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                      maxWidth: sideMaxWidth),
-                                  child: _SideColumn(
-                                    alignRight: false,
-                                    children: [
-                                      _buildFeature(
-                                        'assets/icons/register_4.png',
-                                        "Smart Contracts Ready",
-                                        "Future-proof onboarding.",
-                                        "Seamless integration with blockchain escrow.",
-                                      ),
-                                      _buildFeature(
-                                        'assets/icons/register_5.png',
-                                        "Cross-Border Friendly",
-                                        "Register once, trade globally.",
-                                        "Supports multiple currencies and regions.",
-                                      ),
-                                      _buildFeature(
-                                        'assets/icons/register_6.png',
-                                        "Audit Trail Transparency",
-                                        "Every registration logged immutably.",
-                                        "Proof of trust for partners and investors.",
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      }
-                    },
-                  ),
-
-                  const SizedBox(height: 32),
-                ],
+                ),
               ),
             ),
-          ),
+
+            Positioned(top: 20, left: 30, child: _langMedallion("EN", "assets/icons/lang_en.png", const Locale('en'), currentLocale.languageCode.startsWith('en'))),
+            Positioned(top: 20, right: 30, child: _langMedallion("ZH", "assets/icons/lang_cn.png", const Locale('zh'), currentLocale.languageCode.startsWith('zh'))),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildRegisterCard(AppLocalizations t) {
+    return Container(
+      width: 400,
+      padding: const EdgeInsets.all(40),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [BoxShadow(color: goldBase.withOpacity(0.08), blurRadius: 40, offset: const Offset(0, 10))],
+        border: Border.all(color: goldBase.withOpacity(0.1)),
+      ),
+      child: Column(
+        children: [
+          Text(t.joinNetwork.toUpperCase(), style: const TextStyle(fontFamily: 'Inter', color: goldBase, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          const SizedBox(height: 8),
+          Text(t.register.toLowerCase(), style: const TextStyle(fontFamily: 'Inter', color: terminalBlack, fontSize: 20, fontWeight: FontWeight.w800)),
+          const SizedBox(height: 30),
+          _buildField(_companyController, t.companyName, Icons.business_outlined, errorText: _formSubmitted ? _validateRequired(_companyController.text, "Required") : null),
+          const SizedBox(height: 15),
+          _buildField(_emailController, t.email, Icons.alternate_email, errorText: _formSubmitted ? _validateEmail(_emailController.text, t) : null),
+          const SizedBox(height: 15),
+          _buildField(_passwordController, t.password, Icons.lock_outline, isPass: true, errorText: _formSubmitted ? _validateRequired(_passwordController.text, t.errorPasswordRequired) : null),
+          const SizedBox(height: 35),
+          _metallicBtn(t.createAccount, _loading ? null : _handleRegister, isLoading: _loading),
+          const SizedBox(height: 25),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            onEnter: (_) => setState(() => _isLoginHovered = true),
+            onExit: (_) => setState(() => _isLoginHovered = false),
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Text(t.backToLogin, style: TextStyle(fontFamily: 'Inter', color: _isLoginHovered ? goldBase : silverBase, fontSize: 11, fontWeight: FontWeight.w600, decoration: TextDecoration.underline)),
+            ),
+          ),
+          const SizedBox(height: 20),
+          _StatusPulseRow(statusText: t.authNodeStandby),
+        ],
+      ),
+    );
+  }
+
+  Widget _pillarColumn(AppLocalizations t, bool isLeft) {
+    return Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: isLeft ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      children: isLeft ? [
+        _buildFeature('assets/icons/icon_1.png', t.feature1Title, t.feature1Line1, t.feature1Line2, true),
+        _buildFeature('assets/icons/icon_3.png', t.feature3Title, t.feature3Line1, t.feature3Line2, true),
+        _buildFeature('assets/icons/icon_4.png', t.feature4Title, t.feature4Line1, t.feature4Line2, true),
+      ] : [
+        _buildFeature('assets/icons/icon_5.png', t.feature5Title, t.feature5Line1, t.feature5Line2, false),
+        _buildFeature('assets/icons/icon_2.png', t.feature2Title, t.feature2Line1, t.feature2Line2, false),
+        _buildFeature('assets/icons/icon_6.png', t.feature6Title, t.feature6Line1, t.feature6Line2, false),
+      ],
+    );
+  }
+
+  List<Widget> _allFeatures(AppLocalizations t) {
+    return [
+      SizedBox(width: 300, child: _buildFeature('assets/icons/icon_1.png', t.feature1Title, t.feature1Line1, t.feature1Line2, false)),
+      SizedBox(width: 300, child: _buildFeature('assets/icons/icon_3.png', t.feature3Title, t.feature3Line1, t.feature3Line2, false)),
+      SizedBox(width: 300, child: _buildFeature('assets/icons/icon_4.png', t.feature4Title, t.feature4Line1, t.feature4Line2, false)),
+      SizedBox(width: 300, child: _buildFeature('assets/icons/icon_5.png', t.feature5Title, t.feature5Line1, t.feature5Line2, false)),
+      SizedBox(width: 300, child: _buildFeature('assets/icons/icon_2.png', t.feature2Title, t.feature2Line1, t.feature2Line2, false)),
+      SizedBox(width: 300, child: _buildFeature('assets/icons/icon_6.png', t.feature6Title, t.feature6Line1, t.feature6Line2, false)),
+    ];
+  }
+
+  Widget _buildFeature(String path, String title, String l1, String l2, bool alignRight) {
+    return Padding(padding: const EdgeInsets.symmetric(vertical: 12), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: alignRight ? [
+      Expanded(child: _featText(title, l1, l2, CrossAxisAlignment.end)), const SizedBox(width: 15), Image.asset(path, width: 50, height: 50),
+    ] : [
+      Image.asset(path, width: 50, height: 50), const SizedBox(width: 15), Expanded(child: _featText(title, l1, l2, CrossAxisAlignment.start)),
+    ]));
+  }
+
+  Widget _featText(String title, String l1, String l2, CrossAxisAlignment alignment) {
+    return Column(crossAxisAlignment: alignment, children: [
+      Text(title, style: const TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w900, fontSize: 13, color: terminalBlack)),
+      Text(l1, style: const TextStyle(fontFamily: 'Inter', fontSize: 11, color: goldBase, fontWeight: FontWeight.bold)),
+      const SizedBox(height: 2),
+      Text(l2, textAlign: alignment == CrossAxisAlignment.end ? TextAlign.right : TextAlign.left, style: const TextStyle(fontFamily: 'Inter', fontSize: 10, color: silverBase, height: 1.2)),
+    ]);
+  }
+
+  Widget _buildField(TextEditingController ctrl, String label, IconData icon, {bool isPass = false, String? errorText}) {
+    return TextField(
+      controller: ctrl, 
+      obscureText: isPass, 
+      style: const TextStyle(fontFamily: 'Inter', fontSize: 14),
+      decoration: InputDecoration(
+        labelText: label, 
+        errorText: errorText, 
+        errorStyle: const TextStyle(fontSize: 9), 
+        labelStyle: const TextStyle(fontFamily: 'Inter', color: silverBase, fontSize: 10, fontWeight: FontWeight.bold), 
+        prefixIcon: Icon(icon, color: goldBase, size: 18), 
+        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade200)), 
+        focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: goldBase, width: 2))
+      )
+    );
+  }
+
+  Widget _metallicBtn(String label, VoidCallback? onTap, {bool isLoading = false}) {
+    return Container(width: double.infinity, height: 50, decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), gradient: const LinearGradient(colors: [goldLight, goldBase], begin: Alignment.topCenter, end: Alignment.bottomCenter), boxShadow: [BoxShadow(color: goldBase.withOpacity(0.2), blurRadius: 10, offset: const Offset(0, 4))]),
+      child: ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent), onPressed: onTap, child: isLoading ? const SizedBox(height: 18, width: 18, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : Text(label, style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14))));
+  }
+
+  Widget _langMedallion(String label, String asset, Locale loc, bool isActive) {
+    return GestureDetector(
+      onTap: () => widget.onLocaleChange?.call(loc), 
+      child: Column(
+        children: [
+          Container(
+            width: 40, height: 40, 
+            decoration: BoxDecoration(
+              shape: BoxShape.circle, 
+              border: Border.all(color: isActive ? goldBase : Colors.grey.shade200, width: isActive ? 2 : 1)
+            ), 
+            child: ClipOval(child: Image.asset(asset, fit: BoxFit.cover))
+          ), 
+          const SizedBox(height: 4), 
+          Text(label, style: TextStyle(fontFamily: 'Inter', color: isActive ? goldBase : silverBase, fontSize: 9, fontWeight: FontWeight.w900))
+        ]
+      )
+    );
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: Colors.redAccent, behavior: SnackBarBehavior.floating));
+  }
+
+  void _showSuccessDialog(bool isChinese) {
+    showDialog(
+      context: context, 
+      barrierDismissible: false, 
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white, 
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: goldBase, width: 0.5)), 
+        title: Column(
+          children: [
+            const Icon(Icons.mark_email_read_outlined, color: goldBase, size: 44),
+            const SizedBox(height: 15),
+            Text(isChinese ? "欢迎加入 mBrics" : "Welcome to mBrics", 
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w900, color: terminalBlack)),
+          ],
+        ), 
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              isChinese 
+                ? "您的贸易账户已创建。请点击我们发给您的邮件中的链接，以激活您的 Web3 引擎访问权限。" 
+                : "Your trade account has been created. To activate your access to the Web3 Engine, please click the link in the email we just sent you.",
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontFamily: 'Inter', fontSize: 13, color: Colors.black87, height: 1.5),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: goldBase.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                isChinese 
+                  ? "提示：若 2 分钟内未收到邮件，请检查您的垃圾邮件文件夹。" 
+                  : "Tip: If you don't see the email within 2 minutes, please check your spam or junk folder.",
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontFamily: 'Inter', fontSize: 11, color: goldBase, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ), 
+        actions: [
+          Center(
+            child: TextButton(
+              onPressed: () { Navigator.pop(context); Navigator.pop(context); }, 
+              child: Text(isChinese ? "返回登录" : "RETURN TO LOGIN", 
+                style: const TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w900, color: goldBase, letterSpacing: 1))
+            ),
+          )
+        ]
+      )
+    );
+  }
+}
+
+class _StatusPulseRow extends StatelessWidget {
+  final String statusText;
+  const _StatusPulseRow({required this.statusText});
+  
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center, 
+      children: [
+        Container(
+          width: 6, 
+          height: 6, 
+          decoration: const BoxDecoration(
+            color: Color(0xFF4CAF50), 
+            shape: BoxShape.circle
+          )
+        ), 
+        const SizedBox(width: 8), 
+        Text(
+          statusText, 
+          style: const TextStyle(
+            fontFamily: 'ShareTechMono',
+            fontSize: 10, 
+            color: Color(0xFF4CAF50)
+          )
+        ),
+      ]
     );
   }
 }

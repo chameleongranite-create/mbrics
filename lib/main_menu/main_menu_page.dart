@@ -1,15 +1,7 @@
-import '../layout/master_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
-
-class MenuItem {
-  final String title;
-  final String route;
-  final IconData icon;
-  const MenuItem(this.title, this.route, this.icon);
-}
+import '../layout/master_layout.dart';
 
 class MainMenuPage extends StatefulWidget {
   const MainMenuPage({super.key, this.onLocaleChange});
@@ -22,14 +14,13 @@ class MainMenuPage extends StatefulWidget {
 class _MainMenuPageState extends State<MainMenuPage> {
   Map<String, dynamic>? userData;
 
-  static const Color backgroundWhite = Color(0xFFFFFFFF);
-  static const Color borderGray = Color(0xFFE0E0E0);
+  // mBrics Palette
+  static const Color goldBase = Color(0xFFC2994B);
+  static const Color offWhite = Color(0xFFF8F9FA); 
+  static const Color pureWhite = Colors.white;
+  static const Color terminalBlack = Color(0xFF121212); 
   static const Color silver = Color(0xFFA7A9AC);
-  static const Color flashySilver = Color(0xFFD8D8D8);
-  static const Color gold = Color(0xFFC2994B);
-  static const Color textDark = Color(0xFF343A40);
-  static const Color textSoft = Color(0xFF666666);
-  static const Color platinumFill = Color(0xFFE5E4E2);
+  static const Color terminalGreen = Color(0xFF2E7D32); 
 
   @override
   void initState() {
@@ -37,429 +28,338 @@ class _MainMenuPageState extends State<MainMenuPage> {
     _fetchProfile();
   }
 
+  // --- LOGIC: Fetching the User's Personal Name ---
   Future<void> _fetchProfile() async {
-    final uid = Supabase.instance.client.auth.currentUser?.id;
-    if (uid == null) return;
-    try {
-      final data = await Supabase.instance.client
-          .from('users')
-          .select('full_name')
-          .eq('id', uid)
-          .single();
-      setState(() => userData = data);
-    } catch (e) {
-      debugPrint('Error fetching profile: $e');
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) return;
+    
+    final fullName = user.userMetadata?['full_name'];
+    final name = user.userMetadata?['name'];
+    final email = user.email;
+
+    if (mounted) {
+      setState(() {
+        String displayName = "AUTHORIZED PARTNER";
+        
+        if (fullName != null && fullName.toString().isNotEmpty) {
+          displayName = fullName.toString();
+        } else if (name != null && name.toString().isNotEmpty) {
+          displayName = name.toString();
+        } else if (email != null) {
+          displayName = email.split('@')[0];
+        }
+
+        userData = {
+          'displayName': displayName.toUpperCase() 
+        };
+      });
     }
+  }
+
+  String _getGreeting(AppLocalizations t) {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return t.greetingMorning;
+    if (hour < 17) return t.greetingAfternoon;
+    return t.greetingEvening;
   }
 
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
-    final isWide = MediaQuery.of(context).size.width >= 1000;
-
-    final mainFunctions = [
-      MenuItem("Get a logistics quote", '/ddp', Icons.local_shipping),
-      MenuItem("Send or receive money", '/pay', Icons.payment),
-      MenuItem("Create a blockchain contract", '/escrow', Icons.security),
-    ];
-
-    final secondaryFunctions = [
-      MenuItem("Live forex rates", '/forex', Icons.currency_exchange),
-      MenuItem("Edit personal details", '/editprofile', Icons.edit),
-      MenuItem(t.settings, '/settings', Icons.settings),
-    ];
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isWide = screenWidth >= 1100;
 
     return MasterLayout(
       onLocaleChange: widget.onLocaleChange,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      child: Scaffold(
+        backgroundColor: offWhite,
+        body: Column(
           children: [
-            if (isWide)
-              Expanded(
-                flex: 1,
-                child: _SidePanel(
-                  title: "Trust & Innovation",
-                  items: [
-                    {
-                      "heading": "CBDC Settlement",
-                      "text":
-                          "Backed by China’s Central Bank Digital Currency — secure, auditable, borderless."
-                    },
-                    {
-                      "heading": "Transparent Costs",
-                      "text":
-                          "Every quote shows duties, VAT, and net landed cost clearly."
-                    },
-                    {
-                      "heading": "Global Reach",
-                      "text":
-                          "Designed for cross-border trade with modern Web3 infrastructure."
-                    },
-                  ],
-                  icon: Icons.verified,
-                  imagePath: 'assets/icons/trust_01.png',
-                ),
-              ),
+            _buildSystemStatusBar(t), // Passed 't' here
             Expanded(
-              flex: 2,
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 480),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        _HeroBlock(userData),
-                        const SizedBox(height: 24),
-                        if (!isWide)
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: flashySilver.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              "Powered by China’s Central Bank Digital Currency — secure, auditable, borderless.",
-                              style: GoogleFonts.inter(
-                                fontSize: 13,
-                                color: textSoft,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (isWide) Expanded(child: _buildSideInsight(true, t)),
+                    Expanded(
+                      flex: 3,
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 900),
+                          child: Column(
+                            children: [
+                              _buildHeroHeader(t),
+                              const SizedBox(height: 50),
+                              _buildPillarGrid(t, screenWidth),
+                              const SizedBox(height: 60),
+                              _QuickAccessRow(onLocaleChange: widget.onLocaleChange, t: t), // Passed 't'
+                              const SizedBox(height: 40),
+                              _FooterBranding(t: t), // Passed 't'
+                            ],
                           ),
-                        if (!isWide) const SizedBox(height: 16),
-                        _FunctionBlock(
-                          title: "Core Functions",
-                          items: mainFunctions,
-                          cardColor: platinumFill,
-                          iconColor: silver,
                         ),
-                        const SizedBox(height: 24),
-                        _FunctionBlock(
-                          title: "Tools & Settings",
-                          items: secondaryFunctions,
-                          cardColor: backgroundWhite,
-                          iconColor: gold,
-                        ),
-                        if (!isWide) const SizedBox(height: 16),
-                        if (!isWide)
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: gold),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              "Instant DDP Quotes: tariffs, freight, clearance, and inland transport in one click.",
-                              style: GoogleFonts.inter(
-                                fontSize: 13,
-                                color: textDark,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        if (!isWide) const SizedBox(height: 16),
-                        _FooterBlock(t),
-                      ],
+                      ),
                     ),
-                  ),
+                    if (isWide) Expanded(child: _buildSideInsight(false, t)),
+                  ],
                 ),
               ),
             ),
-            if (isWide)
-              Expanded(
-                flex: 1,
-                child: _SidePanel(
-                  title: "Core Features Explained",
-                  items: [
-                    {
-                      "heading": "DDP Quotes",
-                      "text":
-                          "Instant logistics quotes covering tariffs, freight, clearance, and inland transport."
-                    },
-                    {
-                      "heading": "Send Money",
-                      "text":
-                          "Fast transfers powered by Central Bank Digital Currency — instant, secure, reliable."
-                    },
-                    {
-                      "heading": "Blockchain Contracts",
-                      "text":
-                          "Smart contracts replacing Letters of Credit — milestone-based, auditable, trusted."
-                    },
-                  ],
-                  icon: Icons.star,
-                  imagePath: 'assets/icons/core_functions.png',
-                ),
-              ),
           ],
         ),
       ),
     );
   }
+
+  Widget _buildSystemStatusBar(AppLocalizations t) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(bottom: BorderSide(color: Colors.black.withOpacity(0.05))),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              const Text("mBrics", 
+                style: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w900, color: goldBase, letterSpacing: 1)),
+              const SizedBox(width: 15),
+              const _PulseDot(),
+              const SizedBox(width: 8),
+              Text(t.authNodeStandby.toUpperCase(), // Localized
+                style: const TextStyle(fontFamily: 'ShareTechMono', color: terminalGreen, fontSize: 10, fontWeight: FontWeight.bold)),
+            ],
+          ),
+          Row(
+            children: [
+              _miniLangBtn("EN", () => widget.onLocaleChange?.call(const Locale('en'))),
+              const Text("|", style: TextStyle(color: silver, fontSize: 10)),
+              _miniLangBtn("中文", () => widget.onLocaleChange?.call(const Locale('zh'))),
+              const SizedBox(width: 20),
+              const Text("BLOCKCHAIN v2.0", 
+                style: TextStyle(fontFamily: 'ShareTechMono', color: silver, fontSize: 10)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _miniLangBtn(String label, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Text(label, style: const TextStyle(fontFamily: 'Inter', fontSize: 10, fontWeight: FontWeight.bold, color: terminalBlack)),
+      ),
+    );
+  }
+
+  Widget _buildHeroHeader(AppLocalizations t) {
+    return Column(
+      children: [
+        Text(
+          _getGreeting(t),
+          style: const TextStyle(fontFamily: 'Inter', color: silver, fontSize: 24, fontWeight: FontWeight.w300, letterSpacing: -0.5),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          userData?['displayName'] ?? "AUTHORIZED PARTNER", 
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontFamily: 'Inter', color: terminalBlack, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2),
+        ),
+        const SizedBox(height: 20),
+        Container(width: 60, height: 2, color: goldBase),
+      ],
+    );
+  }
+
+  Widget _buildPillarGrid(AppLocalizations t, double width) {
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: width > 800 ? 3 : 2,
+      crossAxisSpacing: 25,
+      mainAxisSpacing: 25,
+      children: [
+        _buildPillarItem(t.feature5Title, "assets/icons/mm_01.png", t.feature5Line1, '/ddp'),
+        _buildPillarItem(t.feature1Title, "assets/icons/mm_02.png", t.feature1Line1, '/pay'),
+        _buildPillarItem(t.feature6Title, "assets/icons/mm_03.png", t.feature6Line1, '/trust_engine'),
+        _buildPillarItem(t.feature2Title, "assets/icons/mm_04.png", t.feature2Line1, '/forex'),
+        _buildPillarItem(t.feature4Title, "assets/icons/mm_05.png", t.feature4Line1, '/trade_visual'),
+        _buildPillarItem(t.feature3Title, "assets/icons/mm_06.png", t.feature3Line1, '/network'),
+      ],
+    );
+  }
+
+  Widget _buildPillarItem(String title, String assetPath, String subtitle, String route) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () => Navigator.pushNamed(context, route),
+        child: Container(
+          decoration: BoxDecoration(
+            color: pureWhite,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 15, offset: const Offset(0, 8)),
+            ],
+            border: Border.all(color: Colors.black.withOpacity(0.05)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(assetPath, width: 45, height: 45, fit: BoxFit.contain, 
+                errorBuilder: (c,e,s) => const Icon(Icons.hub_outlined, size: 30, color: goldBase)),
+              const SizedBox(height: 12),
+              Text(title.toUpperCase(), textAlign: TextAlign.center,
+                style: const TextStyle(fontFamily: 'Inter', color: terminalBlack, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 0.8)),
+              const SizedBox(height: 6),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Text(subtitle, textAlign: TextAlign.center,
+                  style: const TextStyle(fontFamily: 'Inter', color: silver, fontSize: 9, fontWeight: FontWeight.w500, height: 1.2)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSideInsight(bool isLeft, AppLocalizations t) {
+    return _SideInsightCard(
+      title: isLeft ? "BLOCKCHAIN STATUS" : "WEB3 ENGINE",
+      icon: isLeft ? Icons.hub_outlined : Icons.auto_awesome_outlined,
+      lines: isLeft 
+        ? ["Finality: Valid", "Node Latency: 14ms", "Global Trade Trust: Active"]
+        : [t.feature4Line2, "Doc Verification: 100%", "Digital Trust: Enabled"], // Localized line
+    );
+  }
 }
 
-// Hero greeting block
-class _HeroBlock extends StatelessWidget {
-  final Map<String, dynamic>? userData;
-  const _HeroBlock(this.userData);
+class _PulseDot extends StatefulWidget {
+  const _PulseDot();
+  @override
+  State<_PulseDot> createState() => _PulseDotState();
+}
+
+class _PulseDotState extends State<_PulseDot> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 1))..repeat(reverse: true);
+  }
+  @override
+  void dispose() { _controller.dispose(); super.dispose(); }
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _controller, 
+      child: Container(
+        width: 8, height: 8, 
+        decoration: const BoxDecoration(color: Color(0xFF2E7D32), shape: BoxShape.circle)
+      )
+    );
+  }
+}
+
+class _SideInsightCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final List<String> lines;
+  const _SideInsightCard({required this.title, required this.icon, required this.lines});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFFC2994B),
-        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.black.withOpacity(0.05)),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset('assets/mbrics_logo.png', height: 80),
-          const SizedBox(height: 16),
-          Text(
-            "Hi ${userData?['full_name'] ?? ''}, ready to get started?",
-            style: GoogleFonts.inter(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-            textAlign: TextAlign.center,
+          Row(
+            children: [
+              Icon(icon, size: 16, color: const Color(0xFFC2994B)),
+              const SizedBox(width: 10),
+              Text(title, 
+                style: const TextStyle(fontFamily: 'Inter', color: Color(0xFF121212), fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)),
+            ],
           ),
-          const SizedBox(height: 12),
-          Text(
-            "Your gateway to trusted trade, payments, and contracts.",
-            style: GoogleFonts.inter(
-              fontSize: 14,
-              color: Colors.white,
+          const SizedBox(height: 15),
+          ...lines.map((line) => Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Row(
+              children: [
+                const Icon(Icons.check_circle_outline, size: 10, color: Color(0xFF2E7D32)),
+                const SizedBox(width: 8),
+                Expanded(child: Text(line, 
+                  style: const TextStyle(fontFamily: 'Inter', fontSize: 10, color: Colors.black54))),
+              ],
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-          TextButton(
-            onPressed: () => Navigator.pushNamed(context, '/profile'),
-            child: const Text(
-              "View Profile",
-              style: TextStyle(color: Color(0xFFA7A9AC)),
-            ),
-          ),
+          )),
         ],
       ),
     );
   }
 }
 
-// Function block (core/tools)
-class _FunctionBlock extends StatelessWidget {
-  final String title;
-  final List<MenuItem> items;
-  final Color cardColor;
-  final Color iconColor;
+class _QuickAccessRow extends StatelessWidget {
+  final void Function(Locale)? onLocaleChange;
+  final AppLocalizations t; // Added localizations
+  const _QuickAccessRow({this.onLocaleChange, required this.t});
 
-  const _FunctionBlock({
-    required this.title,
-    required this.items,
-    required this.cardColor,
-    required this.iconColor,
-  });
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _miniBtn("ENGLISH", () => onLocaleChange?.call(const Locale('en'))),
+        const SizedBox(width: 10),
+        _miniBtn("中文", () => onLocaleChange?.call(const Locale('zh'))),
+        const SizedBox(width: 25),
+        _miniBtn(t.logout.toUpperCase(), () async { // Localized
+          await Supabase.instance.client.auth.signOut();
+          if (context.mounted) Navigator.pushReplacementNamed(context, '/login');
+        }, isWarning: true),
+      ],
+    );
+  }
 
+  Widget _miniBtn(String label, VoidCallback onTap, {bool isWarning = false}) {
+    return TextButton(
+      onPressed: onTap,
+      child: Text(label, style: TextStyle(
+        fontFamily: 'ShareTechMono',
+        color: isWarning ? Colors.redAccent : const Color(0xFFC2994B), 
+        fontSize: 11,
+        fontWeight: FontWeight.bold,
+      )),
+    );
+  }
+}
+
+class _FooterBranding extends StatelessWidget {
+  final AppLocalizations t; // Added localizations
+  const _FooterBranding({required this.t});
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          title,
-          style: GoogleFonts.inter(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF343A40),
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 16),
-        ...items.map(
-          (item) => Card(
-            color: cardColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(color: Color(0xFFE0E0E0)),
-            ),
-            margin: const EdgeInsets.only(bottom: 12),
-            child: ListTile(
-              leading: Icon(item.icon, color: iconColor, size: 28),
-              title: Text(
-                item.title,
-                style: GoogleFonts.inter(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF343A40),
-                ),
-              ),
-              trailing: const Icon(
-                Icons.arrow_forward_ios,
-                size: 16,
-                color: Color(0xFF343A40),
-              ),
-              onTap: () => Navigator.pushNamed(context, item.route),
-            ),
-          ),
-        ),
+        Divider(color: Colors.black.withOpacity(0.05)),
+        const SizedBox(height: 20),
+        Text(t.joinNetwork.toUpperCase(), // Localized
+          style: const TextStyle(fontFamily: 'Inter', fontSize: 9, fontWeight: FontWeight.bold, color: Colors.black26, letterSpacing: 2)),
       ],
-    );
-  }
-}
-
-// Footer block
-class _FooterBlock extends StatelessWidget {
-  final AppLocalizations t;
-  const _FooterBlock(this.t);
-
-  @override
-  Widget build(BuildContext context) {
-    const Color footerSilver = Color(0xFFD8D8D8);
-    const Color footerGold = Color(0xFFC2994B);
-    const Color footerTextSoft = Color(0xFF666666);
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: footerSilver.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: footerGold,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              onPressed: () async {
-                await Supabase.instance.client.auth.signOut();
-                if (context.mounted) {
-                  Navigator.pushReplacementNamed(context, '/login');
-                }
-              },
-              child: Text(t.logout),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            "Escrow releases only on milestones\nPayments protected with audit trails",
-            style: GoogleFonts.inter(
-              fontSize: 13,
-              color: footerTextSoft,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "© 2026 mBrics",
-            style: GoogleFonts.inter(
-              fontSize: 12,
-              color: footerTextSoft,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// Side panel widget for wide layouts
-class _SidePanel extends StatelessWidget {
-  final String title;
-  final List<Map<String, String>> items;
-  final IconData icon;
-  final String imagePath;
-
-  const _SidePanel({
-    required this.title,
-    required this.items,
-    required this.icon,
-    required this.imagePath,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    const Color panelSilver = Color(0xFFD8D8D8);
-    const Color panelGold = Color(0xFFC2994B);
-    const Color panelTextDark = Color(0xFF343A40);
-
-    return Card(
-      color: panelSilver.withOpacity(0.2),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Centered round icon image
-            ClipOval(
-              child: Image.asset(
-                imagePath,
-                height: 120,
-                width: 120,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(icon, color: panelGold, size: 32),
-                const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: panelTextDark,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            ...items.map(
-              (entry) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  children: [
-                    Icon(Icons.circle, size: 8, color: panelGold),
-                    const SizedBox(width: 8),
-                    Text.rich(
-                      TextSpan(
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: panelTextDark,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "${entry['heading']}: ",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextSpan(text: entry['text'] ?? ""),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

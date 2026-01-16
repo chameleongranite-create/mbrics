@@ -107,7 +107,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                       // ✅ Slogan inside the card
                       Text(
                         "Built for global trade. Designed for trust.",
-                        style: GoogleFonts.inter(
+                        style: TextStyle(fontFamily: 'Inter',
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: silver,
@@ -120,7 +120,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                       // Conversational heading for main functions
                       Text(
                         'Hi ${userData?['full_name'] ?? ''}, ready to get started?',
-                        style: GoogleFonts.inter(
+                        style: TextStyle(fontFamily: 'Inter',
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: textDark,
@@ -140,7 +140,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                               leading: Icon(item.icon, color: silver, size: 28),
                               title: Text(
                                 item.title,
-                                style: GoogleFonts.inter(
+                                style: TextStyle(fontFamily: 'Inter',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: textDark,
@@ -158,7 +158,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                       // Conversational heading for secondary functions (same style as first heading)
                       Text(
                         'Or, manage your tools and settings…',
-                        style: GoogleFonts.inter(
+                        style: TextStyle(fontFamily: 'Inter',
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: textDark,
@@ -178,7 +178,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                               leading: Icon(item.icon, color: gold, size: 26),
                               title: Text(
                                 item.title,
-                                style: GoogleFonts.inter(
+                                style: TextStyle(fontFamily: 'Inter',
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
                                   color: textDark,
