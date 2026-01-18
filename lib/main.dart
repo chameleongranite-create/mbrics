@@ -1,27 +1,36 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// 1. PILLAR IMPORTS (High-tech Web3 pages)
+// THEME & L10N
+import 'theme/mbrics_theme.dart'; // Ensure this points to your theme file
+import 'package:mbrics/l10n/app_localizations.dart'; 
+
+// PILLAR IMPORTS
 import 'pillars/web3_trust_page.dart';
 import 'pillars/ddp_logistics_page.dart'; 
 import 'pillars/forex_bridge_page.dart'; 
 import 'pillars/global_pay_page.dart';   
 import 'pillars/trade_visualizer_page.dart'; 
-import 'pillars/network_hub_page.dart'; // FIXED: Added Pillar 6
+import 'pillars/network_hub_page.dart'; 
 
-// 2. EXISTING PAGE IMPORTS
+// PAGE IMPORTS
 import 'package:mbrics/main_menu/main_menu_page.dart';
 import 'package:mbrics/login/login_screen.dart';
 import 'package:mbrics/registration/registration_screen.dart';
-
-// 3. LOCALIZATION
-import 'package:mbrics/l10n/app_localizations.dart'; 
-
-// 4. MODULE IMPORTS
 import 'package:mbrics/settings/settings_page.dart';
 import 'package:mbrics/profile/profile_page.dart';
 import 'package:mbrics/profile/edit_profile_page.dart';
+
+class mBricsScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    PointerDeviceKind.trackpad,
+  };
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,24 +51,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale = const Locale('en');
-  bool _initialized = false;
-  Session? _session;
+  Locale _locale = const Locale('zh'); 
 
   @override
   void initState() {
     super.initState();
-    _checkInitialSession();
-  }
-
-  // FIXED: Logic for "Stay Logged In" with a loading guard
-  Future<void> _checkInitialSession() async {
-    // Small delay ensures the Supabase local storage is fully read
-    await Future.delayed(const Duration(milliseconds: 500));
-    final session = Supabase.instance.client.auth.currentSession;
-    setState(() {
-      _session = session;
-      _initialized = true;
+    // STABILITY: Listen for token errors to prevent the "Refresh Token Not Found" crash
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      if (data.event == AuthChangeEvent.signedOut) {
+        // If the session is dead, handle cleanup logic if necessary
+      }
+    }, onError: (error) {
+       if (error.toString().contains('refresh_token_not_found')) {
+         // Force local logout to clear the corrupted token
+         Supabase.instance.client.auth.signOut();
+       }
     });
   }
 
@@ -71,30 +77,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // PREVENT WHITE SCREEN: Loader shows while checking session
-    if (!_initialized) {
-      return const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: Center(child: CircularProgressIndicator(color: Color(0xFFC2994B))),
-        ),
-      );
-    }
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'mBrics Terminal',
-      locale: _locale,
+      locale: _locale, 
+      scrollBehavior: mBricsScrollBehavior(),
       
-      theme: ThemeData(
-        brightness: Brightness.light,
-        scaffoldBackgroundColor: Colors.white,
-        primaryColor: const Color(0xFFC2994B), 
-        fontFamily: 'Inter', 
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      // CHINA COMPLIANCE: Use our custom local font theme
+      theme: MBricsTheme.themeData, 
 
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -105,29 +97,55 @@ class _MyAppState extends State<MyApp> {
         Locale('zh')
       ],
 
-      // If session exists, user stays logged in. If not, Login Screen.
-      home: _session != null 
-          ? MainMenuPage(onLocaleChange: _setLocale) 
-          : LoginScreen(onLocaleChange: _setLocale), 
+      home: const SplashScreen(), 
 
       routes: {
         '/login': (context) => LoginScreen(onLocaleChange: _setLocale),
         '/register': (context) => RegistrationScreen(onLocaleChange: _setLocale),
-        '/main_menu': (context) => MainMenuPage(onLocaleChange: _setLocale),
-        
-        // 6 PILLARS - All routes now connected to correct pages
+        '/mainmenu': (context) => MainMenuPage(onLocaleChange: _setLocale),
         '/trust_engine': (context) => const Web3TrustPage(), 
         '/ddp': (context) => const DdpLogisticsPage(),
         '/pay': (context) => const GlobalPayPage(), 
         '/forex': (context) => const ForexBridgePage(),
-        '/trade_visual': (context) => const TradeVisualizerPage(),
-        '/network': (context) => const NetworkHubPage(), // FIXED: Connected to Pillar 6
-        
-        // MODULES
+        '/visualizer': (context) => const TradeVisualizerPage(),
+        '/network': (context) => const NetworkHubPage(),
         '/settings': (context) => SettingsPage(onLocaleChange: _setLocale),
         '/profile': (context) => const ProfilePage(),
         '/editprofile': (context) => const EditProfilePage(),
       },
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _checkInitialSession();
+  }
+
+  Future<void> _checkInitialSession() async {
+    // Shorter delay for cleaner UX, but long enough for Supabase to init
+    await Future.delayed(const Duration(milliseconds: 500));
+    final session = Supabase.instance.client.auth.currentSession;
+    
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(context, session != null ? '/mainmenu' : '/login');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: MBricsTheme.terminalBlack,
+      body: const Center(
+        child: CircularProgressIndicator(color: MBricsTheme.goldBase),
+      ),
     );
   }
 }

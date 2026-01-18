@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout/master_layout.dart';
 import '../theme/mbrics_theme.dart';
+import '../widgets/mbrics_components.dart';
 
 class Web3TrustPage extends StatelessWidget {
   const Web3TrustPage({super.key});
@@ -15,17 +16,18 @@ class Web3TrustPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           side: const BorderSide(color: MBricsTheme.goldBase, width: 1),
         ),
-        title: Text(t.trustPopupTitle, 
-          style: const TextStyle(fontFamily: 'ShareTechMono', color: MBricsTheme.goldBase, fontSize: 18)),
+        // Simple language for everyday users
+        title: Text("System Notice", 
+          style: MBricsTheme.monoStyle.copyWith(fontSize: 18, color: MBricsTheme.goldBase)),
         content: Text(
           t.trustPopupBody,
-          style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 14, height: 1.5),
+          style: MBricsTheme.bodyStyle.copyWith(color: Colors.white, fontSize: 14, height: 1.5),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(t.trustPopupAction, 
-              style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.goldBase, fontWeight: FontWeight.bold)),
+            child: Text("OK", 
+              style: MBricsTheme.bodyStyle.copyWith(color: MBricsTheme.goldBase, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -46,16 +48,19 @@ class Web3TrustPage extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios_new, color: MBricsTheme.goldBase, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
-          title: Text(t.trustPageTitle, 
-            style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          title: Text("TRUST ENGINE PROTOCOL", 
+            style: MBricsTheme.monoStyle.copyWith(fontSize: 10, letterSpacing: 2)),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // --- HERO SECTION ---
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
                     flex: 3,
@@ -63,74 +68,77 @@ class Web3TrustPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(t.trustHeroTitle1, 
-                          style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 32, fontWeight: FontWeight.w900, height: 1.1)),
+                          style: MBricsTheme.headingStyle.copyWith(fontSize: 32, height: 1.1)),
                         Text(t.trustHeroTitle2, 
-                          style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.goldBase, fontSize: 32, fontWeight: FontWeight.w900, height: 1.1)),
-                        const SizedBox(height: 15),
-                        Text(
-                          t.trustHeroSlogan, 
-                          style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.silver, fontSize: 16, fontWeight: FontWeight.w300),
-                        ),
+                          style: MBricsTheme.headingStyle.copyWith(color: MBricsTheme.goldBase, fontSize: 32, height: 1.1)),
                       ],
                     ),
                   ),
+                  const SizedBox(width: 15),
                   Expanded(
                     flex: 2,
-                    child: Center(
-                      child: Image.asset("assets/escrow_explain.png", height: 160),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: MBricsTheme.goldBase.withOpacity(0.5), width: 1),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(7),
+                        child: Image.asset(
+                          'assets/icons/trust_engine_top.png',
+                          fit: BoxFit.cover,
+                          errorBuilder: (c, e, s) => Container(
+                            height: 80,
+                            color: Colors.black,
+                            child: const Icon(Icons.gavel_rounded, color: MBricsTheme.goldBase),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 40),
+              
+              const SizedBox(height: 30),
+              
+              // --- THE DIGITAL POLICEMAN INTRO BLOCK ---
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: MBricsTheme.goldBase.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: MBricsTheme.goldBase.withOpacity(0.2)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(t.trustIntroTitle, 
+                      style: MBricsTheme.headingStyle.copyWith(color: MBricsTheme.goldBase, fontSize: 14, letterSpacing: 1)),
+                    const SizedBox(height: 10),
+                    Text(t.trustIntroBody, 
+                      style: MBricsTheme.bodyStyle.copyWith(color: Colors.white, fontSize: 14, height: 1.5)),
+                  ],
+                ),
+              ),
 
-              // --- GRID SECTIONS ---
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _sectionHeader(t.trustSection1Title),
-                        _buildFeatureTile(
-                          Icons.security, 
-                          t.trustSection1Feature1Title, 
-                          t.trustSection1Feature1Desc,
-                        ),
-                        _buildFeatureTile(
-                          Icons.document_scanner_outlined, 
-                          t.trustSection1Feature2Title, 
-                          t.trustSection1Feature2Desc,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _sectionHeader(t.trustSection2Title),
-                        _buildFeatureTile(
-                          Icons.lock_reset_outlined, 
-                          t.trustSection2Feature1Title, 
-                          t.trustSection2Feature1Desc,
-                        ),
-                        _buildFeatureTile(
-                          Icons.account_balance_wallet_outlined, 
-                          t.trustSection2Feature2Title, 
-                          t.trustSection2Feature2Desc,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              const SizedBox(height: 35),
+
+              
+
+              // --- CORE TECHNOLOGY SECTIONS ---
+              _sectionHeader(t.trustSection1Title),
+              _buildFeatureTile(Icons.hub_outlined, t.trustSection1Feature1Title, t.trustSection1Feature1Desc),
+              _buildFeatureTile(Icons.currency_bitcoin_outlined, t.trustSection1Feature2Title, t.trustSection1Feature2Desc),
+              
+              const SizedBox(height: 15),
+              
+              _sectionHeader(t.trustSection2Title),
+              _buildFeatureTile(Icons.verified_user_outlined, t.trustSection2Feature1Title, t.trustSection2Feature1Desc),
+              _buildFeatureTile(Icons.account_balance_wallet_outlined, t.trustSection2Feature2Title, t.trustSection2Feature2Desc),
               
               const SizedBox(height: 40),
               
-              _HoverButton(
+              HoverButton(
                 buttonText: t.trustCtaButton,
                 onPressed: () => _showDemoNotice(context, t),
               ),
@@ -154,36 +162,38 @@ class Web3TrustPage extends StatelessWidget {
 
   Widget _sectionHeader(String title) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: Text(title, 
-        style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.2)),
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Text(title.toUpperCase(), 
+        style: MBricsTheme.headingStyle.copyWith(fontSize: 10, color: MBricsTheme.goldBase, letterSpacing: 1)),
     );
   }
 
   Widget _buildFeatureTile(IconData icon, String title, String desc) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      padding: const EdgeInsets.all(18),
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.white.withOpacity(0.1)),
       ),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(icon, color: MBricsTheme.goldBase, size: 20),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(title, 
-                  style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.goldBase, fontWeight: FontWeight.w900, fontSize: 11)),
-              ),
-            ],
+          Icon(icon, color: MBricsTheme.goldBase, size: 24),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, 
+                  style: MBricsTheme.headingStyle.copyWith(fontSize: 15, color: Colors.white)),
+                const SizedBox(height: 4),
+                Text(desc, 
+                  style: MBricsTheme.bodyStyle.copyWith(fontSize: 13, height: 1.4)),
+              ],
+            ),
           ),
-          const SizedBox(height: 10),
-          Text(desc, style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.silver, fontSize: 11, height: 1.5)),
         ],
       ),
     );
@@ -197,49 +207,9 @@ class Web3TrustPage extends StatelessWidget {
         border: Border.all(color: Colors.white.withOpacity(0.1)),
       ),
       child: Center(
-        child: Text(
-          text, 
+        child: Text(text.toUpperCase(), 
           textAlign: TextAlign.center,
-          style: const TextStyle(fontFamily: 'ShareTechMono', color: MBricsTheme.silver, fontSize: 9, letterSpacing: 0.5),
-        ),
-      ),
-    );
-  }
-}
-
-class _HoverButton extends StatefulWidget {
-  final VoidCallback onPressed;
-  final String buttonText;
-  const _HoverButton({required this.onPressed, required this.buttonText});
-  @override
-  State<_HoverButton> createState() => _HoverButtonState();
-}
-
-class _HoverButtonState extends State<_HoverButton> {
-  bool _isHovered = false;
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: GestureDetector(
-        onTap: widget.onPressed,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          width: double.infinity,
-          height: 55,
-          decoration: BoxDecoration(
-            color: _isHovered ? Colors.white : MBricsTheme.goldBase,
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: _isHovered ? [BoxShadow(color: MBricsTheme.goldBase.withOpacity(0.4), blurRadius: 15)] : [],
-          ),
-          child: Center(
-            child: Text(
-              widget.buttonText, 
-              style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.terminalBlack, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1),
-            ),
-          ),
-        ),
+          style: MBricsTheme.monoStyle.copyWith(color: MBricsTheme.silver, fontSize: 9)),
       ),
     );
   }

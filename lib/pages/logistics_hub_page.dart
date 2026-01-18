@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mbrics/l10n/app_localizations.dart'; // Ensure this matches your generated path
 import '../layout/master_layout.dart';
+import '../widgets/mbrics_components.dart';
 
 class LogisticsHubPage extends StatelessWidget {
   const LogisticsHubPage({super.key});
