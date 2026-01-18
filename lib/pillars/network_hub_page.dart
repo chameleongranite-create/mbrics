@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout/master_layout.dart';
 import '../theme/mbrics_theme.dart';
+import '../widgets/mbrics_components.dart';
 
 class NetworkHubPage extends StatelessWidget {
   const NetworkHubPage({super.key});
@@ -15,17 +16,18 @@ class NetworkHubPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           side: const BorderSide(color: MBricsTheme.goldBase, width: 1),
         ),
-        title: Text(t.trustPopupTitle, 
-          style: const TextStyle(fontFamily: 'ShareTechMono', color: MBricsTheme.goldBase, fontSize: 18)),
+        // Simple language for non-tech users
+        title: Text("System Notice", 
+          style: MBricsTheme.monoStyle.copyWith(fontSize: 18, color: MBricsTheme.goldBase)),
         content: Text(
           t.networkDemoNotice,
-          style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 14, height: 1.5),
+          style: MBricsTheme.bodyStyle.copyWith(color: Colors.white, fontSize: 14, height: 1.5),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(t.trustPopupAction, 
-              style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.goldBase, fontWeight: FontWeight.bold)),
+            child: Text("OK", 
+              style: MBricsTheme.bodyStyle.copyWith(color: MBricsTheme.goldBase, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -47,51 +49,79 @@ class NetworkHubPage extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(t.networkPageTitle.toUpperCase(), 
-            style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+            style: MBricsTheme.headingStyle.copyWith(fontSize: 11, letterSpacing: 2)),
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          physics: const ClampingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // --- HERO SECTION ---
-              Text(t.networkHeroTitle1, 
-                style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 32, fontWeight: FontWeight.w900, height: 1.1)),
-              Text(t.networkHeroTitle2, 
-                style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.goldBase, fontSize: 32, fontWeight: FontWeight.w900, height: 1.1)),
-              const SizedBox(height: 15),
-              Text(t.networkHeroSlogan, 
-                style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.silver, fontSize: 14, height: 1.5)),
-              
-              const SizedBox(height: 35),
-
-              // --- PARTNER LIST (Development Preview) ---
-              _sectionHeader("Global Ocean Carriers"),
-              _partnerTile("Maersk Line", "Global", "Vetting in progress"),
-              _partnerTile("MSC Shipping", "Global", "Vetting in progress"),
-              
-              const SizedBox(height: 25),
-              _sectionHeader("Regional Logistics Experts"),
-              _partnerTile("JHB Logistics", "South Africa", "Planned Partner"),
-              _partnerTile("Beijing Logistics Hub", "China", "Planned Partner"),
-              
-              const SizedBox(height: 40),
-              
-              // --- CTA BUTTON ---
-              _HoverButton(
-                buttonText: t.networkCtaButton,
-                onPressed: () => _showDemoNotice(context, t),
+              // --- FULL WIDTH NETWORK LOGO ---
+              Container(
+                width: double.infinity,
+                height: 140,
+                color: Colors.black,
+                child: Center(
+                  child: Image.asset(
+                    'assets/icons/network.png', // FIXED: Single path
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) => 
+                      const Icon(Icons.hub_outlined, color: MBricsTheme.goldBase, size: 50),
+                  ),
+                ),
               ),
+              
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // --- HERO SECTION ---
+                    Text(t.networkHeroTitle1, 
+                      style: MBricsTheme.headingStyle.copyWith(fontSize: 32, height: 1.1)),
+                    Text(t.networkHeroTitle2, 
+                      style: MBricsTheme.headingStyle.copyWith(color: MBricsTheme.goldBase, fontSize: 32, height: 1.1)),
+                    const SizedBox(height: 15),
+                    Text(t.networkHeroSlogan, 
+                      style: MBricsTheme.bodyStyle.copyWith(fontSize: 14, height: 1.5)),
+                    
+                    const SizedBox(height: 35),
 
-              const SizedBox(height: 30),
+                    // --- INSTITUTIONAL CATEGORIES ---
+                    
+                    _sectionHeader(t.networkSectionRegulatory),
+                    _partnerTile(t.networkPartnerCentralBank, "Global Protocol", t.networkStatusActive),
+                    
+                    const SizedBox(height: 25),
+                    _sectionHeader(t.networkSectionInfrastructure),
+                    _partnerTile(t.networkPartnerGlobal500, "Maritime & Air", t.networkStatusReady),
+                    _partnerTile(t.networkPartnerInstitutional, "Regional Logistics", t.networkStatusVetting),
+                    
+                    const SizedBox(height: 25),
+                    _sectionHeader(t.networkSectionFinance),
+                    _partnerTile(t.networkPartnerBanks, "Forex & Liquidity", t.networkStatusBinding),
+                    
+                    const SizedBox(height: 40),
+                    
+                    // --- CTA BUTTON ---
+                    HoverButton(
+                      buttonText: t.networkCtaButton,
+                      onPressed: () => _showDemoNotice(context, t),
+                    ),
 
-              // --- CONCEPT FOOTERS ---
-              Row(
-                children: [
-                  Expanded(child: _conceptTag(t.networkStatusTag)),
-                  const SizedBox(width: 15),
-                  Expanded(child: _conceptTag(t.networkEngineTag)),
-                ],
+                    const SizedBox(height: 30),
+
+                    // --- CONCEPT FOOTERS ---
+                    Row(
+                      children: [
+                        Expanded(child: _conceptTag(t.networkTagTrust)),
+                        const SizedBox(width: 15),
+                        Expanded(child: _conceptTag(t.networkTagVerified)),
+                      ],
+                    ),
+                    const SizedBox(height: 40),
+                  ],
+                ),
               ),
             ],
           ),
@@ -104,11 +134,11 @@ class NetworkHubPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Text(title.toUpperCase(), 
-        style: const TextStyle(fontFamily: 'Inter', fontSize: 10, fontWeight: FontWeight.w900, color: MBricsTheme.goldBase, letterSpacing: 1)),
+        style: MBricsTheme.headingStyle.copyWith(fontSize: 10, color: MBricsTheme.goldBase, letterSpacing: 1)),
     );
   }
 
-  Widget _partnerTile(String name, String region, String status) {
+  Widget _partnerTile(String category, String layer, String status) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -119,14 +149,25 @@ class NetworkHubPage extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.verified_outlined, color: Colors.blueGrey, size: 20),
+          const Icon(Icons.shield_outlined, color: MBricsTheme.goldBase, size: 20),
           const SizedBox(width: 15),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, style: const TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white)),
-                Text("$region • $status", style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.silver, fontSize: 11)),
+                Text(category, 
+                  maxLines: 1, 
+                  overflow: TextOverflow.ellipsis,
+                  style: MBricsTheme.headingStyle.copyWith(fontSize: 15, color: Colors.white)),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Text(layer, style: MBricsTheme.bodyStyle.copyWith(fontSize: 11)),
+                    const Spacer(),
+                    Text(status.toUpperCase(), 
+                      style: MBricsTheme.monoStyle.copyWith(fontSize: 9)),
+                  ],
+                ),
               ],
             ),
           ),
@@ -145,43 +186,7 @@ class NetworkHubPage extends StatelessWidget {
       child: Center(
         child: Text(text.toUpperCase(), 
           textAlign: TextAlign.center,
-          style: const TextStyle(fontFamily: 'ShareTechMono', color: MBricsTheme.silver, fontSize: 9, letterSpacing: 0.5)),
-      ),
-    );
-  }
-}
-
-// Re-using the _HoverButton logic from previous pages for consistency
-class _HoverButton extends StatefulWidget {
-  final VoidCallback onPressed;
-  final String buttonText;
-  const _HoverButton({required this.onPressed, required this.buttonText});
-  @override
-  State<_HoverButton> createState() => _HoverButtonState();
-}
-
-class _HoverButtonState extends State<_HoverButton> {
-  bool _isHovered = false;
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: GestureDetector(
-        onTap: widget.onPressed,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          width: double.infinity,
-          height: 55,
-          decoration: BoxDecoration(
-            color: _isHovered ? Colors.white : MBricsTheme.goldBase,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Center(
-            child: Text(widget.buttonText, 
-              style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.terminalBlack, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
-          ),
-        ),
+          style: MBricsTheme.monoStyle.copyWith(color: MBricsTheme.silver, fontSize: 9)),
       ),
     );
   }

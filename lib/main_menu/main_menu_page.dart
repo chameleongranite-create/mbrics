@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../l10n/app_localizations.dart';
 import '../layout/master_layout.dart';
+import '../theme/mbrics_theme.dart';
 
 class MainMenuPage extends StatefulWidget {
   const MainMenuPage({super.key, this.onLocaleChange});
@@ -14,44 +15,31 @@ class MainMenuPage extends StatefulWidget {
 class _MainMenuPageState extends State<MainMenuPage> {
   Map<String, dynamic>? userData;
 
-  // mBrics Palette
-  static const Color goldBase = Color(0xFFC2994B);
-  static const Color offWhite = Color(0xFFF8F9FA); 
-  static const Color pureWhite = Colors.white;
-  static const Color terminalBlack = Color(0xFF121212); 
-  static const Color silver = Color(0xFFA7A9AC);
-  static const Color terminalGreen = Color(0xFF2E7D32); 
-
   @override
   void initState() {
     super.initState();
     _fetchProfile();
   }
 
-  // --- LOGIC: Fetching the User's Personal Name ---
   Future<void> _fetchProfile() async {
     final user = Supabase.instance.client.auth.currentUser;
     if (user == null) return;
     
-    final fullName = user.userMetadata?['full_name'];
-    final name = user.userMetadata?['name'];
-    final email = user.email;
+    final String? fullName = user.userMetadata?['full_name'];
+    final String? name = user.userMetadata?['name'];
+    final String? email = user.email;
 
     if (mounted) {
       setState(() {
-        String displayName = "AUTHORIZED PARTNER";
-        
-        if (fullName != null && fullName.toString().isNotEmpty) {
-          displayName = fullName.toString();
-        } else if (name != null && name.toString().isNotEmpty) {
-          displayName = name.toString();
+        String displayName = "Partner";
+        if (fullName != null && fullName.isNotEmpty) {
+          displayName = fullName;
+        } else if (name != null && name.isNotEmpty) {
+          displayName = name;
         } else if (email != null) {
           displayName = email.split('@')[0];
         }
-
-        userData = {
-          'displayName': displayName.toUpperCase() 
-        };
+        userData = {'displayName': displayName};
       });
     }
   }
@@ -72,12 +60,13 @@ class _MainMenuPageState extends State<MainMenuPage> {
     return MasterLayout(
       onLocaleChange: widget.onLocaleChange,
       child: Scaffold(
-        backgroundColor: offWhite,
-        body: Column(
-          children: [
-            _buildSystemStatusBar(t), // Passed 't' here
-            Expanded(
-              child: SingleChildScrollView(
+        backgroundColor: const Color(0xFFF2F4F7), // Institutional soft grey
+        body: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(), // Mobile flicker fix
+          child: Column(
+            children: [
+              _buildSystemStatusBar(t),
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,11 +81,12 @@ class _MainMenuPageState extends State<MainMenuPage> {
                             children: [
                               _buildHeroHeader(t),
                               const SizedBox(height: 50),
+                              
                               _buildPillarGrid(t, screenWidth),
                               const SizedBox(height: 60),
-                              _QuickAccessRow(onLocaleChange: widget.onLocaleChange, t: t), // Passed 't'
+                              _QuickAccessRow(onLocaleChange: widget.onLocaleChange, t: t),
                               const SizedBox(height: 40),
-                              _FooterBranding(t: t), // Passed 't'
+                              _FooterBranding(),
                             ],
                           ),
                         ),
@@ -106,8 +96,8 @@ class _MainMenuPageState extends State<MainMenuPage> {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -119,29 +109,26 @@ class _MainMenuPageState extends State<MainMenuPage> {
         color: Colors.white,
         border: Border(bottom: BorderSide(color: Colors.black.withOpacity(0.05))),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              const Text("mBrics", 
-                style: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w900, color: goldBase, letterSpacing: 1)),
+              Text("mBRICS", style: MBricsTheme.headingStyle.copyWith(color: MBricsTheme.goldBase, letterSpacing: 1.5, fontSize: 14)),
               const SizedBox(width: 15),
               const _PulseDot(),
               const SizedBox(width: 8),
-              Text(t.authNodeStandby.toUpperCase(), // Localized
-                style: const TextStyle(fontFamily: 'ShareTechMono', color: terminalGreen, fontSize: 10, fontWeight: FontWeight.bold)),
+              Text(t.globalTrustActive.toUpperCase(), style: MBricsTheme.monoStyle.copyWith(color: const Color(0xFF2E7D32), fontSize: 10, fontWeight: FontWeight.bold)),
             ],
           ),
           Row(
             children: [
               _miniLangBtn("EN", () => widget.onLocaleChange?.call(const Locale('en'))),
-              const Text("|", style: TextStyle(color: silver, fontSize: 10)),
+              const Text("|", style: TextStyle(color: MBricsTheme.silver, fontSize: 10)),
               _miniLangBtn("中文", () => widget.onLocaleChange?.call(const Locale('zh'))),
               const SizedBox(width: 20),
-              const Text("BLOCKCHAIN v2.0", 
-                style: TextStyle(fontFamily: 'ShareTechMono', color: silver, fontSize: 10)),
+              Text("WEB3 ENGINE v2.0", style: MBricsTheme.monoStyle.copyWith(color: MBricsTheme.silver, fontSize: 10)),
             ],
           ),
         ],
@@ -154,26 +141,24 @@ class _MainMenuPageState extends State<MainMenuPage> {
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: Text(label, style: const TextStyle(fontFamily: 'Inter', fontSize: 10, fontWeight: FontWeight.bold, color: terminalBlack)),
+        child: Text(label, style: MBricsTheme.bodyStyle.copyWith(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black87)),
       ),
     );
   }
 
   Widget _buildHeroHeader(AppLocalizations t) {
+    final nameToDisplay = userData?['displayName'] ?? "Partner";
     return Column(
       children: [
+        Text(_getGreeting(t), style: MBricsTheme.bodyStyle.copyWith(color: MBricsTheme.silver, fontSize: 18, fontWeight: FontWeight.w300)),
+        const SizedBox(height: 8),
         Text(
-          _getGreeting(t),
-          style: const TextStyle(fontFamily: 'Inter', color: silver, fontSize: 24, fontWeight: FontWeight.w300, letterSpacing: -0.5),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          userData?['displayName'] ?? "AUTHORIZED PARTNER", 
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontFamily: 'Inter', color: terminalBlack, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2),
+          t.mainGreeting(nameToDisplay), 
+          textAlign: TextAlign.center, 
+          style: MBricsTheme.headingStyle.copyWith(color: Colors.black, fontSize: 28, letterSpacing: -0.5)
         ),
         const SizedBox(height: 20),
-        Container(width: 60, height: 2, color: goldBase),
+        Container(width: 40, height: 2, color: MBricsTheme.goldBase),
       ],
     );
   }
@@ -186,85 +171,85 @@ class _MainMenuPageState extends State<MainMenuPage> {
       crossAxisSpacing: 25,
       mainAxisSpacing: 25,
       children: [
-        _buildPillarItem(t.feature5Title, "assets/icons/mm_01.png", t.feature5Line1, '/ddp'),
-        _buildPillarItem(t.feature1Title, "assets/icons/mm_02.png", t.feature1Line1, '/pay'),
-        _buildPillarItem(t.feature6Title, "assets/icons/mm_03.png", t.feature6Line1, '/trust_engine'),
-        _buildPillarItem(t.feature2Title, "assets/icons/mm_04.png", t.feature2Line1, '/forex'),
-        _buildPillarItem(t.feature4Title, "assets/icons/mm_05.png", t.feature4Line1, '/trade_visual'),
-        _buildPillarItem(t.feature3Title, "assets/icons/mm_06.png", t.feature3Line1, '/network'),
+        _HoverPillarItem(title: t.pillar1Title, assetPath: "assets/icons/mm_01.png", subtitle: t.pillar1Subtitle, route: '/ddp'),
+        _HoverPillarItem(title: t.pillar2Title, assetPath: "assets/icons/mm_02.png", subtitle: t.pillar2Subtitle, route: '/pay'),
+        _HoverPillarItem(title: t.pillar3Title, assetPath: "assets/icons/mm_03.png", subtitle: t.pillar3Subtitle, route: '/trust_engine'),
+        _HoverPillarItem(title: t.pillar4Title, assetPath: "assets/icons/mm_04.png", subtitle: t.pillar4Subtitle, route: '/forex'),
+        _HoverPillarItem(title: t.pillar5Title, assetPath: "assets/icons/mm_05.png", subtitle: t.pillar5Subtitle, route: '/visualizer'),
+        _HoverPillarItem(title: t.pillar6Title, assetPath: "assets/icons/mm_06.png", subtitle: t.pillar6Subtitle, route: '/network'),
       ],
-    );
-  }
-
-  Widget _buildPillarItem(String title, String assetPath, String subtitle, String route) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: () => Navigator.pushNamed(context, route),
-        child: Container(
-          decoration: BoxDecoration(
-            color: pureWhite,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 15, offset: const Offset(0, 8)),
-            ],
-            border: Border.all(color: Colors.black.withOpacity(0.05)),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(assetPath, width: 45, height: 45, fit: BoxFit.contain, 
-                errorBuilder: (c,e,s) => const Icon(Icons.hub_outlined, size: 30, color: goldBase)),
-              const SizedBox(height: 12),
-              Text(title.toUpperCase(), textAlign: TextAlign.center,
-                style: const TextStyle(fontFamily: 'Inter', color: terminalBlack, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 0.8)),
-              const SizedBox(height: 6),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Text(subtitle, textAlign: TextAlign.center,
-                  style: const TextStyle(fontFamily: 'Inter', color: silver, fontSize: 9, fontWeight: FontWeight.w500, height: 1.2)),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 
   Widget _buildSideInsight(bool isLeft, AppLocalizations t) {
     return _SideInsightCard(
-      title: isLeft ? "BLOCKCHAIN STATUS" : "WEB3 ENGINE",
+      title: isLeft ? t.blockchainStatus : t.web3EngineTitle,
       icon: isLeft ? Icons.hub_outlined : Icons.auto_awesome_outlined,
       lines: isLeft 
-        ? ["Finality: Valid", "Node Latency: 14ms", "Global Trade Trust: Active"]
-        : [t.feature4Line2, "Doc Verification: 100%", "Digital Trust: Enabled"], // Localized line
+        ? [t.finalityValid, t.nodeLatency, t.globalTrustActive]
+        : [t.docVerification, t.digitalTrustEnabled, "Protocol Level Encryption"],
     );
   }
 }
 
-class _PulseDot extends StatefulWidget {
-  const _PulseDot();
+class _HoverPillarItem extends StatefulWidget {
+  final String title;
+  final String assetPath;
+  final String subtitle;
+  final String route;
+  const _HoverPillarItem({required this.title, required this.assetPath, required this.subtitle, required this.route});
+
   @override
-  State<_PulseDot> createState() => _PulseDotState();
+  State<_HoverPillarItem> createState() => _HoverPillarItemState();
 }
 
-class _PulseDotState extends State<_PulseDot> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 1))..repeat(reverse: true);
-  }
-  @override
-  void dispose() { _controller.dispose(); super.dispose(); }
+class _HoverPillarItemState extends State<_HoverPillarItem> {
+  bool _isHovered = false;
+
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _controller, 
-      child: Container(
-        width: 8, height: 8, 
-        decoration: const BoxDecoration(color: Color(0xFF2E7D32), shape: BoxShape.circle)
-      )
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () => Navigator.pushNamed(context, widget.route),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          transform: _isHovered ? (Matrix4.identity()..translate(0, -8, 0)) : Matrix4.identity(),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: _isHovered ? MBricsTheme.goldBase.withOpacity(0.15) : Colors.black.withOpacity(0.03), 
+                blurRadius: _isHovered ? 25 : 15, 
+                offset: const Offset(0, 10)
+              )
+            ],
+            border: Border.all(
+              color: _isHovered ? MBricsTheme.goldBase : Colors.black.withOpacity(0.05), 
+              width: _isHovered ? 1.5 : 1
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(widget.assetPath, height: 40, 
+                errorBuilder: (c,e,s) => const Icon(Icons.token_outlined, size: 30, color: MBricsTheme.goldBase)),
+              const SizedBox(height: 15),
+              Text(widget.title.toUpperCase(), textAlign: TextAlign.center, 
+                style: MBricsTheme.headingStyle.copyWith(color: Colors.black, fontSize: 11, letterSpacing: 0.5)),
+              const SizedBox(height: 6),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Text(widget.subtitle, textAlign: TextAlign.center, 
+                  style: MBricsTheme.bodyStyle.copyWith(color: Colors.black54, fontSize: 9, height: 1.3)),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -289,21 +274,19 @@ class _SideInsightCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, size: 16, color: const Color(0xFFC2994B)),
+              Icon(icon, size: 16, color: MBricsTheme.goldBase),
               const SizedBox(width: 10),
-              Text(title, 
-                style: const TextStyle(fontFamily: 'Inter', color: Color(0xFF121212), fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)),
+              Text(title.toUpperCase(), style: MBricsTheme.monoStyle.copyWith(fontWeight: FontWeight.bold, fontSize: 11, letterSpacing: 1)),
             ],
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
           ...lines.map((line) => Padding(
-            padding: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.only(bottom: 12),
             child: Row(
               children: [
-                const Icon(Icons.check_circle_outline, size: 10, color: Color(0xFF2E7D32)),
-                const SizedBox(width: 8),
-                Expanded(child: Text(line, 
-                  style: const TextStyle(fontFamily: 'Inter', fontSize: 10, color: Colors.black54))),
+                const Icon(Icons.shield_outlined, size: 12, color: Color(0xFF2E7D32)),
+                const SizedBox(width: 10),
+                Expanded(child: Text(line, style: MBricsTheme.bodyStyle.copyWith(fontSize: 10, color: Colors.black54))),
               ],
             ),
           )),
@@ -315,7 +298,7 @@ class _SideInsightCard extends StatelessWidget {
 
 class _QuickAccessRow extends StatelessWidget {
   final void Function(Locale)? onLocaleChange;
-  final AppLocalizations t; // Added localizations
+  final AppLocalizations t;
   const _QuickAccessRow({this.onLocaleChange, required this.t});
 
   @override
@@ -323,13 +306,13 @@ class _QuickAccessRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _miniBtn("ENGLISH", () => onLocaleChange?.call(const Locale('en'))),
+        _miniBtn("EN", () => onLocaleChange?.call(const Locale('en'))),
         const SizedBox(width: 10),
         _miniBtn("中文", () => onLocaleChange?.call(const Locale('zh'))),
-        const SizedBox(width: 25),
-        _miniBtn(t.logout.toUpperCase(), () async { // Localized
+        const SizedBox(width: 30),
+        _miniBtn(t.terminateSession.toUpperCase(), () async {
           await Supabase.instance.client.auth.signOut();
-          if (context.mounted) Navigator.pushReplacementNamed(context, '/login');
+          Navigator.pushReplacementNamed(context, '/login');
         }, isWarning: true),
       ],
     );
@@ -338,27 +321,48 @@ class _QuickAccessRow extends StatelessWidget {
   Widget _miniBtn(String label, VoidCallback onTap, {bool isWarning = false}) {
     return TextButton(
       onPressed: onTap,
-      child: Text(label, style: TextStyle(
-        fontFamily: 'ShareTechMono',
-        color: isWarning ? Colors.redAccent : const Color(0xFFC2994B), 
-        fontSize: 11,
+      child: Text(label, style: MBricsTheme.monoStyle.copyWith(
+        color: isWarning ? Colors.redAccent : MBricsTheme.goldBase, 
+        fontSize: 12,
         fontWeight: FontWeight.bold,
       )),
     );
   }
 }
 
+class _PulseDot extends StatefulWidget {
+  const _PulseDot();
+  @override
+  State<_PulseDot> createState() => _PulseDotState();
+}
+
+class _PulseDotState extends State<_PulseDot> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500))..repeat(reverse: true);
+  }
+  @override
+  void dispose() { _controller.dispose(); super.dispose(); }
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _controller, 
+      child: Container(width: 8, height: 8, decoration: const BoxDecoration(color: Color(0xFF2E7D32), shape: BoxShape.circle))
+    );
+  }
+}
+
 class _FooterBranding extends StatelessWidget {
-  final AppLocalizations t; // Added localizations
-  const _FooterBranding({required this.t});
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Divider(color: Colors.black.withOpacity(0.05)),
         const SizedBox(height: 20),
-        Text(t.joinNetwork.toUpperCase(), // Localized
-          style: const TextStyle(fontFamily: 'Inter', fontSize: 9, fontWeight: FontWeight.bold, color: Colors.black26, letterSpacing: 2)),
+        Text("mBRICS WEB3 ENGINE • GLOBAL TRADE TRUST PROTOCOL", 
+          style: MBricsTheme.monoStyle.copyWith(fontSize: 9, color: Colors.black26, letterSpacing: 2)),
       ],
     );
   }

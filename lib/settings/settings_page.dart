@@ -1,6 +1,7 @@
 import "../layout/master_layout.dart";
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/mbrics_components.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key, this.onLocaleChange});

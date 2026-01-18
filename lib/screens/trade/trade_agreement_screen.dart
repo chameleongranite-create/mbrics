@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../layout/master_layout.dart';
+import '../widgets/mbrics_components.dart';
 
 class TradeAgreementScreen extends StatelessWidget {
   const TradeAgreementScreen({super.key});

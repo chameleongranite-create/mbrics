@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mbrics/l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart'; // Updated path to match standard l10n
 import '../layout/master_layout.dart';
 import '../theme/mbrics_theme.dart';
+import '../widgets/mbrics_components.dart';
 
 class DdpLogisticsPage extends StatelessWidget {
   const DdpLogisticsPage({super.key});
@@ -15,15 +16,15 @@ class DdpLogisticsPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(15), 
           side: const BorderSide(color: MBricsTheme.goldBase, width: 1)
         ),
-        title: Text(t.trustPopupTitle, style: const TextStyle(fontFamily: 'ShareTechMono', color: MBricsTheme.goldBase)),
+        title: Text("SYSTEM NOTICE", style: MBricsTheme.monoStyle.copyWith(fontSize: 16, color: MBricsTheme.goldBase)),
         content: Text(
-          t.ddpDemoNotice, // Localized
-          style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 14, height: 1.5),
+          t.ddpDemoNotice, 
+          style: MBricsTheme.bodyStyle.copyWith(color: Colors.white, fontSize: 13, height: 1.5)
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(t.trustPopupAction, style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.goldBase, fontWeight: FontWeight.bold)),
+            child: Text("OK", style: MBricsTheme.bodyStyle.copyWith(color: MBricsTheme.goldBase, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -44,85 +45,102 @@ class DdpLogisticsPage extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios_new, color: MBricsTheme.goldBase, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
-          title: Text(t.ddpPageTitle, 
-            style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+          title: Text("MBRICS WEB3 ENGINE", 
+            style: MBricsTheme.monoStyle.copyWith(fontSize: 10, letterSpacing: 2)),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // --- HERO SECTION ---
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    flex: 3,
+                    flex: 4,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(t.ddpHeroTitle1, style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 32, fontWeight: FontWeight.w900, height: 1.1)),
-                        Text(t.ddpHeroTitle2, style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.goldBase, fontSize: 32, fontWeight: FontWeight.w900, height: 1.1)),
-                        const SizedBox(height: 15),
-                        Text(t.ddpHeroSlogan, style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.silver, fontSize: 16, fontWeight: FontWeight.w300)),
+                        Text(t.ddpHeroTitle1, 
+                          style: MBricsTheme.headingStyle.copyWith(fontSize: 24, height: 1.1)),
+                        Text(t.ddpHeroTitle2, 
+                          style: MBricsTheme.headingStyle.copyWith(color: MBricsTheme.goldBase, fontSize: 24, height: 1.1)),
+                        const SizedBox(height: 10),
+                        Text(t.ddpTechStatus, 
+                          style: MBricsTheme.monoStyle.copyWith(color: MBricsTheme.silver, fontSize: 9)),
                       ],
                     ),
                   ),
+                  const SizedBox(width: 15),
                   Expanded(
-                    flex: 2,
-                    child: Center(
-                      child: Image.asset("assets/ddp_explain.png", height: 160),
+                    flex: 3, // Increased flex slightly for better visibility
+                    child: Container(
+                      height: 85,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: MBricsTheme.goldBase.withOpacity(0.3), width: 1),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(7),
+                        // FIXED: Path updated to match your file exactly with capital P
+                        child: Image.asset(
+                          'assets/ddP.png', 
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            color: Colors.black,
+                            child: const Icon(Icons.local_shipping_outlined, color: MBricsTheme.goldBase),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
-              ),
-              const SizedBox(height: 40),
-
-              // --- TWO-COLUMN EXPLANATION GRID ---
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _sectionHeader(t.ddpSection1Title),
-                        _buildFeatureTile(Icons.calculate_outlined, t.ddpSection1Feature1Title, t.ddpSection1Feature1Desc),
-                        _buildFeatureTile(Icons.public, t.ddpSection1Feature2Title, t.ddpSection1Feature2Desc),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _sectionHeader(t.ddpSection2Title),
-                        _buildFeatureTile(Icons.psychology_outlined, t.ddpSection2Feature1Title, t.ddpSection2Feature1Desc),
-                        _buildFeatureTile(Icons.lock_outline, t.ddpSection2Feature2Title, t.ddpSection2Feature2Desc),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 40),
-
-              // --- ACTION BUTTON ---
-              _HoverButton(
-                buttonText: t.ddpCtaButton,
-                onPressed: () => _showDemoNotice(context, t),
               ),
               
               const SizedBox(height: 30),
 
-              // --- TECHNICAL FOOTER TAGS ---
-              Row(
-                children: [
-                  Expanded(child: _conceptTag(t.ddpStatusTag)),
-                  const SizedBox(width: 15),
-                  Expanded(child: _conceptTag(t.ddpEngineTag)),
-                ],
+              // --- INTRO BLOCK ---
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: MBricsTheme.goldBase.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: MBricsTheme.goldBase.withOpacity(0.2)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(t.ddpIntroTitle, style: MBricsTheme.monoStyle.copyWith(fontSize: 14, color: MBricsTheme.goldBase)),
+                    const SizedBox(height: 12),
+                    Text(t.ddpIntroBody, style: MBricsTheme.bodyStyle.copyWith(color: Colors.white, fontSize: 13, height: 1.6)),
+                  ],
+                ),
               ),
+
+              const SizedBox(height: 30),
+
+              // --- FEATURE LIST ---
+              _sectionHeader(t.ddpSection1Title),
+              _buildFeatureTile(Icons.calculate_outlined, t.ddpSection1Feature1Title, t.ddpSection1Feature1Desc),
+              _buildFeatureTile(Icons.public, t.ddpSection1Feature2Title, t.ddpSection1Feature2Desc),
+              
+              const SizedBox(height: 15),
+              
+              _sectionHeader(t.ddpSection2Title),
+              _buildFeatureTile(Icons.psychology_outlined, t.ddpSection2Feature1Title, t.ddpSection2Feature1Desc),
+              _buildFeatureTile(Icons.lock_outline, t.ddpSection2Feature2Title, t.ddpSection2Feature2Desc),
+
+              const SizedBox(height: 40),
+
+              HoverButton(
+                buttonText: t.ddpCtaButton.toUpperCase(),
+                onPressed: () => _showDemoNotice(context, t),
+              ),
+              
               const SizedBox(height: 40),
             ],
           ),
@@ -133,90 +151,37 @@ class DdpLogisticsPage extends StatelessWidget {
 
   Widget _sectionHeader(String title) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: Text(title, 
-        style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.2)),
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Text(title.toUpperCase(), 
+        style: MBricsTheme.headingStyle.copyWith(fontSize: 10, color: MBricsTheme.goldBase, letterSpacing: 1.5)),
     );
   }
 
   Widget _buildFeatureTile(IconData icon, String title, String desc) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      padding: const EdgeInsets.all(18),
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
+        color: Colors.white.withOpacity(0.03),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.1)),
+        border: Border.all(color: Colors.white.withOpacity(0.08)),
       ),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(icon, color: MBricsTheme.goldBase, size: 20),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(title, 
-                  style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.goldBase, fontWeight: FontWeight.w900, fontSize: 11)),
-              ),
-            ],
+          Icon(icon, color: MBricsTheme.goldBase, size: 22),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title.toUpperCase(), style: MBricsTheme.headingStyle.copyWith(fontSize: 13, color: Colors.white)),
+                const SizedBox(height: 4),
+                Text(desc, style: MBricsTheme.bodyStyle.copyWith(fontSize: 12, height: 1.4, color: MBricsTheme.silver)),
+              ],
+            ),
           ),
-          const SizedBox(height: 10),
-          Text(desc, style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.silver, fontSize: 11, height: 1.5)),
         ],
-      ),
-    );
-  }
-
-  Widget _conceptTag(String text) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.white.withOpacity(0.1)),
-      ),
-      child: Center(
-        child: Text(
-          text, 
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontFamily: 'ShareTechMono', color: MBricsTheme.silver, fontSize: 9, letterSpacing: 0.5),
-        ),
-      ),
-    );
-  }
-}
-
-class _HoverButton extends StatefulWidget {
-  final VoidCallback onPressed;
-  final String buttonText;
-  const _HoverButton({required this.onPressed, required this.buttonText});
-  @override
-  State<_HoverButton> createState() => _HoverButtonState();
-}
-
-class _HoverButtonState extends State<_HoverButton> {
-  bool _isHovered = false;
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: GestureDetector(
-        onTap: widget.onPressed,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          width: double.infinity,
-          height: 55,
-          decoration: BoxDecoration(
-            color: _isHovered ? Colors.white : MBricsTheme.goldBase,
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: _isHovered ? [BoxShadow(color: MBricsTheme.goldBase.withOpacity(0.4), blurRadius: 15)] : [],
-          ),
-          child: Center(
-            child: Text(widget.buttonText, 
-              style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.terminalBlack, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
-          ),
-        ),
       ),
     );
   }

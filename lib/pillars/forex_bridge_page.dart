@@ -4,6 +4,7 @@ import 'dart:convert';
 import '../l10n/app_localizations.dart';
 import '../layout/master_layout.dart';
 import '../theme/mbrics_theme.dart';
+import '../widgets/mbrics_components.dart';
 
 class ForexBridgePage extends StatefulWidget {
   const ForexBridgePage({super.key});
@@ -26,6 +27,8 @@ class _ForexBridgePageState extends State<ForexBridgePage> {
     if (!mounted) return;
     setState(() => loading = true);
     try {
+      // Fetching live data for the Web3 Engine bridge
+      // Frankfurter is a reliable open source for currency data
       final response = await http.get(Uri.parse('https://api.frankfurter.app/latest?from=ZAR&to=CNY'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -50,17 +53,17 @@ class _ForexBridgePageState extends State<ForexBridgePage> {
           borderRadius: BorderRadius.circular(15),
           side: const BorderSide(color: MBricsTheme.goldBase, width: 1),
         ),
-        title: Text(t.trustPopupTitle, 
-          style: const TextStyle(fontFamily: 'ShareTechMono', color: MBricsTheme.goldBase, fontSize: 18)),
+        title: Text("ENGINE PROTOCOL", 
+          style: MBricsTheme.monoStyle.copyWith(color: MBricsTheme.goldBase, fontSize: 18)),
         content: Text(
           t.forexDemoNotice,
-          style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 14, height: 1.5),
+          style: MBricsTheme.bodyStyle.copyWith(color: Colors.white, fontSize: 14, height: 1.5),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(t.trustPopupAction, 
-              style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.goldBase, fontWeight: FontWeight.bold)),
+            child: Text("OK", 
+              style: MBricsTheme.bodyStyle.copyWith(color: MBricsTheme.goldBase, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -82,60 +85,71 @@ class _ForexBridgePageState extends State<ForexBridgePage> {
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(t.forexPageTitle.toUpperCase(), 
-            style: const TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2)),
+            style: MBricsTheme.headingStyle.copyWith(fontSize: 11, letterSpacing: 2)),
           actions: [
             IconButton(icon: const Icon(Icons.refresh, color: MBricsTheme.goldBase), onPressed: fetchRates)
           ],
         ),
-        body: loading 
-          ? const Center(child: CircularProgressIndicator(color: MBricsTheme.goldBase))
-          : SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        body: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: loading 
+                  ? Container(
+                      height: 200, 
+                      alignment: Alignment.center, 
+                      child: const CircularProgressIndicator(color: MBricsTheme.goldBase)
+                    )
+                  : _buildLockCard(t),
+              ),
+              const SizedBox(height: 35),
+
+              Text(t.forexSectionTitle, 
+                style: MBricsTheme.headingStyle.copyWith(fontSize: 12, color: MBricsTheme.goldBase, letterSpacing: 1.2)),
+              const SizedBox(height: 15),
+              Text(
+                t.forexDescription,
+                style: MBricsTheme.bodyStyle.copyWith(fontSize: 14, height: 1.6),
+              ),
+              
+              const SizedBox(height: 35),
+              
+              
+
+              _buildFeature(Icons.visibility_outlined, t.forexFeature1Title, t.forexFeature1Desc),
+              _buildFeature(Icons.lock_clock_outlined, t.forexFeature2Title, t.forexFeature2Desc),
+
+              const SizedBox(height: 40),
+              
+              HoverButton(
+                buttonText: t.forexCtaButton,
+                onPressed: () => _showDemoNotice(context, t),
+              ),
+              
+              const SizedBox(height: 30),
+              
+              Row(
                 children: [
-                  _buildLockCard(t),
-                  const SizedBox(height: 35),
-
-                  Text(t.forexSectionTitle, 
-                    style: const TextStyle(fontFamily: 'Inter', fontSize: 12, fontWeight: FontWeight.bold, color: MBricsTheme.goldBase, letterSpacing: 1.2)),
-                  const SizedBox(height: 15),
-                  Text(
-                    t.forexDescription,
-                    style: const TextStyle(fontFamily: 'Inter', fontSize: 14, height: 1.6, color: MBricsTheme.silver),
-                  ),
-                  
-                  const SizedBox(height: 35),
-                  
-                  _buildFeature(Icons.visibility_outlined, t.forexFeature1Title, t.forexFeature1Desc),
-                  _buildFeature(Icons.lock_clock_outlined, t.forexFeature2Title, t.forexFeature2Desc),
-
-                  const SizedBox(height: 40),
-                  
-                  _HoverButton(
-                    buttonText: t.forexCtaButton,
-                    onPressed: () => _showDemoNotice(context, t),
-                  ),
-                  
-                  const SizedBox(height: 30),
-                  
-                  Row(
-                    children: [
-                      Expanded(child: _conceptTag(t.forexStatusTag)),
-                      const SizedBox(width: 15),
-                      Expanded(child: _conceptTag(t.forexEngineTag)),
-                    ],
-                  ),
-                  const SizedBox(height: 40),
+                  Expanded(child: _conceptTag(t.forexStatusTag)),
+                  const SizedBox(width: 15),
+                  Expanded(child: _conceptTag(t.forexEngineTag)),
                 ],
               ),
-            ),
+              const SizedBox(height: 40),
+            ],
+          ),
+        ),
       ),
     );
   }
 
   Widget _buildLockCard(AppLocalizations t) {
     return Container(
+      key: const ValueKey("rateCard"),
       width: double.infinity,
       padding: const EdgeInsets.all(30),
       decoration: BoxDecoration(
@@ -146,19 +160,22 @@ class _ForexBridgePageState extends State<ForexBridgePage> {
       ),
       child: Column(
         children: [
-          Text(t.forexCardLabel.toUpperCase(), style: const TextStyle(fontFamily: 'ShareTechMono', color: MBricsTheme.silver, fontSize: 11, letterSpacing: 2)),
+          Text(t.forexCardLabel.toUpperCase(), style: MBricsTheme.monoStyle.copyWith(color: MBricsTheme.silver, letterSpacing: 2)),
           const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("1 ZAR ≈ ", style: TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 18)),
-              Text(zarToCny?.toStringAsFixed(4) ?? "—", 
-                style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.goldBase, fontSize: 36, fontWeight: FontWeight.bold)),
-              const Text(" CNY", style: TextStyle(fontFamily: 'Inter', color: Colors.white, fontSize: 18)),
-            ],
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("1 ZAR ≈ ", style: MBricsTheme.headingStyle.copyWith(fontSize: 18)),
+                Text(zarToCny?.toStringAsFixed(4) ?? "—", 
+                  style: MBricsTheme.headingStyle.copyWith(color: MBricsTheme.goldBase, fontSize: 36)),
+                Text(" CNY", style: MBricsTheme.headingStyle.copyWith(fontSize: 18)),
+              ],
+            ),
           ),
           const Divider(color: Colors.white10, height: 40),
-          Text(t.forexCardStatus, style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.silver, fontSize: 11)),
+          Text(t.forexCardStatus, style: MBricsTheme.bodyStyle.copyWith(fontSize: 11)),
         ],
       ),
     );
@@ -175,9 +192,9 @@ class _ForexBridgePageState extends State<ForexBridgePage> {
           Expanded(child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: const TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white)),
+              Text(title, style: MBricsTheme.headingStyle.copyWith(fontSize: 15, color: Colors.white)),
               const SizedBox(height: 5),
-              Text(desc, style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.silver, fontSize: 13, height: 1.4)),
+              Text(desc, style: MBricsTheme.bodyStyle.copyWith(fontSize: 13, height: 1.4)),
             ],
           ))
         ],
@@ -195,42 +212,7 @@ class _ForexBridgePageState extends State<ForexBridgePage> {
       child: Center(
         child: Text(text.toUpperCase(), 
           textAlign: TextAlign.center,
-          style: const TextStyle(fontFamily: 'ShareTechMono', color: MBricsTheme.silver, fontSize: 9, letterSpacing: 0.5)),
-      ),
-    );
-  }
-}
-
-class _HoverButton extends StatefulWidget {
-  final VoidCallback onPressed;
-  final String buttonText;
-  const _HoverButton({required this.onPressed, required this.buttonText});
-  @override
-  State<_HoverButton> createState() => _HoverButtonState();
-}
-
-class _HoverButtonState extends State<_HoverButton> {
-  bool _isHovered = false;
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: GestureDetector(
-        onTap: widget.onPressed,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          width: double.infinity,
-          height: 60,
-          decoration: BoxDecoration(
-            color: _isHovered ? Colors.white : MBricsTheme.goldBase,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Center(
-            child: Text(widget.buttonText, 
-              style: const TextStyle(fontFamily: 'Inter', color: MBricsTheme.terminalBlack, fontWeight: FontWeight.bold, fontSize: 16)),
-          ),
-        ),
+          style: MBricsTheme.monoStyle.copyWith(color: MBricsTheme.silver, fontSize: 9)),
       ),
     );
   }
