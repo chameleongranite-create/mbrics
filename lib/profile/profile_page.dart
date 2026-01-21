@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import '../l10n/app_localizations.dart';
 import '../layout/master_layout.dart';
 import '../widgets/mbrics_components.dart';

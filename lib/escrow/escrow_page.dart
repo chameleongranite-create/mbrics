@@ -1,6 +1,6 @@
 import '../layout/master_layout.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 
 class EscrowPage extends StatefulWidget {
   const EscrowPage({super.key, this.onLocaleChange});
@@ -15,60 +15,39 @@ class _EscrowPageState extends State<EscrowPage> {
   final Color charcoal = const Color(0xFF343A40);
 
   @override
-  Widget build(BuildContext context) {
-    return MasterLayout(
-      onLocaleChange: widget.onLocaleChange,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(),
-            const SizedBox(height: 24),
-            
-            // Contract Status Hero
-            _buildContractStatusCard(),
-            
-            const SizedBox(height: 30),
-            const Text("SETTLEMENT MILESTONES", 
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey, letterSpacing: 1.2)),
-            const SizedBox(height: 16),
-            
-            // Milestone Tracker
-            _buildMilestone(
-              "Contract Initiated", 
-              "Digital signature verified by BoC Node", 
-              true, 
-              true
-            ),
-            _buildMilestone(
-              "Funds Locked (Escrow)", 
-              "145,000.00 e-CNY secured in mBrics Vault", 
-              true, 
-              true
-            ),
-            _buildMilestone(
-              "Bill of Lading Issued", 
-              "Awaiting Xiamen Port verification...", 
-              false, 
-              false
-            ),
-            _buildMilestone(
-              "Final Disbursement", 
-              "Release upon Durban Customs clearance", 
-              false, 
-              false
-            ),
-            
-            const SizedBox(height: 40),
-            
-            // Safety Note
-            _buildSafetyNote(),
-          ],
+Widget build(BuildContext context) {
+  return PopScope(
+    canPop: false, // Intercepts hardware back button & swipe
+    onPopInvokedWithResult: (didPop, result) {
+      if (didPop) return;
+      // Safety: Redirect specifically to Main Menu
+      Navigator.pushReplacementNamed(context, '/mainmenu');
+    },
+    child: MasterLayout(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.5,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF343A40), size: 20),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/mainmenu'),
+          ),
+          title: const Text(
+            "GLOBAL DELIVERY", // Change this for each page (e.g., GLOBAL PAY)
+            style: TextStyle(color: Color(0xFF343A40), fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Your specific page content goes here
+            ],
+          ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildHeader() {
     return Column(

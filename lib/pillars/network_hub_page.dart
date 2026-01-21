@@ -35,10 +35,17 @@ class NetworkHubPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
+Widget build(BuildContext context) {
+  final t = AppLocalizations.of(context)!;
 
-    return MasterLayout(
+  return PopScope(
+    canPop: false, // Prevents falling back to an empty web stack
+    onPopInvokedWithResult: (didPop, result) {
+      if (didPop) return;
+      // Safety: Always route back to the Engine Hub
+      Navigator.pushReplacementNamed(context, '/mainmenu');
+    },
+    child: MasterLayout(
       child: Scaffold(
         backgroundColor: MBricsTheme.terminalBlack,
         appBar: AppBar(
@@ -46,9 +53,10 @@ class NetworkHubPage extends StatelessWidget {
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new, color: MBricsTheme.goldBase, size: 20),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/mainmenu'),
           ),
-          title: Text(t.networkPageTitle.toUpperCase(), 
+          // Using the localized menu key for absolute consistency
+          title: Text(t.menuGlobalNetwork.toUpperCase(), 
             style: MBricsTheme.headingStyle.copyWith(fontSize: 11, letterSpacing: 2)),
         ),
         body: SingleChildScrollView(
@@ -63,7 +71,7 @@ class NetworkHubPage extends StatelessWidget {
                 color: Colors.black,
                 child: Center(
                   child: Image.asset(
-                    'assets/icons/network.png', // FIXED: Single path
+                    'assets/icons/network.png', 
                     fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) => 
                       const Icon(Icons.hub_outlined, color: MBricsTheme.goldBase, size: 50),
@@ -88,7 +96,6 @@ class NetworkHubPage extends StatelessWidget {
                     const SizedBox(height: 35),
 
                     // --- INSTITUTIONAL CATEGORIES ---
-                    
                     _sectionHeader(t.networkSectionRegulatory),
                     _partnerTile(t.networkPartnerCentralBank, "Global Protocol", t.networkStatusActive),
                     
@@ -127,8 +134,9 @@ class NetworkHubPage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _sectionHeader(String title) {
     return Padding(

@@ -35,10 +35,17 @@ class Web3TrustPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
+Widget build(BuildContext context) {
+  final t = AppLocalizations.of(context)!;
 
-    return MasterLayout(
+  return PopScope(
+    canPop: false, // Prevents the white screen issue on back-button
+    onPopInvokedWithResult: (didPop, result) {
+      if (didPop) return;
+      // Safety: Redirect specifically to Main Menu
+      Navigator.pushReplacementNamed(context, '/mainmenu');
+    },
+    child: MasterLayout(
       child: Scaffold(
         backgroundColor: MBricsTheme.terminalBlack,
         appBar: AppBar(
@@ -46,9 +53,10 @@ class Web3TrustPage extends StatelessWidget {
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new, color: MBricsTheme.goldBase, size: 20),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/mainmenu'),
           ),
-          title: Text("TRUST ENGINE PROTOCOL", 
+          // Using the localized menu key for total consistency
+          title: Text(t.menuGlobalTrust.toUpperCase(), 
             style: MBricsTheme.monoStyle.copyWith(fontSize: 10, letterSpacing: 2)),
           centerTitle: true,
         ),
@@ -102,6 +110,7 @@ class Web3TrustPage extends StatelessWidget {
               const SizedBox(height: 30),
               
               // --- THE DIGITAL POLICEMAN INTRO BLOCK ---
+              
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
@@ -122,8 +131,6 @@ class Web3TrustPage extends StatelessWidget {
               ),
 
               const SizedBox(height: 35),
-
-              
 
               // --- CORE TECHNOLOGY SECTIONS ---
               _sectionHeader(t.trustSection1Title),
@@ -157,8 +164,9 @@ class Web3TrustPage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _sectionHeader(String title) {
     return Padding(

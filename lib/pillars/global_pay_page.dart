@@ -34,10 +34,17 @@ class GlobalPayPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
+Widget build(BuildContext context) {
+  final t = AppLocalizations.of(context)!;
 
-    return MasterLayout(
+  return PopScope(
+    canPop: false, // Ensures the user doesn't pop into a white screen
+    onPopInvokedWithResult: (didPop, result) {
+      if (didPop) return;
+      // Force navigation back to the Main Menu
+      Navigator.pushReplacementNamed(context, '/mainmenu');
+    },
+    child: MasterLayout(
       child: Scaffold(
         backgroundColor: MBricsTheme.terminalBlack,
         appBar: AppBar(
@@ -45,9 +52,10 @@ class GlobalPayPage extends StatelessWidget {
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new, color: MBricsTheme.goldBase, size: 20),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/mainmenu'),
           ),
-          title: Text("MBRICS WEB3 ENGINE", 
+          // Consistent localized title
+          title: Text(t.menuGlobalPay.toUpperCase(), 
             style: MBricsTheme.monoStyle.copyWith(fontSize: 10, letterSpacing: 2)),
           centerTitle: true,
         ),
@@ -88,7 +96,7 @@ class GlobalPayPage extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(7),
                         child: Image.asset(
-                          'assets/icons/pay.png', // Corrected single-path
+                          'assets/icons/pay.png', 
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) => Container(
                             color: Colors.black,
@@ -147,8 +155,9 @@ class GlobalPayPage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _sectionHeader(String title) {
     return Padding(

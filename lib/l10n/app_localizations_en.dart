@@ -9,28 +9,37 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get slogan => 'The Digital Gateway for Global Trade';
+  String get loginSlogan => 'THE GLOBAL TRADE STANDARD';
 
   @override
-  String get loginTitle => 'Sign In';
+  String get loginTitle => 'Welcome';
 
   @override
   String get loginSubtitle => 'Access the mBrics Web3 Engine';
 
   @override
-  String get secureAuth => 'Secure Member Login';
+  String get secureAuth => 'SECURE ACCESS';
 
   @override
-  String get email => 'Registered Email';
+  String get email => 'Email Address';
 
   @override
-  String get password => 'Secure Password';
+  String get password => 'Password';
 
   @override
-  String get login => 'Enter Engine';
+  String get login => 'Sign In';
 
   @override
-  String get authNodeStandby => 'Network Status: Secure & Online';
+  String get loginButton => 'Sign In';
+
+  @override
+  String get registerLink => 'REGISTER HERE';
+
+  @override
+  String get continueAsVisitor => 'Enter as Guest';
+
+  @override
+  String get authNodeStandby => 'SECURE NODE: READY';
 
   @override
   String get greetingMorning => 'Good Morning';
@@ -42,69 +51,46 @@ class AppLocalizationsEn extends AppLocalizations {
   String get greetingEvening => 'Good Evening';
 
   @override
-  String get joinNetwork => 'Modernizing Global Commerce';
+  String get joinNetwork => 'Join our Global Network';
 
   @override
   String get passwordHelper => 'Security: 8+ Characters Required';
 
   @override
-  String get noAccount => 'Request access to the trade network';
+  String get noAccountYet => 'REGISTER';
 
   @override
-  String get pillar1Title => 'Global Delivery';
+  String get cancel => 'Cancel';
 
   @override
-  String get pillar1Subtitle =>
-      'ALL-IN-ONE LOGISTICS\nDoor-to-door delivery with all taxes and shipping paid. No surprises.';
-
-  @override
-  String get pillar2Title => 'Global Pay';
-
-  @override
-  String get pillar2Subtitle =>
-      'INSTANT TRANSFERS\nImmediate international payments between mBrics members with zero delay.';
-
-  @override
-  String get pillar3Title => 'Global Trust';
-
-  @override
-  String get pillar3Subtitle =>
-      'DIGITAL POLICEMAN\nReplacing slow bank LCs with instant, automated digital verification.';
-
-  @override
-  String get pillar4Title => 'Global Forex';
-
-  @override
-  String get pillar4Subtitle =>
-      'PRICE LOCKER\nLock your exchange rates now to stop worrying about bank fluctuations.';
-
-  @override
-  String get pillar5Title => 'Global Tracking';
-
-  @override
-  String get pillar5Subtitle =>
-      'LIVE JOURNEY\nWatch your trade journey happen on a live, verified timeline.';
-
-  @override
-  String get pillar6Title => 'Global Networks';
-
-  @override
-  String get pillar6Subtitle =>
-      'ELITE PARTNERS\nBacked by Global 500 logistics leaders to handle every delivery promise.';
+  String get poweredBy => 'POWERED BY mBrics WEB3 ENGINE';
 
   @override
   String mainGreeting(String name) {
-    return 'Welcome back, $name';
+    return 'WELCOME, $name';
   }
 
   @override
-  String get globalTrustActive => 'Global Trust: Active';
+  String get guestGreeting => 'WELCOME, PARTNER';
 
   @override
-  String get blockchainStatus => 'Engine Status';
+  String get web3EngineTitle => 'mBrics Web3 Engine';
 
   @override
-  String get web3EngineTitle => 'Web3 Protocol';
+  String get web3EngineDescription =>
+      'Replacing traditional bank LCs with instant, blockchain-secured trust.';
+
+  @override
+  String get engineStatusActive => 'Engine Status: Operational';
+
+  @override
+  String get blockchainVerified => 'Blockchain Verified';
+
+  @override
+  String get trustProtocol => 'Digital Trust Protocol: Active';
+
+  @override
+  String get tradeFinality => 'Instant Trade Finality';
 
   @override
   String get finalityValid => 'Trade Finality: Secured';
@@ -113,13 +99,129 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nodeLatency => 'Verified Speed: 12ms';
 
   @override
-  String get docVerification => 'Smart Verification: On';
+  String get globalTrustActive => 'Global Trust: Active';
+
+  @override
+  String get docVerification => 'Smart Document Verification: Active';
 
   @override
   String get digitalTrustEnabled => 'Digital Trust: Active';
 
   @override
+  String get secureNode => 'Secure Node: Connected';
+
+  @override
+  String get engineUptime => 'Verified Uptime: 99.9%';
+
+  @override
+  String get documentVerification => 'Smart Verification: Online';
+
+  @override
+  String get engineLatency => 'Network Latency: 12ms';
+
+  @override
+  String get viewEngineStats => 'View Engine Performance';
+
+  @override
   String get terminateSession => 'Safe Log Out';
+
+  @override
+  String get blockchainStatus => 'Engine Status';
+
+  @override
+  String get engineBenefit =>
+      'Real-time Verification • No Bank Delays • 100% Trust';
+
+  @override
+  String get menuCoreNavigation => 'CORE NAVIGATION';
+
+  @override
+  String get menuWeb3Modules => 'WEB3 MODULES';
+
+  @override
+  String get menuMainHome => 'Main Menu';
+
+  @override
+  String get menuGlobalDelivery => 'Global Delivery';
+
+  @override
+  String get menuGlobalPay => 'Global Pay';
+
+  @override
+  String get menuGlobalTrust => 'Global Trust';
+
+  @override
+  String get menuGlobalNetwork => 'Global Network';
+
+  @override
+  String get menuGlobalTracking => 'Global Tracking';
+
+  @override
+  String get menuGlobalForex => 'Global Forex';
+
+  @override
+  String get menuExitTerminal => 'Exit Terminal';
+
+  @override
+  String get pillar1Title => 'GLOBAL DELIVERY';
+
+  @override
+  String get pillar1Subtitle =>
+      'DDP LOGISTICS COMMAND\nComplete door-to-door delivery with all taxes and duties pre-calculated. No hidden fees or surprises at the border.';
+
+  @override
+  String get pillar2Title => 'GLOBAL PAY';
+
+  @override
+  String get pillar2Subtitle =>
+      'SETTLEMENT ENGINE\nImmediate international payments between mBrics members with zero delay, bypassing slow traditional bank networks.';
+
+  @override
+  String get pillar3Title => 'GLOBAL TRUST';
+
+  @override
+  String get pillar3Subtitle =>
+      'TRUST ENGINE\nReplacing slow bank Letters of Credit (LCs) with instant, automated digital verification through secure Web3 protocols.';
+
+  @override
+  String get pillar4Title => 'GLOBAL FOREX';
+
+  @override
+  String get pillar4Subtitle =>
+      'FOREX BRIDGE\nLock your exchange rates immediately through the engine to stop worrying about currency fluctuations during your trade.';
+
+  @override
+  String get pillar5Title => 'GLOBAL TRACKING';
+
+  @override
+  String get pillar5Subtitle =>
+      'TRADE VISUALIZER\nWatch your entire trade journey on a live, verified timeline. Total transparency from order to final payment release.';
+
+  @override
+  String get pillar6Title => 'GLOBAL NETWORK';
+
+  @override
+  String get pillar6Subtitle =>
+      'NETWORK HUB\nConnect with Global 500 logistics leaders and institutional nodes to ensure every trade is handled by verified partners.';
+
+  @override
+  String get visitorPopupTitle => 'Welcome, Future Partner';
+
+  @override
+  String get visitorWelcomeMsg =>
+      'Experience the mBrics engine. Share your name to start the demo—no commitment required. We hope you\'ll join our network permanently soon.';
+
+  @override
+  String get visitorNameLabel => 'What is your name?';
+
+  @override
+  String get startExploring => 'Start Exploring';
+
+  @override
+  String get visitorWelcomeTitle => 'Welcome, Partner';
+
+  @override
+  String get visitorDataSync => 'Connecting to Web3 Node...';
 
   @override
   String get ddpPageTitle => 'GLOBAL DELIVERY';
@@ -184,7 +286,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ddpDemoNotice =>
-      'Global Delivery is currently simulating live China-Africa trade routes.';
+      'Coming Soon: Global Delivery is currently simulating live China-Africa trade routes.';
 
   @override
   String get payPageTitle => 'GLOBAL PAY';
@@ -200,7 +302,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get payIntroBody =>
-      'We take the stress out of paying international suppliers. Using our secure Web3 engine, your money is held safely until the digital policeman confirms the documents are correct. It’s faster, cheaper, and safer than a standard bank wire.';
+      'We take the stress out of paying international suppliers. Using our secure Web3 engine, your money is held safely until the \'Digital Policeman\' confirms the documents are correct. It’s faster and safer than a standard bank wire.';
 
   @override
   String get paySection1Title => 'SAFE SETTLEMENTS';
@@ -241,7 +343,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get payDemoNotice =>
-      'The Settlement Engine is currently in its core development phase.';
+      'Development Phase: The Settlement Engine is currently in its core development phase.';
 
   @override
   String get trustPageTitle => 'GLOBAL TRUST';
@@ -250,7 +352,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trustHeroTitle1 => 'GLOBAL';
 
   @override
-  String get trustHeroTitle2 => 'TRUST PROTOCOL';
+  String get trustHeroTitle2 => 'TRUST ENGINE';
 
   @override
   String get trustHeroSlogan =>
@@ -261,24 +363,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trustIntroBody =>
-      'The mBrics Trust Engine is our core Web3 technology. It replaces slow bank processes with automated blockchain verification. It ensures your documents are real and your payments are secure—acting as a digital guardian for every trade.';
+      'The mBrics Trust Engine replaces slow bank Letter of Credits (LCs) with automated blockchain verification. It ensures your documents are real and your payments are secure—acting as a digital guardian for every trade.';
 
   @override
-  String get trustSection1Title => 'BLOCKCHAIN & CBDC INTEGRATION';
+  String get trustSection1Title => 'BLOCKCHAIN INTEGRATION';
 
   @override
   String get trustSection1Feature1Title => 'SMART CONTRACT TRUST';
 
   @override
   String get trustSection1Feature1Desc =>
-      'Replacing the bank LC with a digital handshake. Funds are only moved when every condition is met and verified on the blockchain.';
+      'Replacing the bank LC with a digital handshake. Funds move only when every condition is verified on the blockchain.';
 
   @override
   String get trustSection1Feature2Title => 'CBDC READY';
-
-  @override
-  String get trustSection1Feature2Desc =>
-      'Built to handle Central Bank Digital Currencies for instant, state-backed trade settlement with zero friction.';
 
   @override
   String get trustSection2Title => 'VERIFICATION PROTOCOLS';
@@ -288,14 +386,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trustSection2Feature1Desc =>
-      'Our engine scans and verifies Bill of Ladings and Invoices instantly, ensuring zero fraud in the trade cycle.';
+      'Our engine verifies Bill of Ladings instantly, ensuring zero fraud in the trade cycle.';
 
   @override
   String get trustSection2Feature2Title => 'DIGITAL ESCROW';
 
   @override
   String get trustSection2Feature2Desc =>
-      'A secure vault where funds are held and released only when the digital policeman confirms delivery and compliance.';
+      'A secure vault where funds are held and released only when delivery is confirmed.';
 
   @override
   String get trustCtaButton => 'VERIFY MY PROTOCOL';
@@ -311,66 +409,70 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trustPopupBody =>
-      'Global Trust is currently in its simulation phase. We are integrating with global nodes to bring you the full \'Digital Policeman\' experience soon.';
+      'Global Trust is currently in its simulation phase. We are integrating with global nodes to bring you the full experience soon.';
 
   @override
   String get trustPopupAction => 'UNDERSTOOD';
 
   @override
+  String get trustSection1Feature2Desc =>
+      'Built for Central Bank Digital Currencies (CBDC) to ensure instant, sovereign-backed trade settlement.';
+
+  @override
+  String get forexSectionTitle => 'THE mBRICS ADVANTAGE';
+
+  @override
   String get forexPageTitle => 'GLOBAL FOREX';
 
   @override
-  String get forexCardLabel => 'Institutional Live Rate';
+  String get forexCardLabel => 'mBrics DIRECT TRADE RATE (CNY/ZAR)';
 
   @override
   String get forexCardStatus => 'Status: Rate Lockable via Web3 Engine';
 
   @override
-  String get forexSectionTitle => 'THE MBRICS ADVANTAGE';
-
-  @override
   String get forexDescription =>
-      'We eliminate the guesswork in global trade. By showing all prices in your local currency in real-time, we provide total transparency. When you start a trade, our Web3 engine is designed to \'lock\' this rate into a Smart Contract.';
+      'We eliminate currency risk for South African partners. By showing the direct value of 1 CNY in ZAR, we provide total transparency. When you start a trade, our Web3 engine is designed to \'lock\' this rate so you don\'t pay more later.';
 
   @override
-  String get forexFeature1Title => 'LOCAL CURRENCY ACCURACY';
+  String get forexFeature1Title => 'REAL-TIME ACCURACY';
 
   @override
   String get forexFeature1Desc =>
-      'Avoid manual math. Every price on the platform is automatically converted to your native currency using live feeds.';
+      'Every cost is automatically shown in ZAR using live feeds, so you know exactly what you are paying in South Africa.';
 
   @override
   String get forexFeature2Title => 'CONTRACT-LOCKED RATES';
 
   @override
   String get forexFeature2Desc =>
-      'Planned: Once the trade begins, the engine guarantees the exchange rate for the duration of the shipment.';
+      'Once the trade begins, the engine secures the exchange rate for the entire journey. No bank surprises.';
 
   @override
-  String get forexCtaButton => 'LOCK RATE & PROCEED';
+  String get forexCtaButton => 'SECURE RATE & PROCEED';
 
   @override
-  String get forexStatusTag => 'STATUS: DATA FEED ACTIVE';
+  String get forexStatusTag => 'STATUS: LIVE DATA FEED';
 
   @override
-  String get forexEngineTag => 'ENGINE: FX STABILIZATION ROADMAP';
+  String get forexEngineTag => 'mBrics: FX STABILIZATION ACTIVE';
 
   @override
   String get forexDemoNotice =>
-      'The Web3 Rate Locking protocol is currently in the testing phase.';
+      'Protocol Update: The Web3 Rate Locking engine for the CNY-ZAR route is currently in the testing phase.';
 
   @override
   String get visualPageTitle => 'GLOBAL TRACKING';
 
   @override
-  String get visualHeroTitle => 'Visualizer';
+  String get visualHeroTitle => 'TRADE VISUALIZER';
 
   @override
   String get visualHeroSlogan => 'Follow every step of your trade journey';
 
   @override
   String get visualDescription =>
-      'No more guessing where your money or goods are. Our web3 engine tracks every single document and payment on a live timeline.';
+      'No more guessing where your money or goods are. Our Web3 engine tracks every document and payment on a live timeline.';
 
   @override
   String get visualStep1Title => 'Trade Agreement';
@@ -426,10 +528,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get visualDemoNotice =>
-      'Global Tracking is currently integrating real-time GPS and blockchain logs.';
+      'Simulation: Global Tracking is currently integrating real-time GPS and blockchain logs.';
 
   @override
-  String get networkPageTitle => 'GLOBAL NETWORKS';
+  String get networkPageTitle => 'GLOBAL NETWORK';
 
   @override
   String get networkHeroTitle1 => 'VERIFIED';
@@ -439,7 +541,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get networkHeroSlogan =>
-      'Our Web3 engine connects you to a verified grid of central bank overseen nodes and institutional trade leaders.';
+      'Our Web3 engine connects you to a verified grid of overseers and institutional trade leaders.';
 
   @override
   String get networkSectionRegulatory => 'Regulatory Compliance';
@@ -485,7 +587,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get networkDemoNotice =>
-      'Global Networks is currently in the institutional onboarding phase.';
+      'In Development: Global Network is currently in the institutional onboarding phase.';
 
   @override
   String get settings => 'Settings';
@@ -512,13 +614,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registrationSlogan => 'Join the future of digital trade';
 
   @override
-  String get joinHub => 'Join the mBrics Hub';
+  String get joinHub => 'Join the mBrics Network';
 
   @override
-  String get register => 'Register';
+  String get register => 'Create Account';
 
   @override
-  String get registerTitle => 'Join the Network';
+  String get registerTitle => 'Sign Up';
 
   @override
   String get registerSubtitle => 'Create your mBrics account';
@@ -536,7 +638,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createAccount => 'Create Account';
 
   @override
-  String get alreadyHaveAccount => 'Already a member? Sign in';
+  String get alreadyHaveAccount => 'ALREADY A MEMBER? SIGN IN HERE';
+
+  @override
+  String get registerSuccessTitle => 'Welcome to mBrics!';
+
+  @override
+  String get registerSuccessMsg =>
+      'Registration successful! You are now connected to the Web3 engine. We’ve built this technology to make global trade faster and more trustworthy. We are glad to have you with us.';
+
+  @override
+  String get registerDemoNote =>
+      '(Note: For this demo, your account is pre-activated.)';
+
+  @override
+  String get startNow => 'Start Now';
 
   @override
   String get backToLogin => 'Back to Login';
@@ -563,23 +679,44 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneOptional => 'Phone (Optional)';
 
   @override
-  String get errorEmailRequired => 'Email is required';
+  String get errorEmailRequired => 'Please enter your email address';
 
   @override
-  String get errorInvalidEmailFormat => 'Enter a valid email address';
+  String get errorInvalidEmailFormat => 'Invalid email format';
 
   @override
-  String get errorPasswordRequired => 'Password is required';
+  String get errorPasswordRequired => 'Please enter a password';
 
   @override
   String get errorPasswordTooShort => 'Password must be at least 8 characters';
 
   @override
-  String get errorCompanyNameRequired => 'Company name is required';
+  String get errorCompanyNameRequired => 'Please enter your company name';
 
   @override
-  String get errorUnexpected => 'An unexpected error occurred';
+  String get errorUnexpected => 'System error. Please try again.';
 
   @override
-  String get errorRegistrationFailed => 'Unable to register at this time';
+  String get errorRegistrationFailed => 'Registration error';
+
+  @override
+  String get errorUserExists => 'Email already registered. Please sign in.';
+
+  @override
+  String get errorInvalidCredentials => 'Login failed. Check your details.';
+
+  @override
+  String get errorTooManyRequests => 'Too many attempts. Please wait.';
+
+  @override
+  String get errorEmailNotConfirmed => 'Please verify your email account.';
+
+  @override
+  String get errorWeakPassword => 'Please use a stronger password.';
+
+  @override
+  String get errorNetworkIssue => 'Connection error.';
+
+  @override
+  String get errorLoginFailed => 'Sign in error. Try again.';
 }

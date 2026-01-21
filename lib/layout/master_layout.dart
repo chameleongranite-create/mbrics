@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import '../l10n/app_localizations.dart';
+import '../theme/mbrics_theme.dart';
 
 class MasterLayout extends StatelessWidget {
   final Widget child;
@@ -11,16 +12,18 @@ class MasterLayout extends StatelessWidget {
     this.onLocaleChange,
   });
 
-  // Reusable colors from your palette
-  static const Color gold = Color(0xFFC2994B);
-  static const Color charcoal = Color(0xFF343A40);
-  static const Color silver = Color(0xFFA7A9AC);
+  // Using colors from your mbrics_theme for consistency
+  static const Color gold = MBricsTheme.goldBase;
+  static const Color charcoal = MBricsTheme.terminalBlack;
+  static const Color silver = MBricsTheme.silver;
 
   @override
   Widget build(BuildContext context) {
+    // Initialize localization
+    final t = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.white,
-      // 1. ADDING THE APPBAR (Provides the Hamburger Menu)
       appBar: AppBar(
         backgroundColor: charcoal,
         elevation: 0,
@@ -30,43 +33,56 @@ class MasterLayout extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () => onLocaleChange?.call(const Locale('en')),
-              child: Text("mBRICS BRIDGE", 
-                style: TextStyle(fontFamily: 'Inter',color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+              child: const Text("mBrics ENGINE", 
+                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
             ),
             GestureDetector(
               onTap: () => onLocaleChange?.call(const Locale('zh')),
-              child: const Text("数字货币桥", 
-                style: TextStyle(color: Color(0xFFFF3B30), fontSize: 12, fontWeight: FontWeight.bold)),
+              child: const Text("数字引擎", 
+                style: TextStyle(color: gold, fontSize: 12, fontWeight: FontWeight.bold)),
             ),
           ],
         ),
       ),
       
-      // 2. THE INSTITUTIONAL SIDEBAR
       drawer: Drawer(
         child: Container(
           color: Colors.white,
           child: Column(
             children: [
-              _buildDrawerHeader(),
+              _buildDrawerHeader(t),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: [
-                    _drawerSection("TRUSTED NETWORK"),
-                    _drawerItem(context, Icons.hub_outlined, "Member Directory", '/network'),
+                    // Section: Core Navigation
+                    _drawerSection(t.menuCoreNavigation.toUpperCase()), 
+                    _drawerItem(context, Icons.grid_view_rounded, t.menuMainHome, '/mainmenu'),
                     
-                    _drawerSection("TRADE SERVICES"),
-                    _drawerItem(context, Icons.local_shipping_outlined, "DDP Logistics", '/quote_visual'),
-                    _drawerItem(context, Icons.gavel_outlined, "Web3 Contracts", '/trade_visual'),
+                    // Section: Web3 Modules
+                    _drawerSection(t.menuWeb3Modules.toUpperCase()),
                     
-                    _drawerSection("FINANCIAL TOOLS"),
-                    _drawerItem(context, Icons.currency_exchange, "Forex Engine", '/forex'),
-                    _drawerItem(context, Icons.account_balance_wallet_outlined, "mBrics Pay", '/pay'),
+                    // Pillar 1: DDP Logistics
+                    _drawerItem(context, Icons.local_shipping_outlined, t.menuGlobalDelivery, '/ddp'),
+                    
+                    // Pillar 2: Settlement Engine
+                    _drawerItem(context, Icons.account_balance_wallet_outlined, t.menuGlobalPay, '/pay'),
+                    
+                    // Pillar 3: Trust Engine
+                    _drawerItem(context, Icons.security_rounded, t.menuGlobalTrust, '/trust_engine'),
+                    
+                    // Pillar 4: Network Hub
+                    _drawerItem(context, Icons.hub_outlined, t.menuGlobalNetwork, '/network'),
+                    
+                    // Pillar 5: Trade Visualizer
+                    _drawerItem(context, Icons.location_searching_rounded, t.menuGlobalTracking, '/visualizer'),
+                    
+                    // Pillar 6: Forex Bridge
+                    _drawerItem(context, Icons.currency_exchange_rounded, t.menuGlobalForex, '/forex'),
                     
                     const Divider(height: 40),
-                    _drawerItem(context, Icons.settings_outlined, "Settings", '/settings'),
-                    _drawerItem(context, Icons.logout, "Exit Terminal", '/login'),
+                    // Exit Terminal
+                    _drawerItem(context, Icons.logout, t.menuExitTerminal, '/login'),
                   ],
                 ),
               ),
@@ -78,7 +94,7 @@ class MasterLayout extends StatelessWidget {
     );
   }
 
-  Widget _buildDrawerHeader() {
+  Widget _buildDrawerHeader(AppLocalizations t) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(top: 60, bottom: 30, left: 24),
@@ -88,10 +104,11 @@ class MasterLayout extends StatelessWidget {
         children: [
           const Icon(Icons.account_balance, color: gold, size: 36),
           const SizedBox(height: 16),
-          Text("mBRICS", 
-            style: TextStyle(fontFamily: 'Inter',color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22)),
-          const Text("INSTITUTIONAL PORTAL", 
-            style: TextStyle(color: silver, fontSize: 10, letterSpacing: 1.5)),
+          const Text("mBrics", 
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22)),
+          // Sub-header using menuWeb3Modules for consistency in simple language
+          Text(t.menuWeb3Modules.toUpperCase(), 
+            style: const TextStyle(color: silver, fontSize: 10, letterSpacing: 1.5)),
         ],
       ),
     );
@@ -110,8 +127,8 @@ class MasterLayout extends StatelessWidget {
       leading: Icon(icon, color: gold, size: 22),
       title: Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: charcoal)),
       onTap: () {
-        Navigator.pop(context); // Close drawer
-        Navigator.pushNamed(context, route); // Navigate
+        Navigator.pop(context); 
+        Navigator.pushReplacementNamed(context, route); 
       },
     );
   }
