@@ -98,16 +98,16 @@ abstract class AppLocalizations {
     Locale('zh'),
   ];
 
-  /// No description provided for @slogan.
+  /// No description provided for @loginSlogan.
   ///
   /// In en, this message translates to:
-  /// **'The Digital Gateway for Global Trade'**
-  String get slogan;
+  /// **'THE GLOBAL TRADE STANDARD'**
+  String get loginSlogan;
 
   /// No description provided for @loginTitle.
   ///
   /// In en, this message translates to:
-  /// **'Sign In'**
+  /// **'Welcome'**
   String get loginTitle;
 
   /// No description provided for @loginSubtitle.
@@ -119,31 +119,49 @@ abstract class AppLocalizations {
   /// No description provided for @secureAuth.
   ///
   /// In en, this message translates to:
-  /// **'Secure Member Login'**
+  /// **'SECURE ACCESS'**
   String get secureAuth;
 
   /// No description provided for @email.
   ///
   /// In en, this message translates to:
-  /// **'Registered Email'**
+  /// **'Email Address'**
   String get email;
 
   /// No description provided for @password.
   ///
   /// In en, this message translates to:
-  /// **'Secure Password'**
+  /// **'Password'**
   String get password;
 
   /// No description provided for @login.
   ///
   /// In en, this message translates to:
-  /// **'Enter Engine'**
+  /// **'Sign In'**
   String get login;
+
+  /// No description provided for @loginButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get loginButton;
+
+  /// No description provided for @registerLink.
+  ///
+  /// In en, this message translates to:
+  /// **'REGISTER HERE'**
+  String get registerLink;
+
+  /// No description provided for @continueAsVisitor.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter as Guest'**
+  String get continueAsVisitor;
 
   /// No description provided for @authNodeStandby.
   ///
   /// In en, this message translates to:
-  /// **'Network Status: Secure & Online'**
+  /// **'SECURE NODE: READY'**
   String get authNodeStandby;
 
   /// No description provided for @greetingMorning.
@@ -167,7 +185,7 @@ abstract class AppLocalizations {
   /// No description provided for @joinNetwork.
   ///
   /// In en, this message translates to:
-  /// **'Modernizing Global Commerce'**
+  /// **'Join our Global Network'**
   String get joinNetwork;
 
   /// No description provided for @passwordHelper.
@@ -176,107 +194,71 @@ abstract class AppLocalizations {
   /// **'Security: 8+ Characters Required'**
   String get passwordHelper;
 
-  /// No description provided for @noAccount.
+  /// No description provided for @noAccountYet.
   ///
   /// In en, this message translates to:
-  /// **'Request access to the trade network'**
-  String get noAccount;
+  /// **'REGISTER'**
+  String get noAccountYet;
 
-  /// No description provided for @pillar1Title.
+  /// No description provided for @cancel.
   ///
   /// In en, this message translates to:
-  /// **'Global Delivery'**
-  String get pillar1Title;
+  /// **'Cancel'**
+  String get cancel;
 
-  /// No description provided for @pillar1Subtitle.
+  /// No description provided for @poweredBy.
   ///
   /// In en, this message translates to:
-  /// **'ALL-IN-ONE LOGISTICS\nDoor-to-door delivery with all taxes and shipping paid. No surprises.'**
-  String get pillar1Subtitle;
-
-  /// No description provided for @pillar2Title.
-  ///
-  /// In en, this message translates to:
-  /// **'Global Pay'**
-  String get pillar2Title;
-
-  /// No description provided for @pillar2Subtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'INSTANT TRANSFERS\nImmediate international payments between mBrics members with zero delay.'**
-  String get pillar2Subtitle;
-
-  /// No description provided for @pillar3Title.
-  ///
-  /// In en, this message translates to:
-  /// **'Global Trust'**
-  String get pillar3Title;
-
-  /// No description provided for @pillar3Subtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'DIGITAL POLICEMAN\nReplacing slow bank LCs with instant, automated digital verification.'**
-  String get pillar3Subtitle;
-
-  /// No description provided for @pillar4Title.
-  ///
-  /// In en, this message translates to:
-  /// **'Global Forex'**
-  String get pillar4Title;
-
-  /// No description provided for @pillar4Subtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'PRICE LOCKER\nLock your exchange rates now to stop worrying about bank fluctuations.'**
-  String get pillar4Subtitle;
-
-  /// No description provided for @pillar5Title.
-  ///
-  /// In en, this message translates to:
-  /// **'Global Tracking'**
-  String get pillar5Title;
-
-  /// No description provided for @pillar5Subtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'LIVE JOURNEY\nWatch your trade journey happen on a live, verified timeline.'**
-  String get pillar5Subtitle;
-
-  /// No description provided for @pillar6Title.
-  ///
-  /// In en, this message translates to:
-  /// **'Global Networks'**
-  String get pillar6Title;
-
-  /// No description provided for @pillar6Subtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'ELITE PARTNERS\nBacked by Global 500 logistics leaders to handle every delivery promise.'**
-  String get pillar6Subtitle;
+  /// **'POWERED BY mBrics WEB3 ENGINE'**
+  String get poweredBy;
 
   /// Greeting on the main dashboard
   ///
   /// In en, this message translates to:
-  /// **'Welcome back, {name}'**
+  /// **'WELCOME, {name}'**
   String mainGreeting(String name);
 
-  /// No description provided for @globalTrustActive.
+  /// No description provided for @guestGreeting.
   ///
   /// In en, this message translates to:
-  /// **'Global Trust: Active'**
-  String get globalTrustActive;
-
-  /// No description provided for @blockchainStatus.
-  ///
-  /// In en, this message translates to:
-  /// **'Engine Status'**
-  String get blockchainStatus;
+  /// **'WELCOME, PARTNER'**
+  String get guestGreeting;
 
   /// No description provided for @web3EngineTitle.
   ///
   /// In en, this message translates to:
-  /// **'Web3 Protocol'**
+  /// **'mBrics Web3 Engine'**
   String get web3EngineTitle;
+
+  /// No description provided for @web3EngineDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Replacing traditional bank LCs with instant, blockchain-secured trust.'**
+  String get web3EngineDescription;
+
+  /// No description provided for @engineStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Engine Status: Operational'**
+  String get engineStatusActive;
+
+  /// No description provided for @blockchainVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Blockchain Verified'**
+  String get blockchainVerified;
+
+  /// No description provided for @trustProtocol.
+  ///
+  /// In en, this message translates to:
+  /// **'Digital Trust Protocol: Active'**
+  String get trustProtocol;
+
+  /// No description provided for @tradeFinality.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Trade Finality'**
+  String get tradeFinality;
 
   /// No description provided for @finalityValid.
   ///
@@ -290,10 +272,16 @@ abstract class AppLocalizations {
   /// **'Verified Speed: 12ms'**
   String get nodeLatency;
 
+  /// No description provided for @globalTrustActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Global Trust: Active'**
+  String get globalTrustActive;
+
   /// No description provided for @docVerification.
   ///
   /// In en, this message translates to:
-  /// **'Smart Verification: On'**
+  /// **'Smart Document Verification: Active'**
   String get docVerification;
 
   /// No description provided for @digitalTrustEnabled.
@@ -302,11 +290,221 @@ abstract class AppLocalizations {
   /// **'Digital Trust: Active'**
   String get digitalTrustEnabled;
 
+  /// No description provided for @secureNode.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure Node: Connected'**
+  String get secureNode;
+
+  /// No description provided for @engineUptime.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified Uptime: 99.9%'**
+  String get engineUptime;
+
+  /// No description provided for @documentVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Verification: Online'**
+  String get documentVerification;
+
+  /// No description provided for @engineLatency.
+  ///
+  /// In en, this message translates to:
+  /// **'Network Latency: 12ms'**
+  String get engineLatency;
+
+  /// No description provided for @viewEngineStats.
+  ///
+  /// In en, this message translates to:
+  /// **'View Engine Performance'**
+  String get viewEngineStats;
+
   /// No description provided for @terminateSession.
   ///
   /// In en, this message translates to:
   /// **'Safe Log Out'**
   String get terminateSession;
+
+  /// No description provided for @blockchainStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Engine Status'**
+  String get blockchainStatus;
+
+  /// No description provided for @engineBenefit.
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time Verification • No Bank Delays • 100% Trust'**
+  String get engineBenefit;
+
+  /// No description provided for @menuCoreNavigation.
+  ///
+  /// In en, this message translates to:
+  /// **'CORE NAVIGATION'**
+  String get menuCoreNavigation;
+
+  /// No description provided for @menuWeb3Modules.
+  ///
+  /// In en, this message translates to:
+  /// **'WEB3 MODULES'**
+  String get menuWeb3Modules;
+
+  /// No description provided for @menuMainHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Menu'**
+  String get menuMainHome;
+
+  /// No description provided for @menuGlobalDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Global Delivery'**
+  String get menuGlobalDelivery;
+
+  /// No description provided for @menuGlobalPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Global Pay'**
+  String get menuGlobalPay;
+
+  /// No description provided for @menuGlobalTrust.
+  ///
+  /// In en, this message translates to:
+  /// **'Global Trust'**
+  String get menuGlobalTrust;
+
+  /// No description provided for @menuGlobalNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Global Network'**
+  String get menuGlobalNetwork;
+
+  /// No description provided for @menuGlobalTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'Global Tracking'**
+  String get menuGlobalTracking;
+
+  /// No description provided for @menuGlobalForex.
+  ///
+  /// In en, this message translates to:
+  /// **'Global Forex'**
+  String get menuGlobalForex;
+
+  /// No description provided for @menuExitTerminal.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit Terminal'**
+  String get menuExitTerminal;
+
+  /// No description provided for @pillar1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'GLOBAL DELIVERY'**
+  String get pillar1Title;
+
+  /// No description provided for @pillar1Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'DDP LOGISTICS COMMAND\nComplete door-to-door delivery with all taxes and duties pre-calculated. No hidden fees or surprises at the border.'**
+  String get pillar1Subtitle;
+
+  /// No description provided for @pillar2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'GLOBAL PAY'**
+  String get pillar2Title;
+
+  /// No description provided for @pillar2Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'SETTLEMENT ENGINE\nImmediate international payments between mBrics members with zero delay, bypassing slow traditional bank networks.'**
+  String get pillar2Subtitle;
+
+  /// No description provided for @pillar3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'GLOBAL TRUST'**
+  String get pillar3Title;
+
+  /// No description provided for @pillar3Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'TRUST ENGINE\nReplacing slow bank Letters of Credit (LCs) with instant, automated digital verification through secure Web3 protocols.'**
+  String get pillar3Subtitle;
+
+  /// No description provided for @pillar4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'GLOBAL FOREX'**
+  String get pillar4Title;
+
+  /// No description provided for @pillar4Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'FOREX BRIDGE\nLock your exchange rates immediately through the engine to stop worrying about currency fluctuations during your trade.'**
+  String get pillar4Subtitle;
+
+  /// No description provided for @pillar5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'GLOBAL TRACKING'**
+  String get pillar5Title;
+
+  /// No description provided for @pillar5Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'TRADE VISUALIZER\nWatch your entire trade journey on a live, verified timeline. Total transparency from order to final payment release.'**
+  String get pillar5Subtitle;
+
+  /// No description provided for @pillar6Title.
+  ///
+  /// In en, this message translates to:
+  /// **'GLOBAL NETWORK'**
+  String get pillar6Title;
+
+  /// No description provided for @pillar6Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'NETWORK HUB\nConnect with Global 500 logistics leaders and institutional nodes to ensure every trade is handled by verified partners.'**
+  String get pillar6Subtitle;
+
+  /// No description provided for @visitorPopupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, Future Partner'**
+  String get visitorPopupTitle;
+
+  /// No description provided for @visitorWelcomeMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Experience the mBrics engine. Share your name to start the demo—no commitment required. We hope you\'ll join our network permanently soon.'**
+  String get visitorWelcomeMsg;
+
+  /// No description provided for @visitorNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'What is your name?'**
+  String get visitorNameLabel;
+
+  /// No description provided for @startExploring.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Exploring'**
+  String get startExploring;
+
+  /// No description provided for @visitorWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, Partner'**
+  String get visitorWelcomeTitle;
+
+  /// No description provided for @visitorDataSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting to Web3 Node...'**
+  String get visitorDataSync;
 
   /// No description provided for @ddpPageTitle.
   ///
@@ -419,7 +617,7 @@ abstract class AppLocalizations {
   /// No description provided for @ddpDemoNotice.
   ///
   /// In en, this message translates to:
-  /// **'Global Delivery is currently simulating live China-Africa trade routes.'**
+  /// **'Coming Soon: Global Delivery is currently simulating live China-Africa trade routes.'**
   String get ddpDemoNotice;
 
   /// No description provided for @payPageTitle.
@@ -449,7 +647,7 @@ abstract class AppLocalizations {
   /// No description provided for @payIntroBody.
   ///
   /// In en, this message translates to:
-  /// **'We take the stress out of paying international suppliers. Using our secure Web3 engine, your money is held safely until the digital policeman confirms the documents are correct. It’s faster, cheaper, and safer than a standard bank wire.'**
+  /// **'We take the stress out of paying international suppliers. Using our secure Web3 engine, your money is held safely until the \'Digital Policeman\' confirms the documents are correct. It’s faster and safer than a standard bank wire.'**
   String get payIntroBody;
 
   /// No description provided for @paySection1Title.
@@ -521,7 +719,7 @@ abstract class AppLocalizations {
   /// No description provided for @payDemoNotice.
   ///
   /// In en, this message translates to:
-  /// **'The Settlement Engine is currently in its core development phase.'**
+  /// **'Development Phase: The Settlement Engine is currently in its core development phase.'**
   String get payDemoNotice;
 
   /// No description provided for @trustPageTitle.
@@ -539,7 +737,7 @@ abstract class AppLocalizations {
   /// No description provided for @trustHeroTitle2.
   ///
   /// In en, this message translates to:
-  /// **'TRUST PROTOCOL'**
+  /// **'TRUST ENGINE'**
   String get trustHeroTitle2;
 
   /// No description provided for @trustHeroSlogan.
@@ -557,13 +755,13 @@ abstract class AppLocalizations {
   /// No description provided for @trustIntroBody.
   ///
   /// In en, this message translates to:
-  /// **'The mBrics Trust Engine is our core Web3 technology. It replaces slow bank processes with automated blockchain verification. It ensures your documents are real and your payments are secure—acting as a digital guardian for every trade.'**
+  /// **'The mBrics Trust Engine replaces slow bank Letter of Credits (LCs) with automated blockchain verification. It ensures your documents are real and your payments are secure—acting as a digital guardian for every trade.'**
   String get trustIntroBody;
 
   /// No description provided for @trustSection1Title.
   ///
   /// In en, this message translates to:
-  /// **'BLOCKCHAIN & CBDC INTEGRATION'**
+  /// **'BLOCKCHAIN INTEGRATION'**
   String get trustSection1Title;
 
   /// No description provided for @trustSection1Feature1Title.
@@ -575,7 +773,7 @@ abstract class AppLocalizations {
   /// No description provided for @trustSection1Feature1Desc.
   ///
   /// In en, this message translates to:
-  /// **'Replacing the bank LC with a digital handshake. Funds are only moved when every condition is met and verified on the blockchain.'**
+  /// **'Replacing the bank LC with a digital handshake. Funds move only when every condition is verified on the blockchain.'**
   String get trustSection1Feature1Desc;
 
   /// No description provided for @trustSection1Feature2Title.
@@ -583,12 +781,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'CBDC READY'**
   String get trustSection1Feature2Title;
-
-  /// No description provided for @trustSection1Feature2Desc.
-  ///
-  /// In en, this message translates to:
-  /// **'Built to handle Central Bank Digital Currencies for instant, state-backed trade settlement with zero friction.'**
-  String get trustSection1Feature2Desc;
 
   /// No description provided for @trustSection2Title.
   ///
@@ -605,7 +797,7 @@ abstract class AppLocalizations {
   /// No description provided for @trustSection2Feature1Desc.
   ///
   /// In en, this message translates to:
-  /// **'Our engine scans and verifies Bill of Ladings and Invoices instantly, ensuring zero fraud in the trade cycle.'**
+  /// **'Our engine verifies Bill of Ladings instantly, ensuring zero fraud in the trade cycle.'**
   String get trustSection2Feature1Desc;
 
   /// No description provided for @trustSection2Feature2Title.
@@ -617,7 +809,7 @@ abstract class AppLocalizations {
   /// No description provided for @trustSection2Feature2Desc.
   ///
   /// In en, this message translates to:
-  /// **'A secure vault where funds are held and released only when the digital policeman confirms delivery and compliance.'**
+  /// **'A secure vault where funds are held and released only when delivery is confirmed.'**
   String get trustSection2Feature2Desc;
 
   /// No description provided for @trustCtaButton.
@@ -647,7 +839,7 @@ abstract class AppLocalizations {
   /// No description provided for @trustPopupBody.
   ///
   /// In en, this message translates to:
-  /// **'Global Trust is currently in its simulation phase. We are integrating with global nodes to bring you the full \'Digital Policeman\' experience soon.'**
+  /// **'Global Trust is currently in its simulation phase. We are integrating with global nodes to bring you the full experience soon.'**
   String get trustPopupBody;
 
   /// No description provided for @trustPopupAction.
@@ -655,6 +847,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'UNDERSTOOD'**
   String get trustPopupAction;
+
+  /// No description provided for @trustSection1Feature2Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Built for Central Bank Digital Currencies (CBDC) to ensure instant, sovereign-backed trade settlement.'**
+  String get trustSection1Feature2Desc;
+
+  /// No description provided for @forexSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'THE mBRICS ADVANTAGE'**
+  String get forexSectionTitle;
 
   /// No description provided for @forexPageTitle.
   ///
@@ -665,7 +869,7 @@ abstract class AppLocalizations {
   /// No description provided for @forexCardLabel.
   ///
   /// In en, this message translates to:
-  /// **'Institutional Live Rate'**
+  /// **'mBrics DIRECT TRADE RATE (CNY/ZAR)'**
   String get forexCardLabel;
 
   /// No description provided for @forexCardStatus.
@@ -674,28 +878,22 @@ abstract class AppLocalizations {
   /// **'Status: Rate Lockable via Web3 Engine'**
   String get forexCardStatus;
 
-  /// No description provided for @forexSectionTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'THE MBRICS ADVANTAGE'**
-  String get forexSectionTitle;
-
   /// No description provided for @forexDescription.
   ///
   /// In en, this message translates to:
-  /// **'We eliminate the guesswork in global trade. By showing all prices in your local currency in real-time, we provide total transparency. When you start a trade, our Web3 engine is designed to \'lock\' this rate into a Smart Contract.'**
+  /// **'We eliminate currency risk for South African partners. By showing the direct value of 1 CNY in ZAR, we provide total transparency. When you start a trade, our Web3 engine is designed to \'lock\' this rate so you don\'t pay more later.'**
   String get forexDescription;
 
   /// No description provided for @forexFeature1Title.
   ///
   /// In en, this message translates to:
-  /// **'LOCAL CURRENCY ACCURACY'**
+  /// **'REAL-TIME ACCURACY'**
   String get forexFeature1Title;
 
   /// No description provided for @forexFeature1Desc.
   ///
   /// In en, this message translates to:
-  /// **'Avoid manual math. Every price on the platform is automatically converted to your native currency using live feeds.'**
+  /// **'Every cost is automatically shown in ZAR using live feeds, so you know exactly what you are paying in South Africa.'**
   String get forexFeature1Desc;
 
   /// No description provided for @forexFeature2Title.
@@ -707,31 +905,31 @@ abstract class AppLocalizations {
   /// No description provided for @forexFeature2Desc.
   ///
   /// In en, this message translates to:
-  /// **'Planned: Once the trade begins, the engine guarantees the exchange rate for the duration of the shipment.'**
+  /// **'Once the trade begins, the engine secures the exchange rate for the entire journey. No bank surprises.'**
   String get forexFeature2Desc;
 
   /// No description provided for @forexCtaButton.
   ///
   /// In en, this message translates to:
-  /// **'LOCK RATE & PROCEED'**
+  /// **'SECURE RATE & PROCEED'**
   String get forexCtaButton;
 
   /// No description provided for @forexStatusTag.
   ///
   /// In en, this message translates to:
-  /// **'STATUS: DATA FEED ACTIVE'**
+  /// **'STATUS: LIVE DATA FEED'**
   String get forexStatusTag;
 
   /// No description provided for @forexEngineTag.
   ///
   /// In en, this message translates to:
-  /// **'ENGINE: FX STABILIZATION ROADMAP'**
+  /// **'mBrics: FX STABILIZATION ACTIVE'**
   String get forexEngineTag;
 
   /// No description provided for @forexDemoNotice.
   ///
   /// In en, this message translates to:
-  /// **'The Web3 Rate Locking protocol is currently in the testing phase.'**
+  /// **'Protocol Update: The Web3 Rate Locking engine for the CNY-ZAR route is currently in the testing phase.'**
   String get forexDemoNotice;
 
   /// No description provided for @visualPageTitle.
@@ -743,7 +941,7 @@ abstract class AppLocalizations {
   /// No description provided for @visualHeroTitle.
   ///
   /// In en, this message translates to:
-  /// **'Visualizer'**
+  /// **'TRADE VISUALIZER'**
   String get visualHeroTitle;
 
   /// No description provided for @visualHeroSlogan.
@@ -755,7 +953,7 @@ abstract class AppLocalizations {
   /// No description provided for @visualDescription.
   ///
   /// In en, this message translates to:
-  /// **'No more guessing where your money or goods are. Our web3 engine tracks every single document and payment on a live timeline.'**
+  /// **'No more guessing where your money or goods are. Our Web3 engine tracks every document and payment on a live timeline.'**
   String get visualDescription;
 
   /// No description provided for @visualStep1Title.
@@ -857,13 +1055,13 @@ abstract class AppLocalizations {
   /// No description provided for @visualDemoNotice.
   ///
   /// In en, this message translates to:
-  /// **'Global Tracking is currently integrating real-time GPS and blockchain logs.'**
+  /// **'Simulation: Global Tracking is currently integrating real-time GPS and blockchain logs.'**
   String get visualDemoNotice;
 
   /// No description provided for @networkPageTitle.
   ///
   /// In en, this message translates to:
-  /// **'GLOBAL NETWORKS'**
+  /// **'GLOBAL NETWORK'**
   String get networkPageTitle;
 
   /// No description provided for @networkHeroTitle1.
@@ -881,7 +1079,7 @@ abstract class AppLocalizations {
   /// No description provided for @networkHeroSlogan.
   ///
   /// In en, this message translates to:
-  /// **'Our Web3 engine connects you to a verified grid of central bank overseen nodes and institutional trade leaders.'**
+  /// **'Our Web3 engine connects you to a verified grid of overseers and institutional trade leaders.'**
   String get networkHeroSlogan;
 
   /// No description provided for @networkSectionRegulatory.
@@ -971,7 +1169,7 @@ abstract class AppLocalizations {
   /// No description provided for @networkDemoNotice.
   ///
   /// In en, this message translates to:
-  /// **'Global Networks is currently in the institutional onboarding phase.'**
+  /// **'In Development: Global Network is currently in the institutional onboarding phase.'**
   String get networkDemoNotice;
 
   /// No description provided for @settings.
@@ -1025,19 +1223,19 @@ abstract class AppLocalizations {
   /// No description provided for @joinHub.
   ///
   /// In en, this message translates to:
-  /// **'Join the mBrics Hub'**
+  /// **'Join the mBrics Network'**
   String get joinHub;
 
   /// No description provided for @register.
   ///
   /// In en, this message translates to:
-  /// **'Register'**
+  /// **'Create Account'**
   String get register;
 
   /// No description provided for @registerTitle.
   ///
   /// In en, this message translates to:
-  /// **'Join the Network'**
+  /// **'Sign Up'**
   String get registerTitle;
 
   /// No description provided for @registerSubtitle.
@@ -1073,8 +1271,32 @@ abstract class AppLocalizations {
   /// No description provided for @alreadyHaveAccount.
   ///
   /// In en, this message translates to:
-  /// **'Already a member? Sign in'**
+  /// **'ALREADY A MEMBER? SIGN IN HERE'**
   String get alreadyHaveAccount;
+
+  /// No description provided for @registerSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to mBrics!'**
+  String get registerSuccessTitle;
+
+  /// No description provided for @registerSuccessMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration successful! You are now connected to the Web3 engine. We’ve built this technology to make global trade faster and more trustworthy. We are glad to have you with us.'**
+  String get registerSuccessMsg;
+
+  /// No description provided for @registerDemoNote.
+  ///
+  /// In en, this message translates to:
+  /// **'(Note: For this demo, your account is pre-activated.)'**
+  String get registerDemoNote;
+
+  /// No description provided for @startNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Now'**
+  String get startNow;
 
   /// No description provided for @backToLogin.
   ///
@@ -1127,19 +1349,19 @@ abstract class AppLocalizations {
   /// No description provided for @errorEmailRequired.
   ///
   /// In en, this message translates to:
-  /// **'Email is required'**
+  /// **'Please enter your email address'**
   String get errorEmailRequired;
 
   /// No description provided for @errorInvalidEmailFormat.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid email address'**
+  /// **'Invalid email format'**
   String get errorInvalidEmailFormat;
 
   /// No description provided for @errorPasswordRequired.
   ///
   /// In en, this message translates to:
-  /// **'Password is required'**
+  /// **'Please enter a password'**
   String get errorPasswordRequired;
 
   /// No description provided for @errorPasswordTooShort.
@@ -1151,20 +1373,62 @@ abstract class AppLocalizations {
   /// No description provided for @errorCompanyNameRequired.
   ///
   /// In en, this message translates to:
-  /// **'Company name is required'**
+  /// **'Please enter your company name'**
   String get errorCompanyNameRequired;
 
   /// No description provided for @errorUnexpected.
   ///
   /// In en, this message translates to:
-  /// **'An unexpected error occurred'**
+  /// **'System error. Please try again.'**
   String get errorUnexpected;
 
   /// No description provided for @errorRegistrationFailed.
   ///
   /// In en, this message translates to:
-  /// **'Unable to register at this time'**
+  /// **'Registration error'**
   String get errorRegistrationFailed;
+
+  /// No description provided for @errorUserExists.
+  ///
+  /// In en, this message translates to:
+  /// **'Email already registered. Please sign in.'**
+  String get errorUserExists;
+
+  /// No description provided for @errorInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed. Check your details.'**
+  String get errorInvalidCredentials;
+
+  /// No description provided for @errorTooManyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please wait.'**
+  String get errorTooManyRequests;
+
+  /// No description provided for @errorEmailNotConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Please verify your email account.'**
+  String get errorEmailNotConfirmed;
+
+  /// No description provided for @errorWeakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please use a stronger password.'**
+  String get errorWeakPassword;
+
+  /// No description provided for @errorNetworkIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection error.'**
+  String get errorNetworkIssue;
+
+  /// No description provided for @errorLoginFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in error. Try again.'**
+  String get errorLoginFailed;
 }
 
 class _AppLocalizationsDelegate

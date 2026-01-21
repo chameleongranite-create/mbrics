@@ -34,10 +34,17 @@ class TradeVisualizerPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
+Widget build(BuildContext context) {
+  final t = AppLocalizations.of(context)!;
 
-    return MasterLayout(
+  return PopScope(
+    canPop: false, // Intercepts the back button to prevent white screen
+    onPopInvokedWithResult: (didPop, result) {
+      if (didPop) return;
+      // Redirect to Main Menu for safe navigation
+      Navigator.pushReplacementNamed(context, '/mainmenu');
+    },
+    child: MasterLayout(
       child: Scaffold(
         backgroundColor: MBricsTheme.terminalBlack,
         appBar: AppBar(
@@ -45,9 +52,10 @@ class TradeVisualizerPage extends StatelessWidget {
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new, color: MBricsTheme.goldBase, size: 20),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/mainmenu'),
           ),
-          title: Text("MBRICS WEB3 ENGINE", 
+          // Consistent ARB Key for the Pillar Title
+          title: Text(t.menuGlobalTracking.toUpperCase(), 
             style: MBricsTheme.monoStyle.copyWith(fontSize: 10, letterSpacing: 2)),
           centerTitle: true,
         ),
@@ -88,7 +96,7 @@ class TradeVisualizerPage extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(7),
                         child: Image.asset(
-                          'assets/icons/visualizer.png', // FIXED: Single path
+                          'assets/icons/visualizer.png', 
                           fit: BoxFit.cover,
                           errorBuilder: (c, e, s) => Container(
                             color: Colors.black, 
@@ -146,8 +154,9 @@ class TradeVisualizerPage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildTimelineStep(Color color, String title, String subtitle, bool isDone, bool showLine) {
     return IntrinsicHeight(

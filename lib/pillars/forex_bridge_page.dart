@@ -14,7 +14,8 @@ class ForexBridgePage extends StatefulWidget {
 }
 
 class _ForexBridgePageState extends State<ForexBridgePage> {
-  double? zarToCny;
+  // Changed from zarToCny to cnyToZar
+  double? cnyToZar;
   bool loading = true;
 
   @override
@@ -27,14 +28,15 @@ class _ForexBridgePageState extends State<ForexBridgePage> {
     if (!mounted) return;
     setState(() => loading = true);
     try {
-      // Fetching live data for the Web3 Engine bridge
-      // Frankfurter is a reliable open source for currency data
-      final response = await http.get(Uri.parse('https://api.frankfurter.app/latest?from=ZAR&to=CNY'));
+      // Fetching live data for the mBrics Web3 Engine bridge
+      // We now fetch CNY as the base currency to show the value in ZAR
+      final response = await http.get(Uri.parse('https://api.frankfurter.app/latest?from=CNY&to=ZAR'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (mounted) {
           setState(() {
-            zarToCny = (data['rates']['CNY'] as num).toDouble();
+            // Updating to the new conversion logic: 1 CNY = X ZAR
+            cnyToZar = (data['rates']['ZAR'] as num).toDouble();
             loading = false;
           });
         }
@@ -74,73 +76,78 @@ class _ForexBridgePageState extends State<ForexBridgePage> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
     
-    return MasterLayout(
-      child: Scaffold(
-        backgroundColor: MBricsTheme.terminalBlack,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: MBricsTheme.goldBase, size: 20),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Text(t.forexPageTitle.toUpperCase(), 
-            style: MBricsTheme.headingStyle.copyWith(fontSize: 11, letterSpacing: 2)),
-          actions: [
-            IconButton(icon: const Icon(Icons.refresh, color: MBricsTheme.goldBase), onPressed: fetchRates)
-          ],
-        ),
-        body: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                child: loading 
-                  ? Container(
-                      height: 200, 
-                      alignment: Alignment.center, 
-                      child: const CircularProgressIndicator(color: MBricsTheme.goldBase)
-                    )
-                  : _buildLockCard(t),
-              ),
-              const SizedBox(height: 35),
-
-              Text(t.forexSectionTitle, 
-                style: MBricsTheme.headingStyle.copyWith(fontSize: 12, color: MBricsTheme.goldBase, letterSpacing: 1.2)),
-              const SizedBox(height: 15),
-              Text(
-                t.forexDescription,
-                style: MBricsTheme.bodyStyle.copyWith(fontSize: 14, height: 1.6),
-              ),
-              
-              const SizedBox(height: 35),
-              
-              
-
-              _buildFeature(Icons.visibility_outlined, t.forexFeature1Title, t.forexFeature1Desc),
-              _buildFeature(Icons.lock_clock_outlined, t.forexFeature2Title, t.forexFeature2Desc),
-
-              const SizedBox(height: 40),
-              
-              HoverButton(
-                buttonText: t.forexCtaButton,
-                onPressed: () => _showDemoNotice(context, t),
-              ),
-              
-              const SizedBox(height: 30),
-              
-              Row(
-                children: [
-                  Expanded(child: _conceptTag(t.forexStatusTag)),
-                  const SizedBox(width: 15),
-                  Expanded(child: _conceptTag(t.forexEngineTag)),
-                ],
-              ),
-              const SizedBox(height: 40),
+    return PopScope(
+      canPop: false, 
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        Navigator.pushReplacementNamed(context, '/mainmenu');
+      },
+      child: MasterLayout(
+        child: Scaffold(
+          backgroundColor: MBricsTheme.terminalBlack,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new, color: MBricsTheme.goldBase, size: 20),
+              onPressed: () => Navigator.pushReplacementNamed(context, '/mainmenu'),
+            ),
+            title: Text(t.menuGlobalForex.toUpperCase(), 
+              style: MBricsTheme.headingStyle.copyWith(fontSize: 11, letterSpacing: 2)),
+            actions: [
+              IconButton(icon: const Icon(Icons.refresh, color: MBricsTheme.goldBase), onPressed: fetchRates)
             ],
+          ),
+          body: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  child: loading 
+                    ? Container(
+                        height: 200, 
+                        alignment: Alignment.center, 
+                        child: const CircularProgressIndicator(color: MBricsTheme.goldBase)
+                      )
+                    : _buildLockCard(t),
+                ),
+                const SizedBox(height: 35),
+
+                Text(t.forexSectionTitle, 
+                  style: MBricsTheme.headingStyle.copyWith(fontSize: 12, color: MBricsTheme.goldBase, letterSpacing: 1.2)),
+                const SizedBox(height: 15),
+                Text(
+                  t.forexDescription,
+                  style: MBricsTheme.bodyStyle.copyWith(fontSize: 14, height: 1.6),
+                ),
+                
+                const SizedBox(height: 35),
+                
+                _buildFeature(Icons.visibility_outlined, t.forexFeature1Title, t.forexFeature1Desc),
+                _buildFeature(Icons.lock_clock_outlined, t.forexFeature2Title, t.forexFeature2Desc),
+
+                const SizedBox(height: 40),
+                
+                HoverButton(
+                  buttonText: t.forexCtaButton,
+                  onPressed: () => _showDemoNotice(context, t),
+                ),
+                
+                const SizedBox(height: 30),
+                
+                Row(
+                  children: [
+                    Expanded(child: _conceptTag(t.forexStatusTag)),
+                    const SizedBox(width: 15),
+                    Expanded(child: _conceptTag(t.forexEngineTag)),
+                  ],
+                ),
+                const SizedBox(height: 40),
+              ],
+            ),
           ),
         ),
       ),
@@ -167,10 +174,11 @@ class _ForexBridgePageState extends State<ForexBridgePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("1 ZAR ≈ ", style: MBricsTheme.headingStyle.copyWith(fontSize: 18)),
-                Text(zarToCny?.toStringAsFixed(4) ?? "—", 
+                // Updated UI to show 1 CNY to ZAR
+                Text("1 CNY ≈ ", style: MBricsTheme.headingStyle.copyWith(fontSize: 18)),
+                Text(cnyToZar?.toStringAsFixed(4) ?? "—", 
                   style: MBricsTheme.headingStyle.copyWith(color: MBricsTheme.goldBase, fontSize: 36)),
-                Text(" CNY", style: MBricsTheme.headingStyle.copyWith(fontSize: 18)),
+                Text(" ZAR", style: MBricsTheme.headingStyle.copyWith(fontSize: 18)),
               ],
             ),
           ),

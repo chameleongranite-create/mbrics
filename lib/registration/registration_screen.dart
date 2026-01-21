@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../l10n/app_localizations.dart';
-import '../theme/mbrics_theme.dart';
 
 class RegistrationScreen extends StatefulWidget {
   final void Function(Locale)? onLocaleChange;
@@ -12,6 +11,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  // 1. STATE & CONTROLLERS
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _companyController = TextEditingController();
@@ -20,14 +20,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String? _passwordError;
   String? _companyError;
   bool _loading = false;
-  bool _isLoginHovered = false;
+  bool _obscurePassword = true;
 
-  // mBrics Brand Palette
+  // REFINED BRAND COLORS - Synced with Login for brand consistency
   static const Color goldBase = Color(0xFFC2994B);
   static const Color goldLight = Color(0xFFE5C17A);
   static const Color terminalBlack = Color(0xFF1A1A1A);
-  static const Color bodyGrey = Color(0xFF757575);
-  static const Color silverBase = Color(0xFFA7A9AC);
+  static const Color bodyGrey = Color(0xFF5F6368);   
+  static const Color silverBase = Color(0xFF70757A); 
 
   @override
   void dispose() {
@@ -37,6 +37,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     super.dispose();
   }
 
+  // 2. LOGIC & SUCCESS POPUP
   void _validateAndRegister() async {
     final t = AppLocalizations.of(context)!;
     setState(() {
@@ -61,7 +62,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       );
       if (mounted) _showSuccessDialog();
     } on AuthException catch (e) {
-      _showSnackBar(e.message);
+      String message = e.message;
+      final lowMsg = e.message.toLowerCase();
+      if (lowMsg.contains("already registered") || lowMsg.contains("already exists")) {
+        message = t.errorUserExists;
+      } else if (lowMsg.contains("weak password")) {
+        message = t.errorWeakPassword;
+      } else if (e.statusCode == '429') {
+        message = t.errorTooManyRequests;
+      }
+      _showSnackBar(message);
     } catch (e) {
       _showSnackBar(t.errorUnexpected);
     } finally {
@@ -71,7 +81,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.redAccent, behavior: SnackBarBehavior.floating)
+      SnackBar(
+        content: Text(message, style: const TextStyle(fontWeight: FontWeight.bold)), 
+        backgroundColor: Colors.redAccent, 
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      )
     );
   }
 
@@ -82,20 +97,38 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: goldBase, width: 0.5)),
+        surfaceTintColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         title: Column(
           children: [
-            const Icon(Icons.verified_user_outlined, color: goldBase, size: 44),
+            const Icon(Icons.check_circle_outline, color: goldBase, size: 54),
             const SizedBox(height: 15),
-            Text(t.registerTitle.toUpperCase(), textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w900, color: terminalBlack, fontSize: 16)),
+            Text(t.registerSuccessTitle, 
+              textAlign: TextAlign.center, 
+              style: const TextStyle(fontWeight: FontWeight.w900, color: terminalBlack, fontSize: 18)),
           ],
         ),
-        content: Text(t.registrationSlogan, textAlign: TextAlign.center, style: const TextStyle(fontSize: 13, color: Colors.black87, height: 1.5)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(t.registerSuccessMsg, 
+              textAlign: TextAlign.center, 
+              style: const TextStyle(color: bodyGrey, fontSize: 14, height: 1.5)),
+            const SizedBox(height: 20),
+            Text(t.registerDemoNote,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 11, color: goldBase, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)),
+          ],
+        ),
         actions: [
           Center(
             child: TextButton(
-              onPressed: () { Navigator.pop(context); Navigator.pop(context); },
-              child: Text(t.backToLogin.toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w900, color: goldBase, letterSpacing: 1)),
+              onPressed: () { 
+                Navigator.pop(context); 
+                Navigator.pop(context); 
+              },
+              child: Text(t.startNow.toUpperCase(), 
+                style: const TextStyle(fontWeight: FontWeight.w900, color: goldBase, letterSpacing: 1.5)),
             ),
           )
         ],
@@ -103,29 +136,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
+  // 3. MAIN UI
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     
-    // Using the same compact breakpoints as Login
-    final bool showThreeCols = size.width > 1050;
-    final bool showTwoCols = size.width <= 1050 && size.width > 800;
+    final bool showThreeCols = size.width >= 1000; 
+    final bool showTwoCols = size.width < 1000 && size.width > 720;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: Center(
-              child: Container(
-                constraints: BoxConstraints(minHeight: size.height, maxWidth: 1200),
-                padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 15),
+      backgroundColor: const Color(0xFFFAFAFA), 
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: size.height - MediaQuery.of(context).padding.vertical, 
+                maxWidth: 1200,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _logoCore(t),
+                    const SizedBox(height: 35),
+                    _languageSwitcher(),
                     const SizedBox(height: 40),
 
                     if (showThreeCols)
@@ -134,118 +172,127 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.stretch, 
                           children: [
-                            _buildSidePillarBlock(t, true), 
-                            const SizedBox(width: 12),
+                            Flexible(child: _buildSidePillarBlock(t, true)), 
+                            const SizedBox(width: 20),
                             _buildRegisterCard(t),                   
-                            const SizedBox(width: 12),
-                            _buildSidePillarBlock(t, false), 
+                            const SizedBox(width: 20),
+                            Flexible(child: _buildSidePillarBlock(t, false)), 
                           ],
                         ),
-                      )
-                    else if (showTwoCols)
-                      Column(
-                        children: [
-                          _buildRegisterCard(t),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              _buildSidePillarBlock(t, true),
-                              const SizedBox(width: 12),
-                              _buildSidePillarBlock(t, false),
-                            ],
-                          ),
-                        ],
                       )
                     else
                       Column(
                         children: [
                           _buildRegisterCard(t),
-                          const SizedBox(height: 20),
-                          _buildSidePillarBlock(t, true, fullWidth: true),
-                          const SizedBox(height: 15),
-                          _buildSidePillarBlock(t, false, fullWidth: true),
+                          const SizedBox(height: 30),
+                          Wrap(
+                            spacing: 20, runSpacing: 20,
+                            alignment: WrapAlignment.center,
+                            children: [
+                              _buildSidePillarBlock(t, true, fullWidth: !showTwoCols),
+                              _buildSidePillarBlock(t, false, fullWidth: !showTwoCols),
+                            ],
+                          ),
                         ],
                       ),
 
                     const SizedBox(height: 50),
-                    const Text("SECURED BY mBRICS BLOCKCHAIN ENGINE", 
-                      style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: silverBase, letterSpacing: 2.5)),
+                    Text("SECURED BY mBrics WEB3 ENGINE", 
+                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: silverBase.withOpacity(0.6), letterSpacing: 3.0)),
                   ],
                 ),
               ),
             ),
           ),
-          Positioned(top: 25, left: 25, child: _langBtn("assets/icons/lang_en.png", const Locale('en'))),
-          Positioned(top: 25, right: 25, child: _langBtn("assets/icons/lang_cn.png", const Locale('zh'))),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _logoCore(AppLocalizations t) {
-    return Column(
-      children: [
-        Image.asset('assets/mbrics_logo.png', height: 65),
-        const SizedBox(height: 8),
-        Text(t.slogan.toUpperCase(), 
-          style: const TextStyle(letterSpacing: 3.0, fontSize: 8, color: goldBase, fontWeight: FontWeight.bold)),
-      ],
-    );
-  }
+  // 4. COMPONENTS
+  Widget _logoCore(AppLocalizations t) => Column(
+  children: [
+    // Total increase to height 100 (Original 55 -> 77 -> 100)
+    Image.asset(
+      'assets/mbrics_logo.png', 
+      height: 100,
+      filterQuality: FilterQuality.high, // Ensures no flicker/blur on scaling
+    ),
+    const SizedBox(height: 20),
+    Text(
+      t.loginSlogan.toUpperCase(), 
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        letterSpacing: 5.0, 
+        fontSize: 10, 
+        color: Color(0xFFC2994B), // goldBase
+        fontWeight: FontWeight.w900,
+      ),
+    ),
+  ],
+);
 
-  Widget _buildSidePillarBlock(AppLocalizations t, bool isLeft, {bool fullWidth = false}) {
-    return Container(
-      width: fullWidth ? 380 : 280,
-      padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: goldBase.withOpacity(0.12)),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.01), blurRadius: 20)],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (isLeft) ...[
-            _pillarUnit('assets/icons/icon_4.png', t.pillar1Title, t.pillar1Subtitle), 
-            _dividerDot(),
-            _pillarUnit('assets/icons/icon_5.png', t.pillar3Title, t.pillar3Subtitle), 
-            _dividerDot(),
-            _pillarUnit('assets/icons/icon_3.png', t.pillar4Title, t.pillar4Subtitle), 
-          ] else ...[
-            _pillarUnit('assets/icons/icon_1.png', t.pillar2Title, t.pillar2Subtitle), 
-            _dividerDot(),
-            _pillarUnit('assets/icons/icon_2.png', t.pillar6Title, t.pillar6Subtitle), 
-            _dividerDot(),
-            _pillarUnit('assets/icons/icon_6.png', t.pillar5Title, t.pillar5Subtitle), 
-          ],
-        ],
-      ),
-    );
-  }
+  Widget _languageSwitcher() => Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+    _langBtn("assets/icons/lang_en.png", const Locale('en'), "EN"),
+    const SizedBox(width: 24),
+    _langBtn("assets/icons/lang_cn.png", const Locale('zh'), "中文"),
+  ]);
+
+  Widget _langBtn(String asset, Locale loc, String label) => GestureDetector(
+    onTap: () => widget.onLocaleChange?.call(loc),
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30), border: Border.all(color: Colors.grey.withOpacity(0.1), width: 1.5)),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        CircleAvatar(radius: 11, backgroundImage: AssetImage(asset), backgroundColor: Colors.transparent),
+        const SizedBox(width: 8),
+        Text(label, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: terminalBlack)),
+      ]),
+    ),
+  );
+
+  Widget _buildSidePillarBlock(AppLocalizations t, bool isLeft, {bool fullWidth = false}) => Container(
+    width: fullWidth ? 400 : 300,
+    padding: const EdgeInsets.all(24),
+    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.grey.withOpacity(0.05))),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
+      children: isLeft ? [
+        _pillarUnit('assets/icons/icon_4.png', t.pillar1Title, t.pillar1Subtitle),
+        _divider(),
+        _pillarUnit('assets/icons/icon_3.png', t.pillar3Title, t.pillar3Subtitle),
+        _divider(),
+        _pillarUnit('assets/icons/icon_2.png', t.pillar2Title, t.pillar2Subtitle),
+      ] : [
+        _pillarUnit('assets/icons/icon_5.png', t.pillar4Title, t.pillar4Subtitle),
+        _divider(),
+        _pillarUnit('assets/icons/icon_1.png', t.pillar5Title, t.pillar5Subtitle),
+        _divider(),
+        _pillarUnit('assets/icons/icon_6.png', t.pillar6Title, t.pillar6Subtitle),
+      ]
+    ),
+  );
 
   Widget _pillarUnit(String iconPath, String head, String fullSub) {
     final parts = fullSub.split('\n');
-    final techLine = parts.isNotEmpty ? parts[0] : "";
-    final bodyText = parts.length > 1 ? parts[1] : "";
-
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start, 
       children: [
-        Container(
-          width: 55, height: 55,
-          decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: goldBase.withOpacity(0.08))),
-          child: ClipOval(child: Image.asset(iconPath, fit: BoxFit.cover)),
-        ),
-        const SizedBox(width: 12),
+        Image.asset(iconPath, width: 52, height: 52),
+        const SizedBox(width: 16),
         Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start, 
             children: [
-              Text(head.toUpperCase(), style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: terminalBlack)),
-              Text(techLine.toUpperCase(), style: const TextStyle(fontSize: 7.5, fontWeight: FontWeight.bold, color: goldBase)),
-              const SizedBox(height: 3),
-              Text(bodyText, style: const TextStyle(fontSize: 9, color: bodyGrey, height: 1.2)),
+              Text(head.toUpperCase(), 
+                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900, color: terminalBlack, letterSpacing: 0.5)),
+              if (parts.isNotEmpty) 
+                Text(parts[0].toUpperCase(), 
+                  style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: goldBase)),
+              const SizedBox(height: 6),
+              if (parts.length > 1) 
+                Text(parts[1], 
+                  style: const TextStyle(fontSize: 11.5, color: bodyGrey, height: 1.4, fontWeight: FontWeight.w400)),
             ],
           ),
         ),
@@ -253,100 +300,77 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
-  Widget _dividerDot() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        children: [
-          const SizedBox(width: 65),
-          Container(width: 3, height: 3, decoration: const BoxDecoration(color: goldBase, shape: BoxShape.circle)),
-        ],
-      ),
-    );
-  }
+  Widget _divider() => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 12), 
+    child: Divider(color: Colors.grey.withOpacity(0.05), thickness: 1, indent: 68)
+  );
 
-  Widget _buildRegisterCard(AppLocalizations t) {
-    return Container(
-      width: 360,
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 35),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: goldBase.withOpacity(0.1), blurRadius: 30)],
-        border: Border.all(color: goldBase.withOpacity(0.15)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(t.joinNetwork.toUpperCase(), style: const TextStyle(color: goldBase, fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-          const SizedBox(height: 4),
-          Text(t.register.toUpperCase(), style: const TextStyle(color: terminalBlack, fontSize: 16, fontWeight: FontWeight.w900)),
-          const SizedBox(height: 30),
-          _field(t.companyName, Icons.business, _companyController, _companyError),
-          const SizedBox(height: 20),
-          _field(t.email, Icons.alternate_email, _emailController, _emailError),
-          const SizedBox(height: 20),
-          _field(t.password, Icons.lock_outline, _passwordController, _passwordError, isPass: true),
-          const SizedBox(height: 35),
-          _metallicBtn(t.createAccount, _loading ? null : _validateAndRegister, isLoading: _loading),
-          const SizedBox(height: 25),
-          _StatusPulseRow(statusText: t.authNodeStandby),
-          const SizedBox(height: 25),
-          _loginLink(t),
-        ],
-      ),
-    );
-  }
+  Widget _buildRegisterCard(AppLocalizations t) => Container(
+    width: 380,
+    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
+    decoration: BoxDecoration(
+      color: Colors.white, 
+      borderRadius: BorderRadius.circular(32), 
+      boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 40, offset: const Offset(0, 10))], 
+      border: Border.all(color: Colors.grey.withOpacity(0.05))
+    ),
+    child: Column(mainAxisSize: MainAxisSize.min, children: [
+      Text(t.joinNetwork.toUpperCase(), style: const TextStyle(color: goldBase, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2.0)),
+      const SizedBox(height: 8),
+      Text(t.register.toUpperCase(), style: const TextStyle(color: terminalBlack, fontSize: 17, fontWeight: FontWeight.w900)),
+      const SizedBox(height: 35),
+      _field(t.companyName, Icons.business, _companyController, _companyError),
+      const SizedBox(height: 18),
+      _field(t.email, Icons.alternate_email, _emailController, _emailError),
+      const SizedBox(height: 18),
+      _field(t.password, Icons.lock_outline, _passwordController, _passwordError, isPass: true),
+      const SizedBox(height: 40),
+      _primaryBtn(t.createAccount, _loading ? null : _validateAndRegister, isLoading: _loading),
+      const SizedBox(height: 14),
+      _secondaryBtn(t.alreadyHaveAccount, () => Navigator.pop(context)),
+      const SizedBox(height: 30),
+      _StatusPulseRow(statusText: t.authNodeStandby),
+    ]),
+  );
 
-  Widget _field(String label, IconData icon, TextEditingController ctrl, String? error, {bool isPass = false}) {
-    return TextField(
-      controller: ctrl,
-      obscureText: isPass,
-      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: terminalBlack),
-      decoration: InputDecoration(
-        labelText: label,
-        errorText: error,
-        errorStyle: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.redAccent),
-        labelStyle: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: silverBase),
-        prefixIcon: Icon(icon, color: goldBase, size: 18),
-        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade100)),
-        focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: goldBase)),
-        contentPadding: const EdgeInsets.symmetric(vertical: 4),
-      ),
-    );
-  }
+  Widget _field(String label, IconData icon, TextEditingController ctrl, String? error, {bool isPass = false}) => TextField(
+    controller: ctrl,
+    obscureText: isPass ? _obscurePassword : false,
+    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: terminalBlack),
+    decoration: InputDecoration(
+      labelText: label,
+      errorText: error,
+      errorStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+      labelStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: silverBase),
+      prefixIcon: Icon(icon, color: goldBase.withOpacity(0.8), size: 20),
+      suffixIcon: isPass ? IconButton(icon: Icon(_obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: 18, color: silverBase), onPressed: () => setState(() => _obscurePassword = !_obscurePassword)) : null,
+      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade100, width: 2)),
+      focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: goldBase, width: 2)),
+    ),
+  );
 
-  Widget _metallicBtn(String label, VoidCallback? onTap, {bool isLoading = false}) {
-    return Container(
-      width: double.infinity, height: 48,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10), 
-        gradient: const LinearGradient(colors: [goldLight, goldBase]),
-      ),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent),
-        onPressed: onTap, 
-        child: isLoading 
-          ? const SizedBox(height: 18, width: 18, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-          : Text(label.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13)),
-      ),
-    );
-  }
+  Widget _primaryBtn(String label, VoidCallback? onTap, {bool isLoading = false}) => Container(
+    width: double.infinity, height: 54,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(12), 
+      gradient: const LinearGradient(colors: [goldLight, goldBase], begin: Alignment.topLeft, end: Alignment.bottomRight), 
+      boxShadow: [BoxShadow(color: goldBase.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 6))]
+    ),
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent, elevation: 0),
+      onPressed: onTap,
+      child: isLoading ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : Text(label.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1.0)),
+    ),
+  );
 
-  Widget _loginLink(AppLocalizations t) {
-    return GestureDetector(
-      onTap: () => Navigator.pop(context),
-      child: Text(t.alreadyHaveAccount, textAlign: TextAlign.center,
-        style: const TextStyle(color: silverBase, fontSize: 10.5, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)),
-    );
-  }
-
-  Widget _langBtn(String asset, Locale loc) {
-    return GestureDetector(
-      onTap: () => widget.onLocaleChange?.call(loc),
-      child: CircleAvatar(radius: 20, backgroundImage: AssetImage(asset), backgroundColor: Colors.transparent),
-    );
-  }
+  Widget _secondaryBtn(String label, VoidCallback onTap) => SizedBox(
+    width: double.infinity, height: 50,
+    child: OutlinedButton(
+      style: OutlinedButton.styleFrom(side: BorderSide(color: Colors.grey.withOpacity(0.2), width: 1.5), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+      onPressed: onTap,
+      child: Text(label.toUpperCase(), style: const TextStyle(color: silverBase, fontWeight: FontWeight.w800, fontSize: 13, letterSpacing: 0.5)),
+    ),
+  );
 }
 
 class _StatusPulseRow extends StatefulWidget {
@@ -358,21 +382,21 @@ class _StatusPulseRow extends StatefulWidget {
 
 class _StatusPulseRowState extends State<_StatusPulseRow> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _opacityAnimation;
+  late Animation<double> _opacity;
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500))..repeat(reverse: true);
-    _opacityAnimation = Tween<double>(begin: 0.3, end: 1.0).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 2000))..repeat(reverse: true);
+    _opacity = Tween<double>(begin: 0.4, end: 1.0).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
   @override
   void dispose() { _controller.dispose(); super.dispose(); }
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      FadeTransition(opacity: _opacityAnimation, child: Container(width: 6, height: 6, decoration: const BoxDecoration(color: Color(0xFF4CAF50), shape: BoxShape.circle))),
-      const SizedBox(width: 8),
-      Text(widget.statusText.toUpperCase(), style: const TextStyle(fontSize: 8.5, color: Color(0xFF4CAF50), fontWeight: FontWeight.bold)),
+    return Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: [
+      FadeTransition(opacity: _opacity, child: Container(width: 8, height: 8, decoration: const BoxDecoration(color: Color(0xFF4CAF50), shape: BoxShape.circle))),
+      const SizedBox(width: 10),
+      Flexible(child: Text(widget.statusText.toUpperCase(), style: const TextStyle(fontSize: 10, color: Color(0xFF4CAF50), fontWeight: FontWeight.w900, letterSpacing: 1.0))),
     ]);
   }
 }
